@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/search/main",
+    "pages/shebei_detail/main",
+    "pages/register/main",
+    "pages/login/main"
+    
+ 
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  }
+}

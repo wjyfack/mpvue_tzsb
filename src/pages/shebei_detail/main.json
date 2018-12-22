@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+        "van-transition": "../../../static/dist/transition/index"
+      }
+      
+}
