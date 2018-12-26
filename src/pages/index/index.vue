@@ -6,21 +6,21 @@
             <img src="../../asset/imgs/search.png" alt="" class="s-icon">
             <div>请输入设备编号搜索</div> 
          </a>
-          <img src="../../asset/imgs/bell.png" alt="" class="bell">
+          <img src="../../asset/imgs/bell.png" alt="" class="bell" @click="toMessage">
       </div>
      </div>  
      <div class="shuliang">
        <div class="shu-item">
          <div class="title">特种设备数量</div>
          <div class="cont">
-           <div class="num">10</div>
+           <div class="num">{{total.totailCount}}</div>
            <div class="tai">台</div>
          </div>
        </div>
        <div class="shu-item">
          <div class="title">不合格数量</div>
          <div class="cont">
-           <div class="num">10</div>
+           <div class="num">{{total.noPassCount}}</div>
            <div class="tai">台</div>
          </div>
        </div>
@@ -40,43 +40,41 @@
           </div>
           <ul class="sort-list" :class="{'sort-active ': issort}">
             <li @click="onSortSelect(1)">锅炉</li>
+            <li @click="onSortSelect(1)">压力容器</li>
+            <li @click="onSortSelect(1)">电梯</li>
+            <li @click="onSortSelect(1)">起重机</li>
+            <li @click="onSortSelect(1)">叉车</li>
+            <li @click="onSortSelect(1)">压力管道</li>
           </ul>
           <ul class="sort-list" :class="{'sort-active ': issort2}">
-            <li @click="onSortSelect(1)">锅炉2</li>
+            <li @click="onSortSelect(1)">默认排序</li>
+            <li @click="onSortSelect(1)">年检日期由近到远</li>
+            <li @click="onSortSelect(1)">年检日期由远到近</li>
+            <li @click="onSortSelect(1)">资料完善度由低到高</li>
+            <li @click="onSortSelect(1)">资料完善度由高到低</li>
           </ul>
         </div>
      </div>
      
      <!--  -->
-    <she-bei></she-bei>
-    <van-tabbar :active="active" >
-      <van-tabbar-item > 
-        <img slot="icon" src="../../asset/imgs/home.png" class="icon" mode="aspectFit" />
-        <img slot="icon-active" src="../../asset/imgs/home_c.png" mode="aspectFit" />
-      </van-tabbar-item>
-      <van-tabbar-item > 
-        <img slot="icon" src="../../asset/imgs/fail.png" class="icon" mode="aspectFit" />
-        <img slot="icon-active" src="../../asset/imgs/fail_c.png" mode="aspectFit" />
-      </van-tabbar-item>
-      <van-tabbar-item > 
-        <img slot="icon" src="../../asset/imgs/yewu.png" class="icon" mode="aspectFit" />
-        <img slot="icon-active" src="../../asset/imgs/yewu_c.png" mode="aspectFit" />
-      </van-tabbar-item>
-      <van-tabbar-item > 
-        <img slot="icon" src="../../asset/imgs/login_people.png" class="icon" mode="aspectFit" />
-        <img slot="icon-active" src="../../asset/imgs/my.png" mode="aspectFit" />
-      </van-tabbar-item>
-    </van-tabbar>
+    <she-bei :list="list" :isEmpty="isEmpty"></she-bei>
+    <div class="loading" v-if="loading"><van-loading type="spinner" size="15px"/><div class="name">加载中...</div> </div>
+    <div class="bottom" v-if="isBottom"> <div class="name">到底了-_-</div></div>
+    <tab-bar active="0"/>
+    <van-toast id="van-toast" />
     <div class="mask"></div>
   </div>
 </template>
 
 <script>
 import sheBei from '@/components/shebei'
-
+import tabBar from '@/components/tabBar'
+import Util from '@/utils/index'
+import Toast from '@/../static/dist/toast/toast';
 export default {
   components: {
-    sheBei
+    sheBei,
+    tabBar
   },
   data () {
     return {
@@ -84,33 +82,110 @@ export default {
       isset: false,
       issort: false,
       issort2: false,
-    }
-  },
-
-  methods: {
-    onSort(opt) {
-      if(opt == 1) {
-         this.issort = !this.issort
-         this.issort2 =  false
-      } else {
-         this.issort2 = !this.issort2
-         this.issort = false
+      loading: false,
+      isBottom: false,
+      isEmpty: false,
+      pageSize: 10,
+      page: 1
+      ,list: []
+      ,total : {
+        totailCount: 0
+        ,noPassCount: 0
       }
     }
+  },
+  computed: {
+    userInfo: function() {
+      return Util.getStorage('userInfo')
+    }
+  },
+  methods: {
+    onSort(opt) {
+        if(opt == 1) {
+          this.issort = !this.issort
+          this.issort2 =  false
+        } else {
+          this.issort2 = !this.issort2
+          this.issort = false
+        }
+      }
     ,onSortSelect(id) {
       this.issort2 = this.issort = false
+    }
+    ,toMessage () {
+        wx.navigateTo({
+          url: '../message/main'
+        })
+    }
+    ,getDrived(){
+      if(this.loading || this.isEmpty) return ''
+     const params = Util.getData({
+        "pageSize": this.pageSize,
+        "pageNum": this.page,
+        "DeviceUseName": this.userInfo.realName
+      })
+      this.loading = true
+      this.$http.post(`/device/get/{${this.userInfo.id}}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        this.loading = false
+        if(data.resultCode == '0000000') {
+          if(data.returnData.length == 0) { // 返回数据为空
+            if(this.page == 1){
+              this.isEmpty = true
+              this.isBottom = false
+            } else {
+               this.isBottom=true 
+            }
+            } else {
+            this.list =  [...this.list, ...data.returnData]
+          }
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,getTotal() {
+       const params = Util.getData({
+       "DeviceUseName": this.userInfo.realName
+      })
+      this.$http.post(`/device/totail/{${this.userInfo.id}}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+              this.total = data.returnData
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
     }
   },
 
   created () {
 
+  },
+  mounted() {
+    this.getDrived()
+    this.getTotal()
   }
   ,onReachBottom () {
     console.log(123)
       // 上拉加载
+      this.page += 1
+      this.getDrived()
+  }
+  ,onPullDownRefresh() {
+    console.log('sss')
+
+    wx.stopPullDownRefresh()
   }
   ,onPageScroll(event) {
-    console.log(event)
       if(event.scrollTop > 74) {
          this.isset = true
       } else {
@@ -121,7 +196,32 @@ export default {
 </script>
 
 <style scoped  lang="less">
+.loading {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background: #fff;
+  font-size: 14px;
+  color:#c9c9c9;
+  .name {margin-left: 5px;}
+}
+.bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  font-size: 14px;
+  color:#c9c9c9;
+  .name {
+    position: relative;
+    
+    }
+  
+}
 .container {
+  position: relative;
  // background: #EEEFF4;
   padding-bottom: 70px;
   margin-top: 69px;
@@ -245,9 +345,11 @@ export default {
   }
 
   // .mask {
+  //   position: absolute;
+  //   top: 0;
   //   width:100%;
   //   height: 100%;
-  //   background: #1C2627;
+  //   background:rgba(74,74,74,0.38);
   // }
 }
 </style>

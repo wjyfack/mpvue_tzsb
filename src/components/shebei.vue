@@ -1,11 +1,16 @@
 <template>
      <div class="shebei">
-      <a href="../shebei_detail/main" class="shebei-item" v-for="(item,i) in 5 " :key="i">
+      <a :href="'../shebei_detail/main?id='+item.id" class="shebei-item" v-for="(item,index) in list " :key="item.id">
         <div class="top van-hairline--bottom">
           <div class="cont">
-            <img src="../asset/imgs/goulu.png" alt="" class="img">
+            <img src="../asset/imgs/goulu.png" alt="" class="img" v-if="item.deviceType1 == 1">
+            <img src="../asset/imgs/rongqi.png" alt="" class="img" v-else-if="item.deviceType1 == 2">
+            <img src="../asset/imgs/dianti.png" alt="" class="img" v-else-if="item.deviceType1 == 3">
+            <img src="../asset/imgs/qizhong.png" alt="" class="img" v-else-if="item.deviceType1 == 4">
+            <img src="../asset/imgs/seshi.png" alt="" class="img" v-else-if="item.deviceType1 == 5">
+            <img src="../asset/imgs/guangdao.png" alt="" class="img" v-else-if="item.deviceType1 == 6">
             <div class="con">
-              <div class="title">容11粤EM0866(18)</div>
+              <div class="title">{{item.deviceName}}</div>
               <div class="zhi">资料完善度100%</div>
             </div>
           </div>
@@ -17,18 +22,23 @@
         <div class="bot">
           <div class="part">
             <div class="par">下次年检日期</div>
-            <div>2018-12</div>
+            <div>{{item.deviceNextYearTestDate || ''}}</div>
           </div>
           <div class="part pa-c ">
             <div class="par">单位内编号</div>
-            <div>2#</div>
+            <div>{{item.deviceNo}}</div>
           </div>
           <div class="tag">
-              <div class="tag-item">锅炉</div>
+              <div class="tag-item" v-if="item.deviceType1 == 1">锅炉</div>
+              <div class="tag-item" v-else-if="item.deviceType1 == 2">压力容器</div>
+              <div class="tag-item" v-else-if="item.deviceType1 == 3">电梯</div>
+              <div class="tag-item" v-else-if="item.deviceType1 == 4">起重机械</div>
+              <div class="tag-item" v-else-if="item.deviceType1 == 5">专用机动车辆</div>
+              <div class="tag-item" v-else-if="item.deviceType1 == 6">压力管道</div>
           </div>
         </div>
       </a>
-      <div class="kong">
+      <div class="kong" v-if="isEmpty">
           <img src="../asset/imgs/kong.png" alt="" class="kong-img">
           <div class="tips">设备列表为空，请先 <a href="" class="link">通过认证</a></div>
       </div>
@@ -36,7 +46,7 @@
 </template>
 <script>
 export default {
-    
+    props: ['list','isEmpty']
 }
 </script>
 <style lang="less" scoped>

@@ -1,6 +1,9 @@
 {
     "usingComponents": {
         "van-tabbar": "../../../static/dist/tabbar/index",
-        "van-tabbar-item": "../../../static/dist/tabbar-item/index"
-      }
+        "van-tabbar-item": "../../../static/dist/tabbar-item/index",
+        "van-toast": "../../../static/dist/toast/index",
+        "van-loading": "../../../static/dist/loading/index"
+      },
+      "enablePullDownRefresh": true
 }

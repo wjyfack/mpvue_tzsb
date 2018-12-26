@@ -1,17 +1,20 @@
 {
   "pages": [
+    "pages/login/main",
+    "pages/my/main",
     "pages/index/main",
+    "pages/message/main",
+    "pages/message_detail/main",
     "pages/search/main",
     "pages/shebei_detail/main",
-    "pages/register/main",
-    "pages/login/main"
+    "pages/register/main"
     
  
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "特种设备",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   }

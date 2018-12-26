@@ -2,11 +2,11 @@ var Fly=require("flyio/dist/npm/wx")
 var fly=new Fly
 
 //定义公共headers
-// fly.config.headers={xx:5,bb:6,dd:7}
+fly.config.headers={'Content-Type':'text/plain'}//
 //设置超时
-fly.config.timeout=10000;
+// fly.config.timeout=10000;
 //设置请求基地址
-fly.config.baseURL="https://wendux.github.io/"
+fly.config.baseURL="http://120.77.34.115:8507"//"http://192.168.0.116:8507"
 
 //添加请求拦截器
 // fly.interceptors.request.use((request)=>{

@@ -4,32 +4,34 @@
     <div class="form">
       <div class="input-item">
         <img src="../../asset/imgs/login_people.png" class="img" alt="">
-        <input type="text" class="input" placeholder="请输入手机号号码"> 
+        <input type="text" class="input" v-model.trim="phone" placeholder="请输入手机号号码"> 
       </div>
        <div class="input-item">
         <img src="../../asset/imgs/login_lock.png" class="img" alt="">
-        <input type="password" class="input" placeholder="请输入密码"> 
+        <input type="password" class="input" v-model.trim="password" placeholder="请输入密码"> 
       </div>
      <div class="btn-group">
-        <van-button round size="large" type="primary" custom-class ="s_btn">注册</van-button>
-        <van-button round size="large" custom-class ="s_btn2">登陆</van-button>
+        <van-button round size="large" type="primary" custom-class ="s_btn" @click="toRegister">注册</van-button>
+        <van-button round size="large" custom-class ="s_btn2" @click="onLogin">登陆</van-button>
     </div>
     </div>
-    
-    <a class="forget"> 忘记密码？</a>
+    <van-toast id="van-toast" />
+    <a href="../register/main?id=2" class="forget"> 忘记密码？</a>
   </div>
 </template>
 
 <script>
-
+import Toast from '@/../static/dist/toast/toast'
+import Util from '@/utils/index'
 export default {
   data () {
     return {
-      height: ''
+      height: '',
+      phone: '',
+      password: '',
+      regPhone:  /^1[34578]\d{9}$/ 
     }
   },
-
-
 
   methods: {
     getPhoneHeight () {
@@ -40,10 +42,47 @@ export default {
         }
       })
     }
+    ,onLogin() {
+        // if(!this.regPhone.test(this.phone)) {
+        //   Toast('手机号格式有误')
+        //   return ''
+        // } else if(this.password == '') {
+        //   Toast('请输入密码')
+        //   return ''
+        // } else {
+          this.$http.post('/customer/logon',{
+            customerLinkTel: this.phone,
+            customerLoginPwd: this.password
+          }).then((res)=> {
+              let data = res.data
+              if(data.resultCode == '0000000') {
+                Util.setStorage('userInfo', data.returnData)
+                Util.redTo('../index/main')
+              } else {
+                Toast(data.resultDesc)
+              }
+          })
+        // }
+        
+    }
+    ,toRegister() {
+      Util.navTo('../register/main?id=1')
+    }
+    ,autoLogin() {
+       let userInfo =  Util.getStorage('userInfo')
+       if(userInfo) {
+          Util.redTo('../index/main')
+       }
+    }
   },
 
   created () {
     this.getPhoneHeight()
+    
+  }
+  ,mounted() {
+    // 自动登录
+    this.autoLogin()
   }
 }
 </script>

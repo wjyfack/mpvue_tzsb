@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+        "van-button": "../../../static/dist/button/index"
+      },
+      "navigationBarTitleText": "修改密码"
+}
