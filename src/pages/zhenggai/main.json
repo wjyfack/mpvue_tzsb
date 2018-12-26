@@ -1,0 +1,7 @@
+{
+"usingComponents": {
+    "van-tab": "../../../static/dist/tab/index",
+    "van-tabs": "../../../static/dist/tabs/index"
+  },
+  "navigationBarTitleText": "设备认证"
+}

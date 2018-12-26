@@ -1,15 +1,17 @@
 {
   "pages": [
+    "pages/zhenggai/main",
     "pages/login/main",
     "pages/my/main",
+    "pages/my_forget/main",
+    "pages/my_info/main",
+    "pages/my_rengzheng/main",
     "pages/index/main",
     "pages/message/main",
     "pages/message_detail/main",
     "pages/search/main",
     "pages/shebei_detail/main",
     "pages/register/main"
-    
- 
   ],
   "window": {
     "backgroundTextStyle": "light",

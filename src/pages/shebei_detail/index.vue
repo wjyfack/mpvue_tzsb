@@ -7,19 +7,19 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">使用登记证</div>
-      <input type="text" class="input" value="梯11粤EM0866" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceCertNo" :disabled="!isEdit">
     </div>
     <div class="mes-item">
       <div class="title">下次年检时间</div>
-      <input type="text" class="input" value="2018-04" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceNextYearTestDate" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备名称或型号</div>
-      <input type="text" class="input" value="NPM/H-Ⅱ" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceName" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备类别</div>
-      <input type="text" class="input" value="载货电梯" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceTypeName3" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">单位内编号</div>
@@ -27,31 +27,31 @@
     </div>
      <div class="mes-item">
       <div class="title">产品编号</div>
-      <input type="text" class="input" value="T1112-013F" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceNo" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备代码</div>
-      <input type="text" class="input" value="32104406002012050030" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceRegNo" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备位置</div>
-      <textarea  class="textarea" value="佛山市南海区大沥镇盐步穗盐 路牛栏岗工业区"  :disabled="!isEdit"> </textarea>
+      <textarea  class="textarea" :value="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
     </div>
      <div class="mes-item">
       <div class="title">设备状态</div>
-      <input type="text" class="input" value="在用" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.status" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">制造时间</div>
-      <input type="text" class="input" value="2002-04" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceProduceDate" :disabled="!isEdit">
     </div>
        <div class="mes-item">
       <div class="title">制造单位</div>
-      <input type="text" class="input" value="广东台日电梯有限公司" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceProduceName" :disabled="!isEdit">
     </div>
        <div class="mes-item">
       <div class="title">安装单位</div>
-      <input type="text" class="input" value="广东台日电梯有限公司" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceInstallName" :disabled="!isEdit">
     </div>
 
   </div>
@@ -86,15 +86,15 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">上次检验结论 </div>
-      <input type="text" class="input" value="630" disabled>
+      <input type="text" class="input" :value="baseInfo.deviceLastYearTestResult" disabled>
     </div>
     <div class="mes-item">
       <div class="title">上次检验日期</div>
-      <input type="text" class="input" value="630" disabled>
+      <input type="text" class="input" :value="baseInfo.deviceLastYearTestDate" disabled>
     </div>
      <div class="mes-item">
       <div class="title">下次检验日期</div>
-      <input type="text" class="input" value="630" disabled>
+      <input type="text" class="input" :value="baseInfo.deviceNextYearTestDate" disabled>
     </div>
   </div>
 </div>
@@ -110,27 +110,129 @@
 </template>
 
 <script>
-
+import Util from '@/utils/index'
+import Toast from '@/../static/dist/toast/toast';
 export default {
   data () {
     return {
       isEdit: false
+      ,id: 0
+      ,baseInfo: {
+        deviceCertNo:'',
+        deviceFullAddress:'',
+        deviceInstallName:'',
+        deviceLastYearTestDate:'',
+        deviceLastYearTestResult:'',
+        deviceName:'',
+        deviceNextYearTestDate:'',
+        deviceNo:'',
+        deviceParam:'',
+        deviceProduceDate:'',
+        deviceProduceName:'',
+        deviceProduceNo:'',
+        deviceRegNo:'',
+        deviceStatus:'',
+        deviceSystemCode:'',
+        deviceType1:'',
+        deviceType2:'',
+        deviceType3:'',
+        deviceTypeName1:'',
+        deviceTypeName2:'',
+        deviceTypeName3:'',
+        deviceUseName:'',
+
+      }
     }
   },
-
-
-
+ computed: {
+    userInfo: function() {
+      return Util.getStorage('userInfo')
+    }
+  },
   methods: {
     onCheck() {
       this.isEdit = true
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
     }
     ,onBack() {
       this.isEdit = false
     }
+    ,getData() {
+       const params = `{"id":"${this.id}"}`
+       this.$http.post(`/device/getDt/{${this.userInfo.id}}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+          console.log(data.returnData)
+          data.returnData.status = this.checkStatus(data.returnData.deviceStatus)
+          data.returnData.deviceFullAddress = this.checkAddr(data.returnData.deviceFullAddress)
+          this.baseInfo = data.returnData
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,checkStatus(status) {
+       let name = ''
+       switch(~~status) {
+         case 1:
+          name='在用'
+          break
+         case 2:
+          name='停用'
+          break
+         case 3:
+          name='检测中'
+          break
+         case 4 :
+          name='整改中'
+          break
+         case 5:
+          name='停电话'
+          break
+         case 6:
+          name='停目录停用'
+          break
+         case 7:
+          name='停检验员'
+          break
+           case 8:
+          name='停'
+          break
+         case 9:
+          name='拆除'
+          break
+         case 10:
+          name='注销'
+          break
+         case 11:
+          name='已移装改造'
+          break
+         case 12:
+          name='简单容器'
+          break
+           case 13:
+          name='待核实'
+          break
+          default:
+          name = '未知'
+          break
+       }
+       return name
+    }
+    ,checkAddr(addr) {
+      return addr.split('/').join('')
+    }
   },
 
-  created () {
-   
+  mounted () {
+    this.id = this.$mp.query.id
+    this.getData()
   }
 }
 </script>

@@ -45,7 +45,7 @@
       <div class="title">退出登陆</div>
     </div>
   </div>
-
+  <tab-bar active="2"/>
 </div>
 </div>
 </template>
