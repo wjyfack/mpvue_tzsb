@@ -58,8 +58,8 @@
      
      <!--  -->
     <she-bei :list="list" :isEmpty="isEmpty"></she-bei>
-    <div class="loading" v-if="loading"><van-loading type="spinner" size="15px"/><div class="name">加载中...</div> </div>
-    <div class="bottom" v-if="isBottom"> <div class="name">到底了-_-</div></div>
+    <my-load :Loading="loading" :Bottom="isBottom"> </my-load>
+
     <tab-bar active="0"/>
     <van-toast id="van-toast" />
     <div class="mask"></div>
@@ -69,12 +69,14 @@
 <script>
 import sheBei from '@/components/shebei'
 import tabBar from '@/components/tabBar'
+import myLoad from '@/components/myLoad'
 import Util from '@/utils/index'
 import Toast from '@/../static/dist/toast/toast';
 export default {
   components: {
     sheBei,
-    tabBar
+    tabBar,
+    myLoad
   },
   data () {
     return {

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="loading" v-if="isLoading"><van-loading type="spinner" size="15px"/><div class="name">加载中...</div> </div>
-    <div class="bottom" v-if="isBottom"> <div class="name">到底了-_-</div></div>
+        <div class="loading" v-if="Loading"><van-loading type="spinner" size="15px"/><div class="name">加载中...</div> </div>
+    <div class="bottom" v-if="Bottom"> <div class="name">到底了-_-</div></div>
     </div>
 </template>
 <script>
 export default {
-    props: ['isLoading','isBottom']
+    props: ['Loading','Bottom']
 }
 </script>
 <style lang="less" scoped>

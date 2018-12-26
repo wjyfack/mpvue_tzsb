@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/zhenggai/main",
     "pages/login/main",
+    "pages/zhenggai/main",
     "pages/my/main",
     "pages/my_forget/main",
     "pages/my_info/main",

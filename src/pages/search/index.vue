@@ -10,18 +10,19 @@
      cancel-class="cancel-class"
     />
     <she-bei :list="list" :isEmpty="isEmpty"></she-bei>
-    <div class="loading" v-if="loading"><van-loading type="spinner" size="15px"/><div class="name">加载中...</div> </div>
-    <div class="bottom" v-if="isBottom"> <div class="name">到底了-_-</div></div>
+    <my-load :Loading="loading" :Bottom="isBottom"> </my-load>
       <van-toast id="van-toast" />
 </div>
 </template>
 <script>
 import sheBei from '@/components/shebei'
-import Toast from '@/../static/dist/toast/toast';
+import Toast from '@/../static/dist/toast/toast'
+import myLoad from '@/components/myLoad'
 import Util from '@/utils/index'
 export default {
   components: {
-    sheBei
+    sheBei,
+    myLoad
   },
   data () {
     return {

@@ -28,6 +28,7 @@ export default {
             let url = '../index/main'
             switch(index) {
                 case 1:
+                url= '../zhenggai/main'
                     break
                 case 2:
                     url= '../my/main'
