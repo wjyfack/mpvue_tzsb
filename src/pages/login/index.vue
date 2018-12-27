@@ -71,7 +71,11 @@ export default {
     ,autoLogin() {
        let userInfo =  Util.getStorage('userInfo')
        if(userInfo) {
+         Toast('自动登录中...')
+         setTimeout(()=> {
           Util.redTo('../index/main')
+         },2500)
+          
        }
     }
   },
@@ -82,6 +86,7 @@ export default {
   }
   ,mounted() {
     // 自动登录
+    
     this.autoLogin()
   }
 }

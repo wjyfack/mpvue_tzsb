@@ -3,64 +3,97 @@
     <van-tabs swipeable animated :active="active" color="#FDC915" @change="onChange">
       <van-tab title="待整改"> 
         <div class="zhen">
-          <a href="../zhenggai_detail/main"  class="zhen-item">
+          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
             <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 2018-06-23</div>
-              <div class="status">
+              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="status" v-if="item.rectifyStatus == 0">
                 <img src="../../asset/imgs/z_deng.png" alt="" class="img">
                 <div>待整改</div>
               </div>
-            </div>
-            <div class="cont">
-              <div class="title van-ellipsis">指令书 [912100]第(3299)号</div>
-              <div class="desc van-multi-ellipsis--l2">设备描述内容/n</div>
-            </div>
-          </a>
-          <a  class="zhen-item">
-            <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 2018-06-23</div>
-              <div class="status">
+              <div class="status" v-else-if="item.rectifyStatus == 2">
                 <img src="../../asset/imgs/z_cuo.png" alt="" class="img">
                 <div>不通过,重新提交</div>
               </div>
-            </div>
-            <div class="cont">
-              <div class="title van-ellipsis">指令书 [912100]第(3299)号</div>
-              <div class="desc van-multi-ellipsis--l2">设备描述内容/n</div>
-            </div>
-          </a>
-          <a  class="zhen-item">
-            <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 2018-06-23</div>
-              <div class="status">
+              <div class="status" v-else-if="item.rectifyStatus == 1">
                 <img src="../../asset/imgs/z_yi.png" alt="" class="img">
                 <div>已提交</div>
               </div>
-            </div>
-            <div class="cont">
-              <div class="title van-ellipsis">指令书 [912100]第(3299)号</div>
-              <div class="desc van-multi-ellipsis--l2">设备描述内容/n</div>
-            </div>
-          </a>
-          <a  class="zhen-item">
-            <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 2018-06-23</div>
-              <div class="status">
+              <div class="status"  v-else>
                 <img src="../../asset/imgs/z_dui.png" alt="" class="img">
                 <div>已通过</div>
               </div>
             </div>
             <div class="cont">
-              <div class="title van-ellipsis">指令书 [912100]第(3299)号</div>
-              <div class="desc van-multi-ellipsis--l2">设备描述内容/n</div>
+              <div class="title van-ellipsis">指令书{{item.commandNo}}</div>
+              <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
             </div>
           </a>
-          <div class="no-driver">暂无需整改设备</div>
-          <my-load Loading="true" Bottom="true"> </my-load>
+          <div class="no-driver" v-if="parOneDev">暂无需整改设备</div>
+          <my-load :Loading="parOneLoad" :Bottom="parOneBottom"> </my-load>
         </div> 
       </van-tab>
-      <van-tab title="已提交">内容   </van-tab>
-      <van-tab title="全部">内容 </van-tab>
+      <van-tab title="已提交">
+      <div class="zhen">
+          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listTi" :key="item.id">
+            <div class="top van-hairline--bottom">
+              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="status" v-if="item.rectifyStatus == 0">
+                <img src="../../asset/imgs/z_deng.png" alt="" class="img">
+                <div>待整改</div>
+              </div>
+              <div class="status" v-else-if="item.rectifyStatus == 2">
+                <img src="../../asset/imgs/z_cuo.png" alt="" class="img">
+                <div>不通过,重新提交</div>
+              </div>
+              <div class="status" v-else-if="item.rectifyStatus == 1">
+                <img src="../../asset/imgs/z_yi.png" alt="" class="img">
+                <div>已提交</div>
+              </div>
+              <div class="status"  v-else>
+                <img src="../../asset/imgs/z_dui.png" alt="" class="img">
+                <div>已通过</div>
+              </div>
+            </div>
+            <div class="cont">
+              <div class="title van-ellipsis">指令书{{item.commandNo}}</div>
+              <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
+            </div>
+          </a>
+          <div class="no-driver" v-if="parTwoDev">暂无需整改设备</div>
+          <my-load :Loading="parTwoLoad" :Bottom="parTwoBottom"> </my-load>
+        </div>   
+      </van-tab>
+      <van-tab title="全部">
+        <div class="zhen">
+          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listQuan" :key="item.id">
+            <div class="top van-hairline--bottom">
+              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="status" v-if="item.rectifyStatus == 0">
+                <img src="../../asset/imgs/z_deng.png" alt="" class="img">
+                <div>待整改</div>
+              </div>
+              <div class="status" v-else-if="item.rectifyStatus == 2">
+                <img src="../../asset/imgs/z_cuo.png" alt="" class="img">
+                <div>不通过,重新提交</div>
+              </div>
+              <div class="status" v-else-if="item.rectifyStatus == 1">
+                <img src="../../asset/imgs/z_yi.png" alt="" class="img">
+                <div>已提交</div>
+              </div>
+              <div class="status"  v-else>
+                <img src="../../asset/imgs/z_dui.png" alt="" class="img">
+                <div>已通过</div>
+              </div>
+            </div>
+            <div class="cont">
+              <div class="title van-ellipsis">指令书{{item.commandNo}}</div>
+              <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
+            </div>
+          </a>
+          <div class="no-driver" v-if="parTreDev">暂无需整改设备</div>
+          <my-load :Loading="parTreLoad" :Bottom="parTreBottom"> </my-load>
+        </div> 
+      </van-tab>
     </van-tabs>
     <tab-bar active="1"/>
   </div>
@@ -76,20 +109,123 @@ export default {
   },
   data () {
     return {
-      active: 0
+      active: 0,
+      list: [],
+      listTi: [],
+      listQuan: [],
+      pageNum: 1,
+      zhengNum:0,
+      tijiaoNum: 0,
+      allNum: 0,
+      status: 0,
+      parOneDev: false,
+      parOneLoad: false,
+      parOneBottom: false,
+      parTwoDev: false,
+      parTwoLoad: false,
+      parTwoBottom: false,
+       parTreDev: false,
+      parTreLoad: false,
+      parTreBottom: false,
+      chaTi: false,
+      chaQuan: false
     }
   },
-
+  computed: {
+    userInfo: () => {
+      return Util.getStorage('userInfo')
+    }
+  },
   methods: {
     onChange(event) {
-      console.log(event)
+     // console.log(event,this.active)
+      const index = event.mp.detail.index
+      this.active = index
+    }
+    ,getData(active) {
+      switch(active) {
+        case 0:
+        this.status = 0
+        this.pageNum = ++this.zhengNum
+        this.parOneLoad = true
+        break
+        case 1: 
+        this.status = 1
+        this.pageNum = ++this.tijiaoNum
+        break
+        case 2:
+        this.status = ''
+        this.pageNum = ++this.allNum
+        break
+      }
+      const params = Util.getData({
+        "pageSize":"10",
+        "pageNum":this.pageNum,
+        "DeviceUseName": this.userInfo.realName,
+        "rectifyStatus":this.status})
+         this.$http.post(`/task/command/page/{${this.userInfo.id}}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            console.log(data)
+             switch(active) {
+                case 0: 
+                  if(data.returnData.length == 0) {
+                      if(this.pageNum == 1) {
+                        this.parOneDev = true
+                      } else {
+                        this.parOneBottom = true
+                        --this.zhengNum
+                      }
+                      this.parOneLoad = false
+                  } else {
+                  this.list = [...this.list,...data.returnData]
+                  }
+                  break
+                case 1: 
+                    if(data.returnData.length == 0) {
+                        if(this.pageNum == 1) {
+                          this.parTwoDev = true
+                        } else {
+                          this.parTwoBottom = true
+                          --this.tijiaoNum
+                        }
+                        this.parTwoLoad = false
+                    } else {
+                    this.listTi = [...this.listTi,...data.returnData]
+                    }
+                  break
+                  case 2: 
+                    if(data.returnData.length == 0) {
+                        if(this.pageNum == 1) {
+                          this.parTreDev = true
+                        } else {
+                          this.parTreBottom = true
+                          --this.allNum
+                        }
+                        this.parTreLoad = false
+                    } else {
+                    this.listQuan = [...this.listQuan,...data.returnData]
+                    }
+                  break
+              } 
+          
+          })
     }
   },
 
   created () {
   }
-
-
+  ,mounted() {
+    this.getData(0)
+    this.getData(1)
+    this.getData(2)
+  }
+  ,onReachBottom () {
+    this.getData()
+  }
 }
 </script>
 

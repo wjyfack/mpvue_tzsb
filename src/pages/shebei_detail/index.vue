@@ -63,19 +63,19 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">额定载荷 </div>
-      <input type="text" class="input" value="630" :disabled="!isEdit">
+      <input type="text" class="input" value="" :disabled="!isEdit">
     </div>
     <div class="mes-item">
       <div class="title">额定速度</div>
-      <input type="text" class="input" value="630" :disabled="!isEdit">
+      <input type="text" class="input" value="" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">层站层</div>
-      <input type="text" class="input" value="630" :disabled="!isEdit">
+      <input type="text" class="input" value="" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备类别</div>
-      <input type="text" class="input" value="630" :disabled="!isEdit">
+      <input type="text" class="input" :value="baseInfo.deviceTypeName3" :disabled="!isEdit">
     </div>
   </div>
 </div>

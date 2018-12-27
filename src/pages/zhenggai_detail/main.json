@@ -1,8 +1,6 @@
 {
 "usingComponents": {
-    "van-tab": "../../../static/dist/tab/index",
-    "van-tabs": "../../../static/dist/tabs/index"
-  
+  "van-transition": "../../../static/dist/transition/index"
   },
   "navigationBarTitleText": "任务详情"
 }

@@ -30,7 +30,7 @@
        <div class="sorted " :class="{'sorted-fixed ': isset}">
           <div class="select">
               <div class="select-item" :class="{'active': issort}" @click="onSort(1)">
-                <div class="name">种类</div>
+                <div class="name">{{isSelect.name}}</div>
                 <div class="triangle_border_down"></div>
               </div>
               <div class="select-item"  :class="{'active': issort2}" @click="onSort(2)">
@@ -39,19 +39,10 @@
               </div>
           </div>
           <ul class="sort-list" :class="{'sort-active ': issort}">
-            <li @click="onSortSelect(1)">锅炉</li>
-            <li @click="onSortSelect(1)">压力容器</li>
-            <li @click="onSortSelect(1)">电梯</li>
-            <li @click="onSortSelect(1)">起重机</li>
-            <li @click="onSortSelect(1)">叉车</li>
-            <li @click="onSortSelect(1)">压力管道</li>
+            <li @click="onSortSelect(1,index,item.id)" v-for="(item,index) in sorts" :key="item.id" :class="{'act': index == isSelect.id}">{{item.name}}</li>
           </ul>
           <ul class="sort-list" :class="{'sort-active ': issort2}">
-            <li @click="onSortSelect(1)">默认排序</li>
-            <li @click="onSortSelect(1)">年检日期由近到远</li>
-            <li @click="onSortSelect(1)">年检日期由远到近</li>
-            <li @click="onSortSelect(1)">资料完善度由低到高</li>
-            <li @click="onSortSelect(1)">资料完善度由高到低</li>
+            <li @click="onSortSelect(2,index,item.id)" v-for="(item,index) in dateSort" :key="item.id" :class="{'act': index == isSelect2}">{{item.name}}</li>
           </ul>
         </div>
      </div>
@@ -71,6 +62,7 @@ import sheBei from '@/components/shebei'
 import tabBar from '@/components/tabBar'
 import myLoad from '@/components/myLoad'
 import Util from '@/utils/index'
+import {deviceTypes,dateSort} from '@/utils/config'
 import Toast from '@/../static/dist/toast/toast';
 export default {
   components: {
@@ -84,9 +76,12 @@ export default {
       isset: false,
       issort: false,
       issort2: false,
+      isSelect: {name: '种类',id: null},
+      isSelect2: '',
       loading: false,
       isBottom: false,
       isEmpty: false,
+      clickSort: false,
       pageSize: 10,
       page: 1
       ,list: []
@@ -94,11 +89,19 @@ export default {
         totailCount: 0
         ,noPassCount: 0
       }
+      ,deviceType: ''
+      ,orderType: ''
     }
   },
   computed: {
     userInfo: function() {
       return Util.getStorage('userInfo')
+    },
+    sorts: function()  {
+      return deviceTypes
+    },
+    dateSort: function() {
+      return dateSort
     }
   },
   methods: {
@@ -111,8 +114,21 @@ export default {
           this.issort = false
         }
       }
-    ,onSortSelect(id) {
+    ,onSortSelect(opt,index,id) {
       this.issort2 = this.issort = false
+      this.clickSort = true
+    
+      this.page = 1
+      if(opt ==1) {
+        this.deviceType = id
+          this.isSelect = {name: this.sorts[index].name, id: index}
+      } else {
+        this.isSelect2 = index
+        this.orderType = id
+      }
+      console.log(1231231)
+      this.getDrived()
+
     }
     ,toMessage () {
         wx.navigateTo({
@@ -124,7 +140,9 @@ export default {
      const params = Util.getData({
         "pageSize": this.pageSize,
         "pageNum": this.page,
-        "DeviceUseName": this.userInfo.realName
+        "deviceUseName": this.userInfo.realName,
+         "deviceType1": this.deviceType,
+        "orderType": this.orderType
       })
       this.loading = true
       this.$http.post(`/device/get/{${this.userInfo.id}}`,params,{
@@ -139,12 +157,20 @@ export default {
             if(this.page == 1){
               this.isEmpty = true
               this.isBottom = false
+              this.clickSort ?  this.list =  [ ...data.returnData] : ''
+             
             } else {
                this.isBottom=true 
             }
             } else {
-            this.list =  [...this.list, ...data.returnData]
+              if(this.clickSort) {
+                this.list =  [ ...data.returnData]
+               
+              } else{
+                this.list =  [...this.list, ...data.returnData]
+              }
           }
+           this.clickSort = false
         } else {
           Toast(data.resultDesc)
         }
@@ -152,7 +178,8 @@ export default {
     }
     ,getTotal() {
        const params = Util.getData({
-       "DeviceUseName": this.userInfo.realName
+       "DeviceUseName": this.userInfo.realName,
+
       })
       this.$http.post(`/device/totail/{${this.userInfo.id}}`,params,{
         headers:{
@@ -332,6 +359,7 @@ export default {
         background:#fff;
         z-index:99;
        li {padding: 7px 32px;}
+       .act {color:#FDC915}
     }
     .sort-active {
       display: block;
