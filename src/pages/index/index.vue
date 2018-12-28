@@ -126,7 +126,6 @@ export default {
         this.isSelect2 = index
         this.orderType = id
       }
-      console.log(1231231)
       this.getDrived()
 
     }
@@ -136,6 +135,7 @@ export default {
         })
     }
     ,getDrived(){
+      if(!this.clickSort)
       if(this.loading || this.isEmpty) return ''
      const params = Util.getData({
         "pageSize": this.pageSize,
@@ -188,6 +188,7 @@ export default {
       }).then((res) => {
         let data = res.data
         if(data.resultCode == '0000000') {
+              if(data.returnData.totailCount != 'undefined')
               this.total = data.returnData
         } else {
           Toast(data.resultDesc)

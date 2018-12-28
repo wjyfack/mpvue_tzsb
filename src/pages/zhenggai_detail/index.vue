@@ -47,7 +47,7 @@
             <div class="mes-item">
               <div class="title">指令书图片</div>
               <div class="input">
-                <img src="http://placehold.it/100x100" alt="" class="img">
+                <img :src="command.commandImgUrl" alt="" class="img">
               </div>
             </div>
           </div>

@@ -43,6 +43,7 @@ function getData(obj) {
   for(let i in obj) {
     str += `"${i}": "${obj[i]}",`
   }
+  str = str.substring(0,str.length-1)
   str += '}'
   return str
 }

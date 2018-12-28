@@ -23,6 +23,7 @@
 <script>
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
+import md5 from 'js-md5'
 export default {
   data () {
     return {
@@ -43,17 +44,18 @@ export default {
       })
     }
     ,onLogin() {
-        // if(!this.regPhone.test(this.phone)) {
-        //   Toast('手机号格式有误')
-        //   return ''
-        // } else if(this.password == '') {
-        //   Toast('请输入密码')
-        //   return ''
-        // } else {
-          this.$http.post('/customer/logon',{
+        if(!this.regPhone.test(this.phone)) {
+          Toast('手机号格式有误')
+          return ''
+        } else if(this.password == '') {
+          Toast('请输入密码')
+          return ''
+        } else {
+         const params = Util.getData({
             customerLinkTel: this.phone,
-            customerLoginPwd: this.password
-          }).then((res)=> {
+            customerLoginPwd: md5(this.password)
+          })
+          this.$http.post('/customer/logon',params).then((res)=> {
               let data = res.data
               if(data.resultCode == '0000000') {
                 Util.setStorage('userInfo', data.returnData)
@@ -62,7 +64,7 @@ export default {
                 Toast(data.resultDesc)
               }
           })
-        // }
+        }
         
     }
     ,toRegister() {
