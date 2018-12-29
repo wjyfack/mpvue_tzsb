@@ -1,23 +1,24 @@
 {
   "pages": [
     "pages/login/main",
+    "pages/register/main",
+    "pages/index/main",
     "pages/zhenggai/main",
+    "pages/zhenggai_detail/main",
     "pages/my/main",
     "pages/my_forget/main",
     "pages/my_info/main",
     "pages/my_rengzheng/main",
-    "pages/index/main",
+
     "pages/message/main",
     "pages/message_detail/main",
     "pages/search/main",
-    "pages/shebei_detail/main",
-    "pages/register/main"
+    "pages/shebei_detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "特种设备",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "navigationBarTextStyle": "black"
   }
 }

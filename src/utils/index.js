@@ -24,12 +24,12 @@ function setTitle(title){
 }
 function navTo(url) {
   wx.navigateTo({
-    url: url
+    url: `./${url}`
   })
 }
 function redTo(url) {
   wx.redirectTo({
-    url: url
+    url: `./${url}`
   })
 }
 function setStorage(key,value) {
@@ -38,7 +38,14 @@ function setStorage(key,value) {
 function getStorage(key) {
  return wx.getStorageSync(key)
 }
-function getData(obj) {
+function preview(urls,index = 0) {
+
+  wx.previewImage({
+    current: urls[index], // 当前显示图片的http链接
+    urls: urls // 需要预览的图片http链接列表
+  })
+}
+function getData(obj) { // 字符串拼接
   let str = '{'
   for(let i in obj) {
     str += `"${i}": "${obj[i]}",`
@@ -55,5 +62,6 @@ export default {
   setStorage,
   getStorage,
   getData,
-  setTitle
+  setTitle,
+  preview
 }

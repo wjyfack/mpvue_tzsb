@@ -49,7 +49,7 @@ export default {
      const params = `{"id":"${val}"}`
        Toast(params)
       // this.loading = true
-      // this.$http.post(`/device/getDt/{${this.userInfo.id}}`,params,{
+      // this.$http.post(`/device/getDt/${this.userInfo.id}`,params,{
       //   headers:{
       //     'Access-Token':this.userInfo.token,
       //   }, //http请求头，

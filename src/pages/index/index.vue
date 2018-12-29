@@ -6,7 +6,8 @@
             <img src="../../asset/imgs/search.png" alt="" class="s-icon">
             <div>请输入设备编号搜索</div> 
          </a>
-          <img src="../../asset/imgs/bell.png" alt="" class="bell" @click="toMessage">
+          <img v-if="isbell" src="../../asset/imgs/bell_r.png" alt="" class="bell" @click="toMessage">
+          <img v-else src="../../asset/imgs/bell.png" alt="" class="bell" @click="toMessage">
       </div>
      </div>  
      <div class="shuliang">
@@ -82,6 +83,7 @@ export default {
       isBottom: false,
       isEmpty: false,
       clickSort: false,
+      isbell: false,
       pageSize: 10,
       page: 1
       ,list: []
@@ -145,7 +147,7 @@ export default {
         "orderType": this.orderType
       })
       this.loading = true
-      this.$http.post(`/device/get/{${this.userInfo.id}}`,params,{
+      this.$http.post(`/device/get/${this.userInfo.id}`,params,{
         headers:{
           'Access-Token':this.userInfo.token,
         }, //http请求头，
@@ -181,7 +183,7 @@ export default {
        "DeviceUseName": this.userInfo.realName,
 
       })
-      this.$http.post(`/device/totail/{${this.userInfo.id}}`,params,{
+      this.$http.post(`/device/totail/${this.userInfo.id}`,params,{
         headers:{
           'Access-Token':this.userInfo.token,
         }, //http请求头，
@@ -195,6 +197,21 @@ export default {
         }
       })
     }
+    , getData() {
+      const params = Util.getData({
+        "pageSize":"10",
+        "pageNum":1
+        })
+         this.$http.post(`/msg/un-read/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            console.log(data)
+           data.returnData.length != 0? this.isbell = true: this.isbell = false
+        })
+    }
   },
 
   created () {
@@ -203,6 +220,7 @@ export default {
   mounted() {
     this.getDrived()
     this.getTotal()
+    this.getData()
   }
   ,onReachBottom () {
     console.log(123)

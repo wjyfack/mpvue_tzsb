@@ -1,12 +1,12 @@
 <template>
 <div class="message">
-  <a href="../message_detail/main" class="message-item van-hairline--top" v-for="(item,i) in list" :key="item.id">
+  <a :href="'../message_detail/main?id='+item.id+'&title='+item.title+'&endTime='+item.sendTime+'&context='+item.context" class="message-item van-hairline--top" v-for="(item,index) in lists" :key="item.id">
     <div class="top">
       <div class="left">
         <div class="red"></div>
         <div class="title van-ellipsis">{{item.title}}</div>
       </div>
-      <div class="right">{{item.sendTime}}</div>
+      <div class="right">{{item.sendTime || ''}}</div>
     </div>
     <div class="cont van-ellipsis">{{item.context}}</div>
   </a>
@@ -24,7 +24,8 @@ export default {
     return {
       page: 1,
       isbt: false,
-      isload: false
+      isload: false,
+      lists: []
     }
   },
   computed: {
@@ -37,10 +38,9 @@ export default {
       this.isload = true
       const params = Util.getData({
         "pageSize":"10",
-        "pageNum":this.page,
-        "DeviceUseName": this.userInfo.realName
+        "pageNum":this.page
         })
-         this.$http.post(`/msg/un-read/{${this.userInfo.id}}`,params,{
+         this.$http.post(`/msg/un-read/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
@@ -52,15 +52,17 @@ export default {
               if(data.returnData.length == 0) {
                  this.isbt = true
                  this.page >1 ? --this.page : ''
+              } else{
+                this.lists = [...this.lists,...data.returnData]
               }
-             
-               this.list = [...this.list,...data.returnData]
+              
             }
         })
     }
   },
 
   mounted () {
+    this.lists = []
     this.getData()
   }
 

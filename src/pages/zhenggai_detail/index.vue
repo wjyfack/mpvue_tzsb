@@ -47,7 +47,7 @@
             <div class="mes-item">
               <div class="title">指令书图片</div>
               <div class="input">
-                <img :src="command.commandImgUrl" alt="" class="img">
+                <img :src="command.commandImgUrl" alt="" class="img" @click="previews(command.commandImgUrl)">
               </div>
             </div>
           </div>
@@ -85,18 +85,18 @@
           <div class="mes">
             <div class="mes-item">
               <div class="title">任务状态 </div>
-              <div class="input">{{command.rectifyAuditInfo}}</div>
+              <div class="input">{{command.rectifyAuditInfo || ''}}</div>
             </div>
             <div class="mes-item">
               <div class="title">审核说明 </div>
-              <div class="input">{{command.rectifyAuditInfo}}</div>
+              <div class="input">{{command.rectifyAuditInfo || ''}}</div>
             </div>
           </div>
           <div class="h-50"></div>
         </div>
       </van-transition>
       <van-transition :show="!show" name="slide-right">
-        <div class="info info-top" v-for="(item,index) in tasks" :key="item.sourceCheckId" >
+        <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
           <div class="header van-hairline--bottom">
             <div class="title">任务{{index+1}}</div>
           </div>
@@ -115,40 +115,46 @@
             </div>
             <div class="mes-item">
               <div class="title">单位内编号 </div>
-              <div class="input">{{item.remask}}</div>
+              <div class="input">{{item.deviceNo}}</div>
             </div>
             <div class="pic-item">
               <div class="title">整改图片 </div>
               <div class="input_img">
-                <div class="add">
+                <div class="img-list" v-for="(items,indexs) in item.imgs" :key="indexs">
+                  <div class="close" @click="deleteImg(index,indexs)"><img src="../../asset/imgs/z_cuo.png" alt="" class="img-c"></div>
+                  <img :src="baseImg+items" alt="" class="img-item" @click="previews(item.imgs,indexs)">
+                </div>
+                <div class="add" @click="uploadImg(index)">
                     <img src="../../asset/imgs/add.png" alt="" class="add_img">
                 </div>
               </div>
             </div>
              <div class="mes-item">
-              <div class="title"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
-              <input class="input" value="" placeholder="已经根据要求整改">
+              <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
+              <input class="input" v-model="item.remark" placeholder="已经根据要求整改">
             </div>
           </div>
         </div>
-        <div class="h-t-50"></div>
+        
         <div class="set-fixed">
-            <div class="btn" @click="onBack">上一步</div>
-            <div class="btn btn-c">提交整改反馈</div>
+            <div class="btn" @click="changTab">上一步</div>
+            <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
           </div>
         </van-transition>
-
+      <van-toast id="van-toast" />
   </div>
 </template>
 <script>
 import Util from '@/utils/index'
-
+import {baseUrl} from '@/utils/config'
+import Toast from '@/../static/dist/toast/toast'
 export default {
   data() {
     return {
       active: 0,
       show: true,
       id: 0,
+      ids: 0,
       sign: '',
       command: {
         shebeis: []
@@ -160,6 +166,9 @@ export default {
     userInfo: () => {
       return Util.getStorage('userInfo')
     }
+    ,baseImg: () => {
+      return `${baseUrl}/file/show/rectify/`
+    }
   },
   methods: {
    
@@ -170,21 +179,35 @@ export default {
         const params = Util.getData({
           "sourceSySign":this.sign,
           "sourceCommandId":this.id})
-         this.$http.post(`/task/check/get/{${this.userInfo.id}}`,params,{
+         this.$http.post(`/task/check/get/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
           }).then((res) => {
             let data = res.data
             if(data.resultCode == '0000000') {
-                this.tasks =  data.returnData
+                 let myData = data.returnData
+                 let imgNames =  []
+                 for(let i in myData) {
+                 imgNames = myData[i].rectifyImg.split('&')
+                  for(let j in imgNames) {
+                    if(imgNames[j] == ''|| imgNames== null) {
+                      imgNames.splice(j,1)
+                    } else {
+                      imgNames[j] = imgNames[j]
+                    }
+                  }
+                    myData[i].imgs = imgNames
+                 }
+                this.tasks =  myData
+                console.log(myData)
             }
           })
     }
     ,getDetail() {
         const params = Util.getData({
-          "id":this.id})
-         this.$http.post(`/task/command/dt/{${this.userInfo.id}}`,params,{
+          "id":this.ids})
+         this.$http.post(`/task/command/dt/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
@@ -198,12 +221,118 @@ export default {
           })
     }
     ,getSheBeis(data) {
-      return data.split(',')
+      return data == '' ? [] : data.split(',')
+    }
+    ,previews(url,indexs=0) {
+        let urls = [url]
+        typeof url == 'string' ? urls = [url] : urls = url
+        Util.preview(urls,indexs)
+    }
+     ,uploadImg(index) { // index 为第几个任务
+        const _this = this
+        let fileType	= 'rectify' //	整改
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success(res) {
+          // tempFilePath可以作为img标签的src属性显示图片
+          const tempFilePaths = res.tempFilePaths
+
+          // 文件上传
+           wx.showToast({  
+              title: '正在上传...',  
+              icon: 'loading',  
+              mask: true,  
+              duration: 10000  
+            })  
+          wx.uploadFile({
+          url: `${baseUrl}/file/upload/${fileType}/${_this.userInfo.id}`, 
+          filePath: tempFilePaths[0],
+          name: 'file',
+          header: { 'Access-Token':_this.userInfo.token},
+          success: function (res) {
+             wx.hideToast();  
+            var data =JSON.parse(res.data)  // string to obj
+             if(data.resultCode == '0000000') {
+                console.log(data,index)
+                const url = data.returnData
+                _this.tasks[index].imgs = [..._this.tasks[index].imgs, url]
+            }
+          },fail:function(err){
+            wx.hideToast();  
+            wx.showModal({  
+              title: '错误提示',  
+              content: '上传图片失败',  
+              showCancel: false,  
+              success: function (res) { }  
+            }) 
+          }
+        })
+        }
+      })
+
+    }
+    ,deleteImg (index,indexs) {
+        this.tasks[index].imgs.splice(indexs,1)
+    }
+    ,pushTask(index) { // index 为第几个任务
+           const params = Util.getData({
+          "sourceSySign":this.tasks[index].sourceSySign,
+          "sourceCheckId": this.tasks[index].sourceCheckId,
+          "rectifyImg": this.tasks[index].imgs.join('&'),
+          "remark": this.tasks[index].remark
+          })
+         this.$http.post(`/task/check/save/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+                 Toast('保存成功')
+            }
+          })
+    }
+    ,pushTasks() {
+      if(this.tasks.length == 0) {
+        Toast('暂无整改任务')
+        return ''
+      }
+      const tasks = this.tasks
+      let list  = []
+    
+      for(let i in tasks) {
+          let obj = {}
+        obj.rectifyImg = tasks[i].imgs.join('&')
+        obj.sourceSySign = tasks[i].sourceSySign
+        obj.remark = tasks[i].remark
+        obj.sourceCheckId = tasks[i].sourceCheckId
+        list = [...list,obj]
+      }
+        const params =JSON.stringify( {
+          "id":  this.command.id
+          ,"list": list
+        })
+         this.$http.post(`/task/command/rectify/submit/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+                 Toast('提交成功')
+                wx.navigateBack({
+                  delta: 1
+                })
+            }
+          })
     }
   },
 
   mounted () {
     this.id = this.$mp.query.id
+    this.ids = this.$mp.query.ids
     this.sign = this.$mp.query.sign
     this.getDetail()
     this.getTask()
@@ -224,7 +353,7 @@ export default {
       width: 152px;
       height: 26px;
       border: 1px solid #FDC915;
-      border-radius: 4px;
+      border-radius: 2px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -288,6 +417,8 @@ export default {
           .title {font-size: 14px;color:#1C2627; min-width: 120px;}
           .input_img {
             padding: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
             .add {
               width:80px;
               height: 80px;
@@ -302,7 +433,28 @@ export default {
                 height: 24px;
               }
             }
-            
+            .img-list {
+               width:80px;
+              height: 80px;
+              margin-right: 8px;
+              margin-bottom: 8px;
+              position: relative;
+              .close {
+                position: absolute;
+                  right: -5px;
+                  top: -4px;
+                  background: #ffffff;
+                  border-radius: 50%;
+                  width: 14px;
+                  height: 14px;
+                  display: flex;
+                  .img-c {width: 14px;height: 14px;}
+              }
+              .img-item {
+                width: 80px;
+                height: 80px;
+              }
+            }
           }
         }
      }

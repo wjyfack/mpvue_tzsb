@@ -61,11 +61,11 @@
     <div class="title">设备参数信息 <img v-if="isEdit" src="../../asset/imgs/xiugai.png" alt="" class="img"></div>
   </div>
   <div class="mes">
-    <div class="mes-item">
-      <div class="title">额定载荷 </div>
-      <input type="text" class="input" value="" :disabled="!isEdit">
+    <div class="mes-item" v-for="(item,index) in baseInfo.deviceParams" :key="index">
+      <div class="title">{{item.name}} </div>
+      <input type="text" class="input" :value="item.value" :disabled="!isEdit">
     </div>
-    <div class="mes-item">
+    <!-- <div class="mes-item">
       <div class="title">额定速度</div>
       <input type="text" class="input" value="" :disabled="!isEdit">
     </div>
@@ -76,7 +76,7 @@
      <div class="mes-item">
       <div class="title">设备类别</div>
       <input type="text" class="input" :value="baseInfo.deviceTypeName3" :disabled="!isEdit">
-    </div>
+    </div> -->
   </div>
 </div>
 <div class="info info-top"  :class="{'info-active': isEdit}" >
@@ -161,7 +161,7 @@ export default {
     }
     ,getData() {
        const params = `{"id":"${this.id}"}`
-       this.$http.post(`/device/getDt/{${this.userInfo.id}}`,params,{
+       this.$http.post(`/device/getDt/${this.userInfo.id}`,params,{
         headers:{
           'Access-Token':this.userInfo.token,
         }, //http请求头，
@@ -171,6 +171,7 @@ export default {
           console.log(data.returnData)
           data.returnData.status = this.checkStatus(data.returnData.deviceStatus)
           data.returnData.deviceFullAddress = this.checkAddr(data.returnData.deviceFullAddress)
+          data.returnData.deviceParams = this.checkParam(data.returnData.deviceParam)
           this.baseInfo = data.returnData
         } else {
           Toast(data.resultDesc)
@@ -227,6 +228,13 @@ export default {
     }
     ,checkAddr(addr) {
       return addr.split('/').join('')
+    }
+    ,checkParam(params) {
+        let data = []
+        for(let i in params) {
+          data.push({name: i, value:params[i]})
+        }
+        return data
     }
   },
 

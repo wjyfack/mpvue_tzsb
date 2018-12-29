@@ -3,21 +3,21 @@
   <div class="part" v-if="id == 1">
     <div class="item van-hairline--top">
       <div class="title">单位名称</div>
-      <div class="cont">广东中奥物业管理有</div>
+      <div class="cont">{{cName}}</div>
     </div>
     <div class="item van-hairline--top">
       <div class="title">单位地址</div>
-      <div class="cont">广东中奥物业管理有限公司佛山南海分公司</div>
+      <div class="cont">{{cAddr}}</div>
     </div>
   </div>
   <div class="part" v-if="id == 2">
     <div class="item van-hairline--top">
       <div class="title">联系人</div>
-      <div class="cont">香瓜</div>
+      <div class="cont">{{name}}</div>
     </div>
     <div class="item van-hairline--top">
       <div class="title">联系方式</div>
-      <div class="cont">13500000000</div>
+      <div class="cont">{{phone}}</div>
     </div>
   </div>
 </div>
@@ -31,6 +31,10 @@ export default {
     return {
       height: '',
       id: 0, // 1 : 企业信息 2: 联系人信息
+      name: '',
+      phone: '',
+      cName: '',
+      cAddr: ''
     }
   },
 
@@ -50,14 +54,19 @@ export default {
    
   }
   ,mounted() {
-    this.id = ~~this.$mp.query.id || 0
+    const data = this.$mp.query
+    this.id = ~~data.id || 0
     console.log(this.id)
     let title = ''
     switch(this.id) {
       case 1: 
         title = '企业信息'
+         this.cName = data.cName
+        this.cAddr = data.cAddr
       case 2:
         title = '联系人信息'
+        this.name = data.name
+        this.phone = data.phone
     }
     Util.setTitle(title)
   }

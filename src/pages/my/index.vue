@@ -15,13 +15,13 @@
       <div class="title">设备认证</div>
     </div> 
   </a>
-  <a href="../my_info/main?id=1" class="list-item">
+  <a :href="'../my_info/main?id=1&cName='+userInfo.companyName+'&cAddr='+userInfo.companyAddress" class="list-item">
     <div class="cont van-hairline--bottom">
       <img src="../../asset/imgs/my_qiye.png" alt="" class="b-img">
       <div class="title">企业信息</div>
     </div>
   </a>
-  <a  href="../my_info/main?id=2" class="list-item">
+  <a  :href="'../my_info/main?id=2&name='+userInfo.customerLinkMan+'&phone='+userInfo.customerLinkTel" class="list-item">
     <div class="cont">
       <img src="../../asset/imgs/my_info.png" alt="" class="b-img">
       <div class="title">联系人信息</div>
@@ -39,7 +39,7 @@
       <div class="title">关于软件</div>
     </div>
   </div>
-  <div class="list-item mar-top">
+  <div class="list-item mar-top" @click="outLogin">
     <div class="cont">
       <img src="../../asset/imgs/my_tuichu.png" alt="" class="b-img">
       <div class="title">退出登陆</div>
@@ -47,6 +47,7 @@
   </div>
   <tab-bar active="2"/>
 </div>
+
 </div>
 </template>
 <script>
@@ -66,7 +67,18 @@ export default {
     }
   },
   methods: {
-
+    outLogin() {
+      wx.showToast({
+        title: '正在退出',
+        icon: 'loading',
+        duration: 2000
+      })
+      wx.clearStorage()
+      setTimeout(() => {
+        wx.hideToast()
+        Util.redTo('../login/main')
+      }, 2000)
+    }
   },
 
   created () {
@@ -96,6 +108,7 @@ export default {
       top: 53px ;
       left: 50%;
       transform: translateX(-50%);
+      text-align: center;
       .img {width: 67px; height: 67px;border-radius: 50%;}
       .name {font-size: 18px; color: #1C2627;}
     }

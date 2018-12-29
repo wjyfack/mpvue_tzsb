@@ -11,7 +11,7 @@
 	"compileType": "miniprogram",
 	"appid": "wx59a6b34a03579721",
 	"projectname": "tzsb-weapp",
-	"libVersion": "2.4.2",
+	"libVersion": "2.4.3",
 	"condition": {
 		"search": {
 			"current": -1,

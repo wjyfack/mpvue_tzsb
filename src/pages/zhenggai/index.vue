@@ -1,9 +1,9 @@
 <template>
   <div class="zhengai">
-    <van-tabs swipeable animated :active="active" color="#FDC915" @change="onChange">
+    <van-tabs swipeable  active="0" color="#FDC915" @change="onChange">
       <van-tab title="待整改"> 
         <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
+          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
             <div class="top van-hairline--bottom">
               <div class="title">整改截止日期 {{item.commandDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
@@ -163,7 +163,7 @@ export default {
         "pageNum":this.pageNum,
         "DeviceUseName": this.userInfo.realName,
         "rectifyStatus":this.status})
-         this.$http.post(`/task/command/page/{${this.userInfo.id}}`,params,{
+         this.$http.post(`/task/command/page/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
@@ -179,10 +179,11 @@ export default {
                         this.parOneBottom = true
                         --this.zhengNum
                       }
-                      this.parOneLoad = false
+                     
                   } else {
                   this.list = [...this.list,...data.returnData]
                   }
+                   this.parOneLoad = false
                   break
                 case 1: 
                     if(data.returnData.length == 0) {
@@ -192,10 +193,10 @@ export default {
                           this.parTwoBottom = true
                           --this.tijiaoNum
                         }
-                        this.parTwoLoad = false
                     } else {
                     this.listTi = [...this.listTi,...data.returnData]
                     }
+                     this.parTwoLoad = false
                   break
                   case 2: 
                     if(data.returnData.length == 0) {
@@ -205,10 +206,11 @@ export default {
                           this.parTreBottom = true
                           --this.allNum
                         }
-                        this.parTreLoad = false
+                      
                     } else {
                     this.listQuan = [...this.listQuan,...data.returnData]
                     }
+                      this.parTreLoad = false
                   break
               } 
           
