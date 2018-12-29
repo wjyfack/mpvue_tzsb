@@ -159,7 +159,8 @@ export default {
       command: {
         shebeis: []
       },
-      tasks:[]
+      tasks:[],
+      regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/
     }
   },
   computed: {
@@ -215,6 +216,9 @@ export default {
             let data = res.data
             if(data.resultCode == '0000000') {
               data.returnData.shebeis = this.getSheBeis(data.returnData.deviceCertNoList)
+              data.returnData.commandChangedEndDate = Util.getDate(data.returnData.commandChangedEndDate)
+              data.returnData.commandDate = Util.getDate(data.returnData.commandDate)
+              
               this.command = data.returnData
             }
             
@@ -224,8 +228,14 @@ export default {
       return data == '' ? [] : data.split(',')
     }
     ,previews(url,indexs=0) {
-        let urls = [url]
-        typeof url == 'string' ? urls = [url] : urls = url
+        let urls = []
+        if(typeof url == 'string') {
+          urls = [url]
+        } else {
+          for(let i in url) {
+            this.regs.test(url[i]) ?'':  urls[i] = this.baseImg+url[i]
+          }
+        } 
         Util.preview(urls,indexs)
     }
      ,uploadImg(index) { // index 为第几个任务
@@ -325,6 +335,8 @@ export default {
                 wx.navigateBack({
                   delta: 1
                 })
+            } else {
+              Toast{data.resultDesc}
             }
           })
     }

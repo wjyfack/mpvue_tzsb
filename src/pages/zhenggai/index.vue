@@ -5,7 +5,7 @@
         <div class="zhen">
           <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
             <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
                 <img src="../../asset/imgs/z_deng.png" alt="" class="img">
                 <div>待整改</div>
@@ -34,9 +34,9 @@
       </van-tab>
       <van-tab title="已提交">
       <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listTi" :key="item.id">
+          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listTi" :key="item.id">
             <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
                 <img src="../../asset/imgs/z_deng.png" alt="" class="img">
                 <div>待整改</div>
@@ -65,13 +65,13 @@
       </van-tab>
       <van-tab title="全部">
         <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listQuan" :key="item.id">
+          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listQuan" :key="item.id">
             <div class="top van-hairline--bottom">
-              <div class="title">整改截止日期 {{item.commandDate}}</div>
+              <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
                 <img src="../../asset/imgs/z_deng.png" alt="" class="img">
                 <div>待整改</div>
-              </div>
+              </div> 
               <div class="status" v-else-if="item.rectifyStatus == 2">
                 <img src="../../asset/imgs/z_cuo.png" alt="" class="img">
                 <div>不通过,重新提交</div>
@@ -170,9 +170,14 @@ export default {
           }).then((res) => {
             let data = res.data
             console.log(data)
+            if(data.resultCode == '0000000') {
+              let returnData = data.returnData
+              for(let i in returnData) {
+                returnData[i].commandChangedEndDate = Util.getDate(returnData[i].commandChangedEndDate)
+              }
              switch(active) {
                 case 0: 
-                  if(data.returnData.length == 0) {
+                  if(returnData.length == 0) {
                       if(this.pageNum == 1) {
                         this.parOneDev = true
                       } else {
@@ -181,12 +186,12 @@ export default {
                       }
                      
                   } else {
-                  this.list = [...this.list,...data.returnData]
+                  this.list = [...this.list,...returnData]
                   }
                    this.parOneLoad = false
                   break
                 case 1: 
-                    if(data.returnData.length == 0) {
+                    if(returnData.length == 0) {
                         if(this.pageNum == 1) {
                           this.parTwoDev = true
                         } else {
@@ -194,12 +199,12 @@ export default {
                           --this.tijiaoNum
                         }
                     } else {
-                    this.listTi = [...this.listTi,...data.returnData]
+                    this.listTi = [...this.listTi,...returnData]
                     }
                      this.parTwoLoad = false
                   break
-                  case 2: 
-                    if(data.returnData.length == 0) {
+                case 2: 
+                    if(returnData.length == 0) {
                         if(this.pageNum == 1) {
                           this.parTreDev = true
                         } else {
@@ -208,12 +213,12 @@ export default {
                         }
                       
                     } else {
-                    this.listQuan = [...this.listQuan,...data.returnData]
+                    this.listQuan = [...this.listQuan,...returnData]
                     }
                       this.parTreLoad = false
                   break
               } 
-          
+            }
           })
     }
   },

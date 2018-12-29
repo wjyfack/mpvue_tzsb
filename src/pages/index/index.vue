@@ -221,6 +221,7 @@ export default {
     this.getDrived()
     this.getTotal()
     this.getData()
+    this.isset = false
   }
   ,onReachBottom () {
     console.log(123)

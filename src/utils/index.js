@@ -54,6 +54,11 @@ function getData(obj) { // 字符串拼接
   str += '}'
   return str
 }
+function getDate(date) {
+  const dateFormat = require('dateformat');
+  const now = new Date(date)
+  return dateFormat(now, 'yyyy-mm-dd');
+}
 export default {
   formatNumber,
   formatTime,
@@ -63,5 +68,6 @@ export default {
   getStorage,
   getData,
   setTitle,
-  preview
+  preview,
+  getDate
 }
