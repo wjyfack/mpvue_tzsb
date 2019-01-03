@@ -9,7 +9,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx59a6b34a03579721",
+	"appid": "wx60b0d4c4524fd595",
 	"projectname": "tzsb-weapp",
 	"libVersion": "2.4.3",
 	"condition": {
@@ -30,12 +30,18 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
 					"name": "ss",
-					"pathName": "pages/yewu/main",
+					"pathName": "pages/jiankong/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "yewudetail",
+					"pathName": "pages/yewu_detail/main",
 					"query": ""
 				}
 			]

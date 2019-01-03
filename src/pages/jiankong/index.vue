@@ -1,7 +1,7 @@
 <template>
   <div class="jiankong">
-      <div class="kong-item" v-for="(itm,inex) in 3" :key="inex">
-        <div class="img-sh"><img src="http://placehold.it/100x100" alt="" class="img"></div>
+      <a href="../jiankong_detail/main?id=1" class="kong-item" v-for="(itm,inex) in 3" :key="inex">
+        <div class="img-sh"><img src="../../asset/imgs/goulus.png" alt="" class="img"></div>
         <div class="cont">
           <div class="brand">正常</div>
           <div class="title">
@@ -41,7 +41,48 @@
           </div>
 
         </div>
-      </div>
+      </a>
+      <a href="../jiankong_detail/main?id=2" class="kong-item" v-for="(itm,inex) in 3" :key="inex">
+        <div class="img-dt"><img src="../../asset/imgs/diantis.png" alt="" class="img"></div>
+        <div class="cont">
+          <div class="brand">正常</div>
+          <div class="title">
+            <div>电梯1号机</div>
+            <div class="deng">
+              <div>使用登记证</div>
+              <div class="hao">梯粤ES5385</div>
+            </div>
+            <div class="msg">
+                <div class="name">检修信号</div>
+                <div class="val">正常</div>
+              </div>
+              <div class="msg">
+                <div class="name">故障信号</div>
+                <div class="val">正常</div>
+              </div>
+              <div class="msg">
+                <div class="name">消防信号</div>
+                <div class="val ">正常</div></div>
+              <div class="msg msg-act">
+                <div class="name">驻停信号</div>
+                <div class="val">正常</div>
+              </div>
+              <div class="msg msg-no">
+                <div class="name">平层信号</div>
+                <div class="val">正常</div>
+              </div>
+              <div class="msg">
+                <div class="name">供电信号</div>
+                <div class="val">正常</div>
+              </div>
+              <div class="msg">
+                <div class="name">困人信号</div>
+                <div class="val">正常</div>
+              </div>
+          </div>
+
+        </div>
+      </a>
     <tab-bar active="2"/>
   </div>
 </template>
@@ -56,7 +97,7 @@ export default {
   },
   data () {
     return {
-     
+      id: 0
     }
   },
   computed: {
@@ -88,7 +129,7 @@ export default {
   created () {
   }
   ,mounted() {
-
+    this.id = this.$mp.query.id || 0
   }
   ,onReachBottom () {
   //  this.getData()
@@ -113,6 +154,12 @@ export default {
        .img {
          width: 112px;
          height: 78px;
+       }
+     }
+     .img-dt {
+       padding: 16px 36px 0 27px;
+       .img {
+         width:77px;height: 130px;
        }
      }
      .cont {

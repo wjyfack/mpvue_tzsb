@@ -12,6 +12,7 @@
     "pages/jiankong/main",
     "pages/jiankong_detail/main",
     "pages/yewu/main",
+    "pages/yewu_detail/main",
     "pages/message/main",
     "pages/message_detail/main",
     "pages/search/main",

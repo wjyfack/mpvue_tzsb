@@ -54,9 +54,9 @@ function getData(obj) { // 字符串拼接
   str += '}'
   return str
 }
-function getDate(date) {
+function getDate(date = '') {
   const dateFormat = require('dateformat');
-  const now = new Date(date)
+  const now = date == ''? new Date() : new Date(date)
   return dateFormat(now, 'yyyy-mm-dd');
 }
 export default {

@@ -1,29 +1,29 @@
 <template>
-  <div class="yewu">
+  <div class="yewu" :style="{'height':height}">
     <div class="yewu-item van-hairline--top">
       <div class="title">
         <div class="br"></div>
         <div>企业业务</div>
       </div>
       <div class="option">
-        <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+        <a href="../yewu_detail/main" class="option-item">
+          <img src="../../asset/imgs/ye_yewu.png" alt="" class="img">
           <div>行政许可业务</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_jianshi.png" alt="" class="img">
           <div>新增设备监视</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_yuyue.png" alt="" class="img">
           <div>预约检查</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_zhaopin.png" alt="" class="img">
           <div>技术人员招聘</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_xinzeng.png" alt="" class="img">
           <div>设备新增管理</div>
         </a>
       </div>
@@ -35,20 +35,20 @@
       </div>
       <div class="option">
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_kaozheng.png" alt="" class="img">
           <div>特种设备考证</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_tiku.png" alt="" class="img">
           <div>题库练习</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
+          <img src="../../asset/imgs/ye_zhili.png" alt="" class="img">
           <div>个人资历</div>
         </a>
         <a href="" class="option-item">
-          <img src="http://placehold.it/100x100" alt="" class="img">
-          <div>个人资历</div>
+          <img src="../../asset/imgs/ye_peixun.png" alt="" class="img">
+          <div>人员培训</div>
         </a>
         
       </div>
@@ -67,7 +67,7 @@ export default {
   },
   data () {
     return {
-     
+     height: 0
     }
   },
   computed: {
@@ -76,10 +76,18 @@ export default {
     }
   },
   methods: {
-   
+       getPhoneHeight () {
+          let _this = this
+          wx.getSystemInfo({
+            success: function(res) {
+            _this.height = (res.windowHeight) +'px'
+            }
+          })
+        }
   },
 
   created () {
+    this.getPhoneHeight()
   }
   ,mounted() {
 

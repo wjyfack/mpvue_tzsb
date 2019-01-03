@@ -35,6 +35,13 @@ export default {
                 url= '../zhenggai/main'
                     break
                 case 2:
+                    url= '../jiankong/main'
+                    break
+                case 3:
+                    url= '../yewu/main'
+                    break
+         
+                case 4:
                     url= '../my/main'
                     break
                 case 0: 
