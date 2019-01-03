@@ -1,6 +1,7 @@
 {
     "usingComponents": {
-        "van-transition": "../../../static/dist/transition/index"
+        "van-transition": "../../../static/dist/transition/index",
+        "van-toast": "../../../static/dist/toast/index"
       }
       
 }

@@ -8,10 +8,14 @@
         <img slot="icon" src="../asset/imgs/fail.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/fail_c.png" mode="aspectFit" />
       </van-tabbar-item>
-      <!-- <van-tabbar-item > 
+       <van-tabbar-item > 
+        <img slot="icon" src="../asset/imgs/jiankong.png" class="icon" mode="aspectFit" />
+        <img slot="icon-active" src="../asset/imgs/jiankong.png" mode="aspectFit" />
+      </van-tabbar-item>
+      <van-tabbar-item > 
         <img slot="icon" src="../asset/imgs/yewu.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/yewu_c.png" mode="aspectFit" />
-      </van-tabbar-item> -->
+      </van-tabbar-item>
       <van-tabbar-item > 
         <img slot="icon" src="../asset/imgs/login_people.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/my.png" mode="aspectFit" />

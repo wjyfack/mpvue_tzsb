@@ -131,7 +131,7 @@
             </div>
              <div class="mes-item">
               <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
-              <input class="input" v-model="item.remark" placeholder="已经根据要求整改">
+              <input @focus="onInput(index)" class="input" v-model="item.remark" placeholder="已经根据要求整改">
             </div>
           </div>
         </div>
@@ -336,9 +336,12 @@ export default {
                   delta: 1
                 })
             } else {
-              Toast{data.resultDesc}
+              Toast(data.resultDesc)
             }
           })
+    }
+    ,onInput(index) {
+        console.log(index)
     }
   },
 

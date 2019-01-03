@@ -9,7 +9,9 @@
     "pages/my_forget/main",
     "pages/my_info/main",
     "pages/my_rengzheng/main",
-
+    "pages/jiankong/main",
+    "pages/jiankong_detail/main",
+    "pages/yewu/main",
     "pages/message/main",
     "pages/message_detail/main",
     "pages/search/main",

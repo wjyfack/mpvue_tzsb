@@ -1,0 +1,9 @@
+{
+"usingComponents": {
+
+    "van-tabbar": "../../../static/dist/tabbar/index",
+    "van-tabbar-item": "../../../static/dist/tabbar-item/index"
+
+  },
+  "navigationBarTitleText": "实时监控"
+}

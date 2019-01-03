@@ -7,19 +7,19 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">使用登记证</div>
-      <input type="text" class="input" :value="baseInfo.deviceCertNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceCertNo" :disabled="!isEdit">
     </div>
     <div class="mes-item">
       <div class="title">下次年检时间</div>
-      <input type="text" class="input" :value="baseInfo.deviceNextYearTestDate" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceNextYearTestDate" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备名称或型号</div>
-      <input type="text" class="input" :value="baseInfo.deviceName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceName" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备类别</div>
-      <input type="text" class="input" :value="baseInfo.deviceTypeName3" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceTypeName2" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">单位内编号</div>
@@ -27,31 +27,31 @@
     </div>
      <div class="mes-item">
       <div class="title">产品编号</div>
-      <input type="text" class="input" :value="baseInfo.deviceNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceNo" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备代码</div>
-      <input type="text" class="input" :value="baseInfo.deviceRegNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceRegNo" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备位置</div>
-      <textarea  class="textarea" :value="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
+      <textarea  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
     </div>
      <div class="mes-item">
       <div class="title">设备状态</div>
-      <input type="text" class="input" :value="baseInfo.status" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.status" >
     </div>
      <div class="mes-item">
       <div class="title">制造时间</div>
-      <input type="text" class="input" :value="baseInfo.deviceProduceDate" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceDate" :disabled="!isEdit">
     </div>
        <div class="mes-item">
       <div class="title">制造单位</div>
-      <input type="text" class="input" :value="baseInfo.deviceProduceName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceName" :disabled="!isEdit">
     </div>
        <div class="mes-item">
       <div class="title">安装单位</div>
-      <input type="text" class="input" :value="baseInfo.deviceInstallName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceInstallName" :disabled="!isEdit">
     </div>
 
   </div>
@@ -63,7 +63,7 @@
   <div class="mes">
     <div class="mes-item" v-for="(item,index) in baseInfo.deviceParams" :key="index">
       <div class="title">{{item.name}} </div>
-      <input type="text" class="input" :value="item.value" :disabled="!isEdit">
+      <input type="text" class="input" v-model="item.value" :disabled="!isEdit">
     </div>
     <!-- <div class="mes-item">
       <div class="title">额定速度</div>
@@ -86,15 +86,15 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">上次检验结论 </div>
-      <input type="text" class="input" :value="baseInfo.deviceLastYearTestResult" disabled>
+      <input type="text" class="input" v-model="baseInfo.deviceLastYearTestResult" disabled>
     </div>
     <div class="mes-item">
       <div class="title">上次检验日期</div>
-      <input type="text" class="input" :value="baseInfo.deviceLastYearTestDate" disabled>
+      <input type="text" class="input" v-model="baseInfo.deviceLastYearTestDate" disabled>
     </div>
      <div class="mes-item">
       <div class="title">下次检验日期</div>
-      <input type="text" class="input" :value="baseInfo.deviceNextYearTestDate" disabled>
+      <input type="text" class="input" v-model="baseInfo.deviceNextYearTestDate" disabled>
     </div>
   </div>
 </div>
@@ -102,10 +102,10 @@
 <van-transition :show="isEdit" name="slide-up">
   <div class="set-fixed">
     <div class="btn" @click="onBack">上一步</div>
-    <div class="btn btn-c">提交设备信息</div>
+    <div class="btn btn-c" @click="onSubmit">提交设备信息</div>
   </div>
 </van-transition>
-
+ <van-toast id="van-toast" />
 </div>
 </template>
 
@@ -158,6 +158,7 @@ export default {
     }
     ,onBack() {
       this.isEdit = false
+      this.getData()
     }
     ,getData() {
        const params = `{"id":"${this.id}"}`
@@ -173,6 +174,51 @@ export default {
           data.returnData.deviceFullAddress = this.checkAddr(data.returnData.deviceFullAddress)
           data.returnData.deviceParams = this.checkParam(data.returnData.deviceParam)
           this.baseInfo = data.returnData
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,onSubmit() {
+      const baseInfo = this.baseInfo
+      let data = {
+        deviceCertNo: baseInfo.deviceCertNo,
+        deviceNextYearTestDate: baseInfo.deviceNextYearTestDate,
+        deviceName: baseInfo.deviceName,
+        deviceType2: baseInfo.deviceType2,
+        deviceTypeName2: baseInfo.deviceTypeName2,
+        deviceNo: baseInfo.deviceNo,
+        deviceProduceNo: baseInfo.deviceProduceNo,
+        deviceRegNo: baseInfo.deviceRegNo,
+        deviceProduceDate: baseInfo.deviceProduceDate,
+        deviceProduceName:baseInfo.deviceProduceName,
+        deviceInstallName: baseInfo.deviceInstallName,  
+        deviceId: baseInfo.id,
+        deviceArea1: baseInfo.deviceUseArea1,
+        deviceAreaName1: baseInfo.deviceUseAreaName1,
+        deviceArea2: baseInfo.deviceUseArea2,
+        deviceAreaName2: baseInfo.deviceUseAreaName2,
+        deviceArea3: baseInfo.deviceUseArea3,
+        deviceAreaName3: baseInfo.deviceUseAreaName3,
+        deviceArea4: baseInfo.deviceUseArea4,
+        deviceAreaName4: baseInfo.deviceUseAreaName4,
+        deviceAddress: baseInfo.deviceFullAddress,
+      }
+      for(let i  in baseInfo.deviceParams) {
+        data[`paramName${i+1}`] = baseInfo.deviceParams[i].name
+        data[`paramValue${i+1}`] = baseInfo.deviceParams[i].value
+      }
+      console.log(data)
+       const params = Util.getData(data)
+       this.$http.post(`/device/update/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+          console.log(data.returnData)
+   
         } else {
           Toast(data.resultDesc)
         }
@@ -241,6 +287,7 @@ export default {
   mounted () {
     this.id = this.$mp.query.id
     this.getData()
+    this.isEdit = false
   }
 }
 </script>

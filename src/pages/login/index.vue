@@ -62,6 +62,7 @@ export default {
           this.$http.post('/customer/logon',params).then((res)=> {
               let data = res.data
               if(data.resultCode == '0000000') {
+                Toast.clear()
                 Util.setStorage('userInfo', data.returnData)
                 Util.redTo('../index/main')
               } else {
@@ -79,7 +80,11 @@ export default {
        if(userInfo) {
          this.phone = userInfo.customerLinkTel
            this.pwd = userInfo.customerLoginPwd
-         Toast('自动登录中...')
+         Toast({
+           duration: 0,
+           message:'自动登录中...',
+           mask: true
+         })
          setTimeout(()=> {
           this.onLogin()
          },2500)

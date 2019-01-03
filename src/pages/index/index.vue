@@ -54,7 +54,7 @@
 
     <tab-bar active="0"/>
     <van-toast id="van-toast" />
-    <div class="mask"></div>
+    <!-- <div class="mask" :style="{'height': height}"></div> -->
   </div>
 </template>
 
@@ -73,6 +73,7 @@ export default {
   },
   data () {
     return {
+      height: 0,
       active: 0,
       isset: false,
       issort: false,
@@ -212,10 +213,18 @@ export default {
            data.returnData.length != 0? this.isbell = true: this.isbell = false
         })
     }
+    ,getPhoneHeight () {
+      let _this = this
+      wx.getSystemInfo({
+        success: function(res) {
+         _this.height = (res.windowHeight) +'px'
+        }
+      })
+    }
   },
 
   created () {
-
+    this.getPhoneHeight()
   },
   mounted() {
     this.getDrived()
@@ -286,7 +295,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     padding-bottom:  5px;
-    z-index: 99;
+    z-index: 1000;
     .s-tab {
         display: flex;
         justify-content: flex-end;
@@ -394,12 +403,16 @@ export default {
     z-index: 99;
   }
 
-  // .mask {
-  //   position: absolute;
-  //   top: 0;
-  //   width:100%;
-  //   height: 100%;
-  //   background:rgba(74,74,74,0.38);
-  // }
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width:100%;
+    height: 100%;
+    background:rgba(74,74,74,0.38);
+    z-index: 999;
+    overflow: hidden;
+  }
 }
 </style>
