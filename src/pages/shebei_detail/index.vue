@@ -15,7 +15,7 @@
     </div>
      <div class="mes-item">
       <div class="title">设备名称或型号</div>
-      <input type="text" class="input" v-model="baseInfo.deviceName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceModel " :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备类别</div>
@@ -27,7 +27,7 @@
     </div>
      <div class="mes-item">
       <div class="title">产品编号</div>
-      <input type="text" class="input" v-model="baseInfo.deviceNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceNo" :disabled="!isEdit">
     </div>
      <div class="mes-item">
       <div class="title">设备代码</div>
@@ -39,7 +39,7 @@
     </div>
      <div class="mes-item">
       <div class="title">设备状态</div>
-      <input type="text" class="input" v-model="baseInfo.status" >
+      <div class="input" v-if="!isEdit">{{baseInfo.status}} </div>
     </div>
      <div class="mes-item">
       <div class="title">制造时间</div>
@@ -123,7 +123,7 @@ export default {
         deviceInstallName:'',
         deviceLastYearTestDate:'',
         deviceLastYearTestResult:'',
-        deviceName:'',
+        deviceName :'',
         deviceNextYearTestDate:'',
         deviceNo:'',
         deviceParam:'',
@@ -184,7 +184,7 @@ export default {
       let data = {
         deviceCertNo: baseInfo.deviceCertNo,
         deviceNextYearTestDate: baseInfo.deviceNextYearTestDate,
-        deviceName: baseInfo.deviceName,
+        deviceModel : baseInfo.deviceModel ,
         deviceType2: baseInfo.deviceType2,
         deviceTypeName2: baseInfo.deviceTypeName2,
         deviceNo: baseInfo.deviceNo,
@@ -194,15 +194,15 @@ export default {
         deviceProduceName:baseInfo.deviceProduceName,
         deviceInstallName: baseInfo.deviceInstallName,  
         deviceId: baseInfo.id,
-        deviceArea1: baseInfo.deviceUseArea1,
-        deviceAreaName1: baseInfo.deviceUseAreaName1,
-        deviceArea2: baseInfo.deviceUseArea2,
-        deviceAreaName2: baseInfo.deviceUseAreaName2,
-        deviceArea3: baseInfo.deviceUseArea3,
-        deviceAreaName3: baseInfo.deviceUseAreaName3,
-        deviceArea4: baseInfo.deviceUseArea4,
-        deviceAreaName4: baseInfo.deviceUseAreaName4,
-        deviceAddress: baseInfo.deviceFullAddress,
+        deviceArea1: baseInfo.deviceUseArea1||'',
+        deviceAreaName1: baseInfo.deviceUseAreaName1||'',
+        deviceArea2: baseInfo.deviceUseArea2||'',
+        deviceAreaName2: baseInfo.deviceUseAreaName2||'',
+        deviceArea3: baseInfo.deviceUseArea3||'',
+        deviceAreaName3: baseInfo.deviceUseAreaName3||'',
+        deviceArea4: baseInfo.deviceUseArea4||'',
+        deviceAreaName4: baseInfo.deviceUseAreaName4||'',
+        deviceAddress: baseInfo.deviceFullAddress||'',
       }
       for(let i  in baseInfo.deviceParams) {
         data[`paramName${i+1}`] = baseInfo.deviceParams[i].name

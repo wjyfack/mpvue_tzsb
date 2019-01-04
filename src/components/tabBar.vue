@@ -9,8 +9,8 @@
         <img slot="icon-active" src="../asset/imgs/fail_c.png" mode="aspectFit" />
       </van-tabbar-item>
        <van-tabbar-item > 
-        <img slot="icon" src="../asset/imgs/jiankong.png" class="icon" mode="aspectFit" />
-        <img slot="icon-active" src="../asset/imgs/jiankong.png" mode="aspectFit" />
+        <img slot="icon" class="tabbar-img-big" src="../asset/imgs/jiankong.png"  mode="aspectFit" />
+        <img slot="icon-active" class="tabbar-img-big" src="../asset/imgs/jiankong.png" mode="aspectFit" />
       </van-tabbar-item>
       <van-tabbar-item > 
         <img slot="icon" src="../asset/imgs/yewu.png" class="icon" mode="aspectFit" />
@@ -53,5 +53,12 @@ export default {
     }
 }
 </script>
+<style lang="less">
+.tabbar-img-big {
+    width: 50px !important;
+    height: 50px !important;
+}
+</style>
+
 
 

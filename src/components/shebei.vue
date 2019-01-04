@@ -10,7 +10,7 @@
             <img src="../asset/imgs/seshi.png" alt="" class="img" v-else-if="item.deviceType1 == 5">
             <img src="../asset/imgs/guangdao.png" alt="" class="img" v-else-if="item.deviceType1 == 6">
             <div class="con">
-              <div class="title">{{item.deviceName}}</div>
+              <div class="title">{{item.deviceName }}</div>
               <div class="zhi">资料完善度100%</div>
             </div>
           </div>

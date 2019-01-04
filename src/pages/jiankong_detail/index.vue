@@ -90,7 +90,7 @@
       <div class="bot">
         <div class="bot-item">
           <div>燃气压力</div>
-          <div class="dat">0.3MPa <span class="yi">异常</span></div>
+          <div class="dat">0.3MPa <span class="yi" v-if="false">异常</span></div>
         </div>
         <div class="bot-item">
           <div>燃气流量(累计)</div>
@@ -146,7 +146,7 @@
     <div class="status">
       <div class="status-item">
         <div>设备状态</div>
-        <div class="tai act">正常</div>
+        <div class="tai " :class="{'act': false}">正常</div>
       </div>
        <div class="status-item">
         <div>电梯工号</div>
@@ -173,7 +173,7 @@
       <div class="bot">
         <div class="bot-item">
           <div class="info"> <div class="before"></div><div>检修信号</div> </div>
-          <div class="dat">正常<span class="yi">异常</span></div>
+          <div class="dat">正常<!--<span class="yi">异常</span>--></div>
         </div>
         <div class="bot-item">
           <div class="info"><div class="before"></div><div>故障信号</div></div>
@@ -219,7 +219,7 @@
    
     </div>
   </div>
-  <div class="h-46"></div>
+ 
 </div>
 </template>
 <script>
@@ -316,7 +316,7 @@ export default {
       }
     }
   }
-  .gouhu,.dianti {
+  .gouhu {
     background: #ffffff;
     .status {
       display: flex;
@@ -328,11 +328,13 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        font-size: 10px;
+        font-size: 12px;
         color:#A1A2A4;
         .tai {
           color:#1C2627;
-          font-size: 12px;
+          font-size: 14px;
+          line-height: 14px;
+          padding-top: 5px;
         }
         .act {color:#F5A623;}
       }
@@ -345,13 +347,13 @@ export default {
         align-items: center;
         padding-bottom: 10px;
         .s-img {width:16px;height: 16px;}
-        .name {padding-left:10px;font-size: 12px;color:#1C2627;}
+        .name {padding-left:10px;font-size: 14px;color:#1C2627;}
       }
       .bot {
         display: flex;
 
         .bot-item {
-          font-size: 10px;
+          font-size: 12px;
           color:#9B9B9B;
           width:50%;
           display: flex;
@@ -373,7 +375,74 @@ export default {
                 margin-right: 5px;
             }
           }
-          .dat {padding-left: 10px;font-size: 12px;color:#1C2627; .yi {
+          .dat {padding-left: 10px;font-size: 14px;color:#1C2627; .yi {
+            padding-left: 5px;
+            color: #F5A623
+          }}
+        }
+      }
+    }
+  }
+   .dianti {
+    background: #ffffff;
+    .status {
+      display: flex;
+      padding: 10px 25px;
+      justify-content: space-between;
+      align-items: center;
+      .status-item {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        color:#A1A2A4;
+        .tai {
+          color:#1C2627;
+          font-size: 14px;
+          line-height: 14px;
+          padding-top: 5px;
+        }
+        .act {color:#F5A623;}
+      }
+
+    }
+    .kuang-item {
+      padding: 15px 30px 15px 30px;
+      .title {
+        display: flex;
+        align-items: center;
+        padding-bottom: 15px;
+        .s-img {width:16px;height: 16px;}
+        .name {padding-left:10px;font-size: 12px;color:#1C2627;}
+      }
+      .bot {
+        display: flex;
+
+        .bot-item {
+          font-size: 12px;
+          color:#9B9B9B;
+          width:50%;
+          display: flex;
+          align-items: center;
+          .info {
+            position: relative;
+            
+            display: flex;
+            align-items: center;
+            .before {
+                background: #7ED321;
+                width:6px;
+                height: 6px;
+                border-radius: 50%;
+                // position: absolute;
+                // top: 50%;
+                // left: 5px;
+                // transform: translateY(-50%);
+                margin-right: 5px;
+            }
+          }
+          .dat {padding-left: 10px;font-size: 14px;color:#1C2627; .yi {
             padding-left: 5px;
             color: #F5A623
           }}

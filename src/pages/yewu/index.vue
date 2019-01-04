@@ -6,23 +6,23 @@
         <div>企业业务</div>
       </div>
       <div class="option">
-        <a href="../yewu_detail/main" class="option-item">
+        <a href="../yewu_detail/main?id=1" class="option-item">
           <img src="../../asset/imgs/ye_yewu.png" alt="" class="img">
           <div>行政许可业务</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=2" class="option-item">
           <img src="../../asset/imgs/ye_jianshi.png" alt="" class="img">
           <div>新增设备监视</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=3" class="option-item">
           <img src="../../asset/imgs/ye_yuyue.png" alt="" class="img">
           <div>预约检查</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=3" class="option-item">
           <img src="../../asset/imgs/ye_zhaopin.png" alt="" class="img">
           <div>技术人员招聘</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=5" class="option-item">
           <img src="../../asset/imgs/ye_xinzeng.png" alt="" class="img">
           <div>设备新增管理</div>
         </a>
@@ -34,7 +34,7 @@
         <div>个人业务</div>
       </div>
       <div class="option">
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=6" class="option-item">
           <img src="../../asset/imgs/ye_kaozheng.png" alt="" class="img">
           <div>特种设备考证</div>
         </a>
@@ -42,11 +42,11 @@
           <img src="../../asset/imgs/ye_tiku.png" alt="" class="img">
           <div>题库练习</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=7" class="option-item">
           <img src="../../asset/imgs/ye_zhili.png" alt="" class="img">
           <div>个人资历</div>
         </a>
-        <a href="" class="option-item">
+        <a href="../yewu_detail/main?id=8" class="option-item">
           <img src="../../asset/imgs/ye_peixun.png" alt="" class="img">
           <div>人员培训</div>
         </a>

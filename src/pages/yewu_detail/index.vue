@@ -1,7 +1,7 @@
 <template>
 <div class="rengzheng" :style="{'height': height}">
 
-    <div class="part">
+    <div class="part" v-if="id == 1">
       <div class="form-input van-hairline--top">
         <div class="label">单位名称</div>
         <input type="text" class="input"  placeholder="请输入单位名称" >
@@ -53,11 +53,263 @@
            <div class="num">当天已有0人预约办理</div>
          </div>
       </div>
-      <div class="btn van-hairline--top">
-        <van-button round size="small" type="primary" custom-class="pro">提交</van-button>
+    </div>
+    <div class="part" v-else-if="id ==2">
+      <div class="form-input van-hairline--top">
+        <div class="label">单位名称</div>
+        <input type="text" class="input"  placeholder="请输入单位名称" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="联系方式">
+      </div>
+ 
+      <div class="form-input van-hairline--top">
+        <div class="label">设备种类</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择设备种类</div>
+            </picker>
+      </div>
+           <div class="form-input van-hairline--top">
+        <div class="label">监视套餐</div>
+          <picker @change="pickerChange(1,$event)" value="0" :range="bangli">
+              <div class="picker" v-if="bangliSelect != -1">{{bangli[bangliSelect]}}</div>
+              <div class="select" v-else>请选择监视套餐</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">设备地址</div>
+        <input type="text" class="input"  placeholder="请输入设备地址">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">案例演示</div>
+        <div class="pic-list" v-for="(item , index) in 2" :key="index">
+            <img src="http://placehold.it/100x100" class="img-sel" alt="" >
+        </div>
+      </div>
+     
+    </div>
+     <div class="part" v-else-if="id == 3">
+      <div class="form-input van-hairline--top">
+        <div class="label">单位名称</div>
+        <input type="text" class="input"  placeholder="请输入单位名称" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">设备种类</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择设备种类</div>
+            </picker>
+      </div>
+
+      <div class="form-input van-hairline--top">
+        <div class="label">预约时间</div>
+         <div class="time">
+           
+             <picker
+                  mode="date"
+                  :value="selectDate"
+                  @change="bindDateChange"
+                >
+                <div class="date">{{selectDate}}</div>
+             </picker>
+           <div class="num">当天已有0人预约办理</div>
+         </div>
       </div>
     </div>
+    <div class="part" v-else-if="id == 4">
+      <div class="form-input van-hairline--top">
+        <div class="label">单位名称</div>
+        <input type="text" class="input"  placeholder="请输入单位名称" >
+      </div>
+       <div class="form-input van-hairline--top">
+        <div class="label">单位地址</div>
+        <input type="text" class="input"  placeholder="请输入单位地址" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">岗位名称</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>3000-3999</div>
+            </picker>
+      </div>
+        <div class="form-input van-hairline--top">
+          <div class="label">岗位要求</div>
+          <input type="text" class="input"  placeholder="请输入岗位要求">
+        </div>
+    </div>
+    <div class="part" v-else-if="id == 5">
+      <div class="form-input van-hairline--top">
+        <div class="label">单位名称</div>
+        <input type="text" class="input"  placeholder="请输入单位名称" >
+      </div>
+       <div class="form-input van-hairline--top">
+        <div class="label">单位地址</div>
+        <input type="text" class="input"  placeholder="请输入单位地址" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="请输入联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">设备种类</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择设备种类</div>
+            </picker>
+      </div>
 
+    </div>
+    <div class="part" v-else-if="id == 6">
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="请输入联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">学历</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择学历</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">身份证号码</div>
+        <input type="text" class="input"  placeholder="请输入身份证号码">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">作业种类</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>作业种类</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">项目代码</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择项目代码</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">使用登记证</div>
+        <div class="pic-list" v-for="(item , index) in qiImgs" :key="index">
+          <span class="colse" @click="deleteImgs(index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+          
+            <img :src="item" class="img-sel" alt="" >
+        </div>
+        <div class="add" @click="uploadImg()">
+            <img src="../../asset/imgs/add.png" class="add-btn" alt="">
+        </div>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">预约时间</div>
+         <div class="time">
+           
+             <picker
+                  mode="date"
+                  :value="selectDate"
+                  @change="bindDateChange"
+                >
+                <div class="date">{{selectDate}}</div>
+             </picker>
+           <div class="num">当天已有0人预约办理</div>
+         </div>
+      </div>
+    </div>
+    <div class="part" v-else-if="id == 7">
+
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="请输入联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">求职地点</div>
+        <input type="text" class="input"  placeholder="请输入求职地点" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">期望岗位</div>
+        <input type="text" class="input"  placeholder="请输入岗位名称" >
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">期望薪资</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择期望薪资</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">技能特长</div>
+        <input type="text" class="input"  placeholder="请填写技能特长 (包括相关证书、技能、工作经验)" >
+      </div>
+    </div>
+    <div class="part" v-else>
+
+      <div class="form-input van-hairline--top">
+        <div class="label">联系人</div>
+        <input type="text" class="input"  placeholder="请输入联系人">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">联系方式</div>
+        <input type="text" class="input"  placeholder="请输入联系方式">
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">作业种类</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择作业种类</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">项目代码</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择项目代码</div>
+            </picker>
+      </div>
+      <div class="form-input van-hairline--top">
+        <div class="label">培训科目</div>
+          <picker @change="pickerChange(2,$event)" value="0" :range="zhonglei">
+              <div class="picker" v-if="zhongleiSelect != -1">{{zhonglei[zhongleiSelect]}}</div>
+              <div class="select" v-else>请选择培训科目</div>
+            </picker>
+      </div>
+    </div>
+ <div class="btn van-hairline--top">
+    <van-button round size="small" type="primary" custom-class="pro">提交</van-button>
+  </div>
 </div> 
 </template>
 <script>
@@ -69,7 +321,7 @@ export default {
   },
   data () {
     return {
-      id: 0, // 0什么都不显示，1
+      id: 0, // 0什么都不显示，1:行政许可业务 2:新增设备监视 3:预约检查 4:技术人员招聘 5设备新增管理 6:特种设备考证 7:个人资历 8:人员培训
        height: '',
       psImgs: [],
       psImgsG: [],
@@ -103,7 +355,6 @@ export default {
     ,uploadImg() {
         const _this = this
         let fileType	= 'rectify' //	整改
-     
         wx.chooseImage({
           count: 1,
           sizeType: ['original', 'compressed'],
@@ -142,7 +393,6 @@ export default {
           })
           }
         })
-
     }
     ,pickerChange(opt,event) {
       const val = event.mp.detail.value
@@ -163,13 +413,22 @@ export default {
     ,bindDateChange(event) {
      this.selectDate = event.mp.detail.value
     }
+    ,setTitle(id) {
+      let titles = ["行政许可业务", "新增设备监视", "预约检查", "技术人员招聘", "设备新增管理", "特种设备考证", "个人资历", "人员培训"]
+      Util.setTitle(titles[id-1])
+    }
   }
 
   ,created () {
     this.getPhoneHeight()
-    Util.setTitle('设备认证')
+    
   }
+  ,mounted() {
+    const {id} = this.$mp.query
+    this.id = id || 0
+    this.setTitle(this.id)
 
+  }
 
 }
 </script>

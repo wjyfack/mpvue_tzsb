@@ -39,9 +39,9 @@
 					"query": ""
 				},
 				{
-					"id": -1,
-					"name": "yewudetail",
-					"pathName": "pages/yewu_detail/main",
+					"id": 1,
+					"name": "yewu",
+					"pathName": "pages/yewu/main",
 					"query": ""
 				}
 			]

@@ -20,7 +20,8 @@
               </div>
               <div class="msg">
                 <div class="name">蒸汽压力</div>
-                <div class="val ">正常</div><div class="val act">异常</div>
+                <div class="val ">正常</div>
+                <!-- <div class="val act">异常</div> -->
               </div>
               <div class="msg msg-act">
                 <div class="name">环境温度</div>

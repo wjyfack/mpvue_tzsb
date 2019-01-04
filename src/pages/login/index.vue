@@ -56,7 +56,7 @@ export default {
         } else {
          
          const params = Util.getData({
-            customerLinkTel: this.phone,
+            customerLoginName: this.phone,
             customerLoginPwd: pwds
           })
           this.$http.post('/customer/logon',params).then((res)=> {
