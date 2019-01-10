@@ -35,7 +35,7 @@
           <div>推荐职位</div>
         </div>
         <div class="tui">
-          <div class="tui-item van-hairline--top">
+          <a href="../zhaoping_zhiwei/main" class="tui-item van-hairline--top">
             <img src="http://placekitten.com/100/100" alt="" class="tui-img">
             <div class="cont">
               <div class="titles">
@@ -49,8 +49,8 @@
                 <div class="brand-item">N2</div>
             </div>
             </div>
-          </div>
-          <div class="tui-item van-hairline--top">
+          </a>
+          <a href="../zhaoping_zhiwei/main" class="tui-item van-hairline--top">
             <img src="http://placekitten.com/100/100" alt="" class="tui-img">
             <div class="cont">
               <div class="titles">
@@ -64,7 +64,7 @@
                 <div class="brand-item">N2</div>
             </div>
             </div>
-          </div>
+          </a>
           <div class="more  van-hairline--top">查看更多职位</div>
         </div>
       </div>
@@ -132,7 +132,7 @@
         </div>
         <a href="../zhaoping_company_msg/main?opt=record"  class="zhao-item" >
           <img src="../../asset/imgs/zhao_shengqi.png" alt="" class="zhao-img">
-          <div>申请记录</div>
+          <div>投递记录</div>
         </a>
         
          <a href="../zhaoping_jianli/main?opt=company" class="zhao-item">
@@ -146,36 +146,36 @@
           <div>优选简历</div>
         </div>
         <div class="tui">
-          <div class="tui-item van-hairline--top">
+          <a href="../zhaoping_jianli_detail/main" class="tui-item van-hairline--top">
             <img src="http://placekitten.com/100/100" alt="" class="tui-img">
             <div class="cont">
               <div class="titles">
-                <div>叉车司机</div>
+                <div>林虞浩</div>
                 <div class="act">3000-3999元/月</div>
               </div>
-              <div class="name">佛山市佛朗斯叉车有限公司</div>
-              <div class="addr">佛山市南海区狮山镇博爱路</div>
+              <div class="name">叉车司机   工龄5年 </div>
+              <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
               <div class="brand">
                 <div class="brand-item">大专</div>
                 <div class="brand-item">N2</div>
             </div>
             </div>
-          </div>
-          <div class="tui-item van-hairline--top">
+          </a>
+          <a href="../zhaoping_jianli_detail/main" class="tui-item van-hairline--top">
             <img src="http://placekitten.com/100/100" alt="" class="tui-img">
             <div class="cont">
               <div class="titles">
-                <div>叉车司机</div>
+                <div>林虞浩</div>
                 <div class="act">3000-3999元/月</div>
               </div>
-              <div class="name">佛山市佛朗斯叉车有限公司</div>
-              <div class="addr">佛山市南海区狮山镇博爱路</div>
+              <div class="name">叉车司机   工龄5年 </div>
+              <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
               <div class="brand">
                 <div class="brand-item">大专</div>
                 <div class="brand-item">N2</div>
             </div>
             </div>
-          </div>
+          </a>
           <div class="more  van-hairline--top">查看更多职位</div>
         </div>
       </div>
@@ -301,6 +301,7 @@ export default {
       .tui-img {
         width:36px;
         height: 36px;
+        border-radius: 50%;
       }
       .cont {
         display: flex;

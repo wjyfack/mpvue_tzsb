@@ -7,7 +7,7 @@
               <div class="name">姓名</div>
               <img src="../../asset/imgs/xiugaih.png" alt="" class="left-img">
             </a>
-            <img src="http://placehold.it/100x100" alt="" class="avatar">
+            <img src="http://placekitten.com/100/100" alt="" class="avatar">
           </div>
           <div class="info-item van-hairline--bottom">
             <div class="left">性别</div>
@@ -101,7 +101,7 @@
   <div class="jianli" v-else-if="opt == 'company'">
         <div class="info">
           <div class="header">
-            <a href="../zhaoping_jianli_edit/main?opt=name" class="left">
+            <a href="../zhaoping_jianli_edit/main?opt=com_name" class="left">
               <div class="name">企业名称</div>
               <img src="../../asset/imgs/xiugaih.png" alt="" class="left-img">
             </a>
@@ -249,7 +249,7 @@ export default {
      }
     }
     .add-work {
-      color:#E5E7EC;
+      color:#757980;
       font-size: 11px;
       height: 32px;
       line-height: 32px;

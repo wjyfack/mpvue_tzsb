@@ -42,10 +42,10 @@
           <img src="../../asset/imgs/ye_tiku.png" alt="" class="img">
           <div>题库练习</div>
         </a>
-        <a href="../yewu_detail/main?id=7" class="option-item">
+        <!-- <a href="../yewu_detail/main?id=7" class="option-item">
           <img src="../../asset/imgs/ye_zhili.png" alt="" class="img">
           <div>个人资历</div>
-        </a>
+        </a> -->
          <a href="../zhaoping/main?id=1" class="option-item">
           <img src="../../asset/imgs/ye_zhili.png" alt="" class="img">
           <div>求职</div>

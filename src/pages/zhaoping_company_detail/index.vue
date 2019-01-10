@@ -101,6 +101,7 @@ export default {
     .ri-img {
         width:45px;
         height: 45px;
+        border-radius: 50%;
       }
    }
    .company {

@@ -18,10 +18,10 @@
             <div class="brand-item">N2</div>
           </div>
         </div>
-        <div class="btn-su">保存</div>
+        <div class="btn-su">发布职位</div>
         <van-toast id="van-toast" />
   </div>
-  <zhao-item opt="person" v-else-if="opt == 'record'"></zhao-item>
+  <zhao-item opt="jianli" :show="false" v-else-if="opt == 'record'"></zhao-item>
 </div>
 </template>
 <script>
@@ -51,7 +51,7 @@ export default {
   },
   mounted() {
     this.opt = this.$mp.query.opt
-    let title = '职业管理'
+    let title = '职位管理'
     this.opt == 'record' ? title = '投递记录' : ''
     Util.setTitle(title)
   }

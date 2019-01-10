@@ -14,7 +14,7 @@
     <zhao-item opt="company"></zhao-item>
 
       <van-toast id="van-toast" />
-</div>
+</div> 
 </template>
 <script>
 import zhaoItem from '@/components/zhaoItem'

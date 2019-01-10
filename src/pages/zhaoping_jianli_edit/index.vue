@@ -33,6 +33,10 @@
       </div>
     </div>
    
+    <div class="edit-item van-hairline--bottom"  v-else-if="opt == 'com_name'">
+        <div class="title">企业名称</div>
+        <input type="text" class="input" placeholder="请输入企业名称">
+      </div>
     <div class="edit-item van-hairline--bottom edit-item-textarea" v-else-if="opt == 'com_brief'">
       <div class="title">企业介绍</div>
       <textarea  auto-height="true" class="textarea"   placeholder="请输入企业介绍"></textarea>
@@ -73,7 +77,7 @@ export default {
     return {
       opt: '', // phone,work 编辑手机号和工作经验
       daiyu: [ // 待遇
-        {id: 1, name: '五险一金',check: true},
+        {id: 1, name: '五险一金',check: false},
         {id: 2, name: '定期体检'},
         {id:3, name: '加班补助'},
         {id: 4, name: '全勤奖'},
@@ -86,7 +90,7 @@ export default {
         {id: 11, name: '住房补贴'},
       ],
       fangjia: [　// 放假安排
-        {id: 1, name: '双休',check: true,sort: 'dan'},
+        {id: 1, name: '双休',check: false,sort: 'dan'},
         {id: 2, name: '单休',sort: 'dan'},
         {id:3, name: '大小周',sort: 'dan'},
         {id: 4, name: '排班轮休',sort: 'dan'},
@@ -103,16 +107,18 @@ export default {
     slectBrand(opt,index) {
       // opt 1: 删除　2: 单选　3: 多选
         let i = 0
-        console.log(index,this.yixuan)
-
       switch(opt) {
         case 1: 
-          console.log(this.yixuan[i])
-          if(this.yixuan[i].sort == 'dan') {
-            Toast('单选不能删除')
+          const obj = this.yixuan[index]
+          if(obj.sort == 'dan') {
+            for(i in this.fangjia) {
+              if(this.fangjia[i].id == obj.id) {
+                this.fangjia.check = false
+              }
+            }
           }else {
-            const obj = this.yixuan[index]
-            this.yixuan.splice(1,index)
+            
+            this.yixuan.splice(index,1)
             for( i in this.daiyu) {
               if(this.daiyu[i].id == obj.id) {
                 this.daiyu[i].check = false
@@ -138,12 +144,40 @@ export default {
         break
       }
     }
+    ,setTitle () {
+      let title  = ''
+      switch(this.opt) {
+        case 'com_name':
+        title = '企业名称'
+        break
+        case 'com_brief':
+        title = '企业简介'
+        break
+        case 'com_addr':
+        title = '企业地址'
+        break
+        case 'brand':
+        title = '企业标签'
+        break
+        case 'work':
+        title = '工作经验'
+        break
+        case 'name':
+        title = '姓名'
+        break
+        case 'phone':
+        title = '手机号'
+        break
+      }
+      Util.setTitle(title)
+    }
   },
   created () {
     Util.setBackGroup()
   },
   mounted() {
     this.opt = this.$mp.query.opt
+    this.setTitle()
   }
 }
 </script>

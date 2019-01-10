@@ -34,7 +34,7 @@
         <div class="more  van-hairline--top">查看更多职位</div>
       </div>
       <div class="tui" v-else-if="opt == 'company'">
-        <a href="../zhaoping_company_detail/main" class="tui-item ">
+        <a href="../zhaoping_company_detail/main" class="tui-item van-hairline--bottom">
           <img src="http://placekitten.com/100/100" alt="" class="tui-img">
           <div class="cont">
             <div class="titles">
@@ -49,7 +49,7 @@
            </div>
           </div>
         </a>
-       <a href="../zhaoping_company_detail/main" class="tui-item">
+       <a href="../zhaoping_company_detail/main" class="tui-item van-hairline--bottom">
           <img src="http://placekitten.com/100/100" alt="" class="tui-img">
           <div class="cont">
             <div class="titles">
@@ -64,7 +64,40 @@
            </div>
           </div>
         </a>
-        <div class="more  van-hairline--top">查看更多企业</div>
+        <div class="more  van-hairline--top" v-if="more">查看更多企业</div>
+      </div>
+      <div class="tui" v-if="opt == 'jianli'">
+        <a href="../zhaoping_jianli_detail/main" class="tui-item " :class="{'van-hairline--top': line}">
+          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
+          <div class="cont">
+            <div class="titles">
+              <div>林虞浩</div>
+              <div class="act">3000-3999元/月</div>
+            </div>
+            <div class="name">叉车司机   工龄5年</div>
+            <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
+            <div class="brand">
+              <div class="brand-item">大专</div>
+              <div class="brand-item">N2</div>
+           </div>
+          </div>
+        </a>
+        <a href="../zhaoping_jianli_detail/main" class="tui-item " :class="{'van-hairline--top': line}">
+          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
+          <div class="cont">
+            <div class="titles">
+              <div>林虞浩</div>
+              <div class="act">3000-3999元/月</div>
+            </div>
+            <div class="name">叉车司机   工龄5年</div>
+            <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
+            <div class="brand">
+              <div class="brand-item">大专</div>
+              <div class="brand-item">N2</div>
+           </div>
+          </div>
+        </a>
+        <div class="more  van-hairline--top" v-if="show">查看更多职位</div>
       </div>
     </div>
      </template>
@@ -72,7 +105,8 @@
 export default {
     props: {
       opt: {required: true},
-      line: {default: true}
+      line: {default: true},
+      show: {default: false}
     }
 }
 </script>
@@ -94,6 +128,7 @@ export default {
       .tui-img {
         width:36px;
         height: 36px;
+        border-radius: 50%;
       }
       .cont {
         display: flex;
@@ -119,9 +154,10 @@ export default {
           .brand-item {
             width: 53px;
             height: 17px;
-            font-size: 11px;
+            font-size: 11px; 
             text-align: center;
             background: #EEEFF4;
+            color:#757980;
             margin-right: 10px;
           }
         }
