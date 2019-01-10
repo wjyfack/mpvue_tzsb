@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "van-search": "../../../static/dist/search/index",
+        "van-toast": "../../../static/dist/toast/index"
+      },
+      "navigationBarTitleText": "简历编辑"
+}

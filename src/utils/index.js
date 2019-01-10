@@ -59,6 +59,11 @@ function getDate(date = '') {
   const now = date == ''? new Date() : new Date(date)
   return dateFormat(now, 'yyyy-mm-dd');
 }
+function setBackGroup(){
+  wx.setBackgroundColor({
+    backgroundColor: '#EEEFF4', // 窗口的背景色
+  })
+}
 export default {
   formatNumber,
   formatTime,
@@ -69,5 +74,6 @@ export default {
   getData,
   setTitle,
   preview,
+  setBackGroup,
   getDate
 }

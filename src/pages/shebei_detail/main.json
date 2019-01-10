@@ -1,7 +1,8 @@
 {
     "usingComponents": {
         "van-transition": "../../../static/dist/transition/index",
-        "van-toast": "../../../static/dist/toast/index"
+        "van-toast": "../../../static/dist/toast/index",
+        "van-picker": "../../../static/dist/picker/index"
       },
       "navigationBarTitleText": "设备详情"
 }

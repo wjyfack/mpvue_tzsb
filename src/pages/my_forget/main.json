@@ -1,6 +1,7 @@
 {
     "usingComponents": {
-        "van-button": "../../../static/dist/button/index"
+        "van-button": "../../../static/dist/button/index",
+        "van-toast": "../../../static/dist/toast/index"
       },
       "navigationBarTitleText": "修改密码"
 }

@@ -1,4 +1,4 @@
-export const baseUrl = 'http://192.168.0.116:8507'
+export const baseUrl = 'http://192.168.0.116:8507'// 'http://120.77.34.115:8507'
 export const deviceTypes= [
     {id:1,name: '锅炉'},
     {id:2,name: '压力容器'},

@@ -30,19 +30,19 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "ss",
-					"pathName": "pages/jiankong/main",
+					"pathName": "pages/yewu/main",
 					"query": ""
 				},
 				{
 					"id": 1,
 					"name": "yewu",
-					"pathName": "pages/yewu/main",
-					"query": ""
+					"pathName": "pages/zhaoping/main",
+					"query": "id=2"
 				}
 			]
 		}

@@ -108,8 +108,8 @@ export default {
         }) 
     }
     ,forget() {
-       const data = `{"customerLoginPwd":"${this.password}","customerLinkTel":"${this.phone}"}`
-        this.$http.post('/customer/register',data)
+       const data = `{"customerLoginPwdNew":"${this.password}","bingTel":"${this.phone}"}`
+        this.$http.post('/customer/user/pwd/forget',data)
         .then(res => {
           if(res.status == 200 && res.data.resultCode == '0000000') {
             Toast('操作成功')

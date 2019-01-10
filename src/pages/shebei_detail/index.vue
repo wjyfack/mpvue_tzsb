@@ -9,10 +9,6 @@
       <div class="title">使用登记证</div>
       <input type="text" class="input" v-model="baseInfo.deviceCertNo" :disabled="!isEdit">
     </div>
-    <div class="mes-item">
-      <div class="title">下次年检时间</div>
-      <input type="text" class="input" v-model="baseInfo.deviceNextYearTestDate" :disabled="!isEdit">
-    </div>
      <div class="mes-item">
       <div class="title">设备名称或型号</div>
       <input type="text" class="input" v-model="baseInfo.deviceModel " :disabled="!isEdit">
@@ -35,11 +31,20 @@
     </div>
      <div class="mes-item">
       <div class="title">设备位置</div>
-      <textarea  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
+      <div class="addr">
+          <div class="addr-ssq" @click="addrsSelect"><span>{{addrSelect}}</span><div class="triangle_border_down"></div></div>
+          <textarea auto-height  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
+      </div>
+    
+          
     </div>
      <div class="mes-item">
       <div class="title">设备状态</div>
       <div class="input" v-if="!isEdit">{{baseInfo.status}} </div>
+     
+      <picker v-else @change="bindPickerChange" value="0" :range="statusArr">
+         <div class="input" >{{baseInfo.status}} </div>
+      </picker>
     </div>
      <div class="mes-item">
       <div class="title">制造时间</div>
@@ -105,6 +110,13 @@
     <div class="btn btn-c" @click="onSubmit">提交设备信息</div>
   </div>
 </van-transition>
+<van-transition :show="isAddr" name="slide-up">
+  <div class="min-h">
+    <van-picker show-toolbar :title="addrTitle" :columns="columns" @cancel="isAddr = false"
+  @confirm="bindAddrChange" />
+  </div>
+      
+</van-transition>
  <van-toast id="van-toast" />
 </div>
 </template>
@@ -117,6 +129,7 @@ export default {
     return {
       isEdit: false
       ,id: 0
+      ,isAddr: false
       ,baseInfo: {
         deviceCertNo:'',
         deviceFullAddress:'',
@@ -140,8 +153,20 @@ export default {
         deviceTypeName2:'',
         deviceTypeName3:'',
         deviceUseName:'',
-
-      }
+       
+      },
+       statusArr: [ "在用", "停用", "检测中", "整改中", "停电中", "停目录停用", "停检验员", "停", "拆除", "注销", '已移装改造' ,'简单容器','待核实','未知']
+       ,addrSheng: [],
+       addrShengId: 0,
+       addrShi:[],
+       addrShiId:0,
+       addrQu:[],
+       addrQuId:0,
+       addrZhen:[],
+       addrZhenId:0,
+      columns: [],
+      addrTitle: '请选择省',
+      addrSelect: '请选择地址'
     }
   },
  computed: {
@@ -149,6 +174,7 @@ export default {
       return Util.getStorage('userInfo')
     }
   },
+
   methods: {
     onCheck() {
       this.isEdit = true
@@ -156,9 +182,96 @@ export default {
         scrollTop: 0
       })
     }
+    ,bindPickerChange(event) {
+      const val = ~~event.mp.detail.value+1
+      this.baseInfo.deviceStatus = val
+      this.baseInfo.status = this.checkStatus(val)
+
+    }
+    ,bindAddrChange(event) {
+      const {index} = event.mp.detail
+      switch(this.addrTitle) {
+        case '请选择省':
+         this.addrShengId = index
+         this.addrTitle = '请选择市'
+         this.getAddrChild(1,this.addrSheng[index].id)
+        break
+        case '请选择市':
+         this.addrShiId = index
+         this.addrTitle = '请选择区'
+         this.getAddrChild(2,this.addrShi[index].id)
+        break
+         case '请选择区':
+         this.addrQuId = index
+         this.addrTitle = '请选择镇'
+         this.getAddrChild(3,this.addrQu[index].id)
+        break
+        case '请选择镇':
+         this.addrZhenId = index
+         this.isAddr = false
+         console.log(this.addrSheng[this.addrShengId].areaName)
+           this.addrSelect = `${this.addrSheng[this.addrShengId].areaName}/${this.addrShi[this.addrShiId].areaName}/${this.addrQu[this.addrQuId].areaName}/${this.addrZhen[this.addrZhenId].areaName}`
+        break
+      }
+    }
+    ,addrsSelect() {
+      if(!this.isEdit) return ''
+      this.isAddr = true
+    }
+   ,getAddrChild(opt,id) {
+     const params = JSON.stringify({id: id})
+     this.$http.post(`/area/clild/get/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+          if(data.resultCode == '0000000') {
+              let sheng  = data.returnData
+              let arr = []
+              for(let i in sheng) {
+                let {areaName}  = sheng[i]
+                arr = [...arr,areaName]
+              }
+              switch(opt) {
+                case 1: // 市
+                this.addrShi = sheng
+                break;
+                case 2: // 区
+                this.addrQu = sheng
+                break;
+                case 3: // 镇
+                this.addrZhen = sheng
+                break;
+              }
+              this.columns = arr
+          }
+      })
+   }
+
     ,onBack() {
       this.isEdit = false
       this.getData()
+    }
+     ,getAddr() {
+       const url = `/area/device/init/${this.userInfo.id}`
+       this.$http.post(url,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+          if(data.resultCode == '0000000') {
+              let sheng  = data.returnData.deviceArea1
+              this.addrSheng = sheng
+              let arr = []
+              for(let i in sheng) {
+                let {areaName}  = sheng[i]
+                arr = [...arr,areaName]
+              }
+              this.columns = arr
+          }
+      })
     }
     ,getData() {
        const params = `{"id":"${this.id}"}`
@@ -173,6 +286,8 @@ export default {
           data.returnData.status = this.checkStatus(data.returnData.deviceStatus)
           data.returnData.deviceFullAddress = this.checkAddr(data.returnData.deviceFullAddress)
           data.returnData.deviceParams = this.checkParam(data.returnData.deviceParam)
+          this.addrSelect = this.checkAddrSelect(data.returnData)
+          console.log(this.checkAddrSelect(data.returnData))
           this.baseInfo = data.returnData
         } else {
           Toast(data.resultDesc)
@@ -185,6 +300,7 @@ export default {
         deviceCertNo: baseInfo.deviceCertNo,
         deviceNextYearTestDate: baseInfo.deviceNextYearTestDate,
         deviceModel : baseInfo.deviceModel ,
+        deviceType1: baseInfo.deviceType1,
         deviceType2: baseInfo.deviceType2,
         deviceTypeName2: baseInfo.deviceTypeName2,
         deviceNo: baseInfo.deviceNo,
@@ -193,15 +309,16 @@ export default {
         deviceProduceDate: baseInfo.deviceProduceDate,
         deviceProduceName:baseInfo.deviceProduceName,
         deviceInstallName: baseInfo.deviceInstallName,  
+        deviceStatus: baseInfo.deviceStatus,
         deviceId: baseInfo.id,
-        deviceArea1: baseInfo.deviceUseArea1||'',
-        deviceAreaName1: baseInfo.deviceUseAreaName1||'',
-        deviceArea2: baseInfo.deviceUseArea2||'',
-        deviceAreaName2: baseInfo.deviceUseAreaName2||'',
-        deviceArea3: baseInfo.deviceUseArea3||'',
-        deviceAreaName3: baseInfo.deviceUseAreaName3||'',
-        deviceArea4: baseInfo.deviceUseArea4||'',
-        deviceAreaName4: baseInfo.deviceUseAreaName4||'',
+        deviceArea1: this.addrShengId||baseInfo.deviceUseArea1||'',
+        deviceAreaName1: this.addrSheng[this.addrShengId]||baseInfo.deviceUseAreaName1||'',
+        deviceArea2: this.addrShiId||baseInfo.deviceUseArea2||'',
+        deviceAreaName2: this.addrShi[this.addrShiId]||baseInfo.deviceUseAreaName2||'',
+        deviceArea3: this.addrQuId||baseInfo.deviceUseArea3||'',
+        deviceAreaName3: this.addrQu[this.addrQuId]||baseInfo.deviceUseAreaName3||'',
+        deviceArea4: this.addZhenId||baseInfo.deviceUseArea4||'',
+        deviceAreaName4: this.addZhen[this.addZhenId]||baseInfo.deviceUseAreaName4||'',
         deviceAddress: baseInfo.deviceFullAddress||'',
       }
       for(let i  in baseInfo.deviceParams) {
@@ -218,7 +335,7 @@ export default {
         let data = res.data
         if(data.resultCode == '0000000') {
           console.log(data.returnData)
-   
+           Toast('操作成功')
         } else {
           Toast(data.resultDesc)
         }
@@ -226,6 +343,7 @@ export default {
     }
     ,checkStatus(status) {
        let name = ''
+    
        switch(~~status) {
          case 1:
           name='在用'
@@ -240,7 +358,7 @@ export default {
           name='整改中'
           break
          case 5:
-          name='停电话'
+          name='停电中'
           break
          case 6:
           name='停目录停用'
@@ -282,12 +400,23 @@ export default {
         }
         return data
     }
+    ,checkAddrSelect(data) {
+      let str = ''
+      if(data.deviceAreaName1 != '') str = `${data.deviceAreaName1}`
+      if(data.deviceAreaName2 != '') str += `/${data.deviceAreaName2}`
+      if(data.deviceAreaName3 != '') str += `/${data.deviceAreaName1}`
+      if(data.deviceAreaName4 != '') str += `/${data.deviceAreaName1}`
+      return str
+    }
   },
 
   mounted () {
     this.id = this.$mp.query.id
+    this.getAddr()
     this.getData()
     this.isEdit = false
+  
+
   }
 }
 </script>
@@ -314,10 +443,11 @@ export default {
      }
      .mes {
          padding: 10px 25px  ;
-                   background: #ffffff;
+          background: #ffffff;
         .mes-item  {
           display: flex;
           align-items: center;
+          padding: 5px 0;
           .title {font-size: 14px;color:#1C2627; min-width: 120px;}
           .input {
             flex: 1;
@@ -326,15 +456,39 @@ export default {
             font-size: 14px;
             color:#757980;
           }
-          .textarea {
+          .addr {
             flex: 1;
-            height:  30px;
-            font-size: 14px;
-            color:#757980;
+            display: flex;
+            flex-direction: column;
+             .addr-ssq {
+               flex:1;
+               display: flex;
+               background: #ffffff;
+               font-size: 14px;
+               color: #757980;
+                align-items: center;
+                padding: 5px 0;
+             }
+             .textarea {
+                  flex: 1;
+                  height:  30px;
+                  width:100%;
+                  font-size: 14px;
+                  color:#757980;
+                }
           }
         }  
      }
-
+      .triangle_border_down{
+          width:0;
+          height:0;
+          border-width:8px 5px 0;
+          border-style:solid;
+          border-color:#757980 transparent transparent;/*灰 透明 透明 */
+          margin:0  5px;
+          position:relative;
+         }
+      
    }
    .info-top{
      margin-top: 14px;
@@ -369,6 +523,15 @@ export default {
        line-height: 55px;
       }
       .btn-c {background: #FDC915;}
+   }
+   .min-h {
+     min-height: 50px;
+     position:fixed;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background: #ffffff;
+     z-index: 999;
    }
 }
 </style>

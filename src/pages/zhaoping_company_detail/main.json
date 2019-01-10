@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "van-toast": "../../../static/dist/toast/index",
+        "van-transition": "../../../static/dist/transition/index"
+      },
+      "navigationBarTitleText": "企业详情"
+}
