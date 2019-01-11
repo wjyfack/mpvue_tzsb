@@ -84,6 +84,7 @@
 
         </div>
       </a>
+      <van-dialog id="van-dialog" />
     <tab-bar active="2"/>
   </div>
 </template>
@@ -91,6 +92,7 @@
 import Util from '@/utils/index'
 import tabBar from '@/components/tabBar'
 import myLoad from '@/components/myLoad'
+import Dialog from '@/../static/dist/dialog/dialog';
 export default {
   components: {
     tabBar,
@@ -131,6 +133,9 @@ export default {
   }
   ,mounted() {
     this.id = this.$mp.query.id || 0
+    Dialog.alert({
+      message: '功能正在开发中，查看功能演示'
+    })
   }
   ,onReachBottom () {
   //  this.getData()

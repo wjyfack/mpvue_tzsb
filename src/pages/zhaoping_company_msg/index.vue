@@ -18,10 +18,11 @@
             <div class="brand-item">N2</div>
           </div>
         </div>
-        <div class="btn-su">发布职位</div>
+        <a href="../zhaoping_fabu/main" class="btn-su">发布职位</a>
         <van-toast id="van-toast" />
   </div>
   <zhao-item opt="jianli" :show="false" v-else-if="opt == 'record'"></zhao-item>
+  <zhao-item opt="person" :show="false" v-else-if="opt == 'shenqing'"></zhao-item>
 </div>
 </template>
 <script>
@@ -52,7 +53,15 @@ export default {
   mounted() {
     this.opt = this.$mp.query.opt
     let title = '职位管理'
-    this.opt == 'record' ? title = '投递记录' : ''
+    switch(this.opt) {
+      case 'record':
+       title = '投递记录'
+      break
+      case 'shenqing':
+      title = '申请记录'
+
+      break
+    }
     Util.setTitle(title)
   }
 }
@@ -68,7 +77,7 @@ export default {
     .title {
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: space-between;
       line-height: 20px;
       .name {color:#1C2627;font-size: 14px;}
       .price {color:#FDC915;font-size: 12px;}

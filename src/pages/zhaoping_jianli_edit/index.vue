@@ -55,7 +55,7 @@
       </div>
       <div class="choose-title">放假安排（单选）</div> 
       <div class="brand">
-        <div class="brand-item" :class="{'act': item.check }" v-for="(item,index) in fangjia" :key="item.id" @click="slectBrand(2,index)"><div class="name">{{item.name}}</div></div>
+        <div class="brand-item" :class="{'act': item.check }" v-for="(item,index) in fangjia" :key="index" @click="slectBrand(2,index)"><div class="name">{{item.name}}</div></div>
       </div>
        <div class="choose-title">待遇（多选）</div>
       <div class="brand">
@@ -78,22 +78,22 @@ export default {
       opt: '', // phone,work 编辑手机号和工作经验
       daiyu: [ // 待遇
         {id: 1, name: '五险一金',check: false},
-        {id: 2, name: '定期体检'},
-        {id:3, name: '加班补助'},
-        {id: 4, name: '全勤奖'},
-        {id: 5, name: '年终奖'},
-        {id: 6, name: '免费班车'},
-        {id: 7, name: '餐补'},
-        {id: 8, name: '通讯补贴'},
-        {id: 9, name: '交通补贴'},
-        {id: 10, name: '包吃'},
-        {id: 11, name: '住房补贴'},
+        {id: 2, name: '定期体检',check: false},
+        {id:3, name: '加班补助',check: false},
+        {id: 4, name: '全勤奖',check: false},
+        {id: 5, name: '年终奖',check: false},
+        {id: 6, name: '免费班车',check: false},
+        {id: 7, name: '餐补',check: false},
+        {id: 8, name: '通讯补贴',check: false},
+        {id: 9, name: '交通补贴',check: false},
+        {id: 10, name: '包吃',check: false},
+        {id: 11, name: '住房补贴',check: false},
       ],
       fangjia: [　// 放假安排
         {id: 1, name: '双休',check: false,sort: 'dan'},
-        {id: 2, name: '单休',sort: 'dan'},
-        {id:3, name: '大小周',sort: 'dan'},
-        {id: 4, name: '排班轮休',sort: 'dan'},
+        {id: 2, name: '单休',sort: 'dan',check: false},
+        {id: 3, name: '大小周',sort: 'dan',check: false},
+        {id: 4, name: '排班轮休',sort: 'dan',check: false},
       ],
       yixuan: [] // 已选标签 
     }
@@ -110,15 +110,15 @@ export default {
       switch(opt) {
         case 1: 
           const obj = this.yixuan[index]
+          this.yixuan.splice(index,1)
           if(obj.sort == 'dan') {
             for(i in this.fangjia) {
               if(this.fangjia[i].id == obj.id) {
-                this.fangjia.check = false
+                this.fangjia[i].check = false
               }
             }
           }else {
-            
-            this.yixuan.splice(index,1)
+         
             for( i in this.daiyu) {
               if(this.daiyu[i].id == obj.id) {
                 this.daiyu[i].check = false
@@ -127,18 +127,30 @@ export default {
           }
         break
         case 2:
-        let j = 0
+        let isFlag = false
+        const fangjia = this.fangjia
+        for( i in fangjia) {
+          fangjia[i].check = false
+        }
 
-        for( i in this.fangjia) {
-          this.fangjia[i].check = false
+        fangjia[index].check = true
+        this.fangjia = fangjia
+        const yixuan = this.yixuan
+        for(let j in yixuan) {
+          if(this.yixuan[j].sort == 'dan'){
+            isFlag = true
+            this.yixuan[j] = this.fangjia[index]
+            break
+          } 
         }
-        this.fangjia[index].check = true
-        for( j in this.yixuan) {
-          if(this.yixuan[j].sort == 'dan') break
+        if(isFlag) {
+          
+        } else {
+            this.yixuan = [...this.yixuan,this.fangjia[index]]
         }
-         this.yixuan[j] = this.fangjia[index]
         break
         case 3:
+        if(this.daiyu[index].check) return ''
         this.daiyu[index].check = true
          this.yixuan = [...this.yixuan,this.daiyu[index]]
         break

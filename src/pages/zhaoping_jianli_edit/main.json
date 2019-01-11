@@ -1,7 +1,7 @@
 {
     "usingComponents": {
-        "van-search": "../../../static/dist/search/index",
-        "van-toast": "../../../static/dist/toast/index"
+        "van-toast": "../../../static/dist/toast/index",
+        "van-popup": "../../../static/dist/popup/index"
       },
       "navigationBarTitleText": ""
 }

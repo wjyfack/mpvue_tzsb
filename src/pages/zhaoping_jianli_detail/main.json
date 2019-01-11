@@ -1,5 +1,6 @@
 {
     "usingComponents": {
         "van-toast": "../../../static/dist/toast/index"
-      }
+      },
+      "navigationBarTitleText": "简历详情"
 }

@@ -20,10 +20,10 @@
           <img src="../../asset/imgs/zhao_xiaoxi.png" alt="" class="zhao-img">
           <div>消息</div>
         </div>
-        <div class="zhao-item">
+        <a href="../zhaoping_company_msg/main?opt=shenqing" class="zhao-item">
           <img src="../../asset/imgs/zhao_shengqi.png" alt="" class="zhao-img">
           <div>申请记录</div>
-        </div>
+        </a>
         <a href="../zhaoping_jianli/main?opt=person" class="zhao-item">
           <img src="../../asset/imgs/zhao_jianli.png" alt="" class="zhao-img">
           <div>个人简历</div>

@@ -2,7 +2,8 @@
 "usingComponents": {
 
     "van-tabbar": "../../../static/dist/tabbar/index",
-    "van-tabbar-item": "../../../static/dist/tabbar-item/index"
+    "van-tabbar-item": "../../../static/dist/tabbar-item/index",
+    "van-dialog": "../../../static/dist/dialog/index"
 
   },
   "navigationBarTitleText": "实时监控"

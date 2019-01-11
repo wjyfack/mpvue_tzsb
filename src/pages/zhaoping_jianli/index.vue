@@ -16,7 +16,7 @@
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
           </div>
-          <div class="info-item van-hairline--bottom">
+          <div class="info-item van-hairline--bottom" @click="selectDate(1)">
             <div class="left">出生年月</div>
             <div class="right">
               <div>2000-01</div>
@@ -37,14 +37,14 @@
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
           </div>
-          <div class="info-item van-hairline--bottom">
+          <div class="info-item van-hairline--bottom" @click="selectDate(2)">
             <div class="left">参加工作年月</div>
             <div class="right">
               <div>2000-01</div>
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
           </div>
-          <div class="info-item info-act">
+          <div class="info-item info-act" @click="selectDate(3)">
             <div class="left">求职状态</div>
             <div class="right">
               <div>在职-考虑机会</div>
@@ -132,6 +132,27 @@
         <div class="btn-su">保存</div>
         <van-toast id="van-toast" />
   </div>
+  <van-popup :show="show" @close="onClose" position="bottom">
+    <div class="h-s100">
+      <!-- 日期选择 -->
+      <van-datetime-picker
+          v-if="selectStatus == 1"
+          type="date"
+          :value="currentDate"
+         @confirm="getDate"
+         @cancel="onClose"
+        />
+        <!-- 单选 -->
+        <van-picker
+           v-if="selectStatus == 2" 
+           :columns="columns"
+          @change="onPickerChange"
+          show-toolbar="true"
+          @cancel="onClose"
+          @confirm="getPicker"
+        />
+    </div>
+  </van-popup>
 </div>
 </template>
 <script>
@@ -144,6 +165,12 @@ export default {
   data () {
     return {
       opt : '', // person,company 个人、公司
+      show: false,
+      currentDate: new Date().getTime(),
+      selectOpt: 0, //1: 出生年月 2: 参加工作年月 3: 求职状态
+      selectStatus: 1, // 1:时间选择 2:单选
+      columns: [],
+      qiuzhi: ['离职-随时到岗','在职-暂不考虑','在职-考虑机会','在职-月内到岗']
     }
   },
   computed: {
@@ -152,7 +179,34 @@ export default {
     }
   },
   methods: {
-
+    onClose() {
+      this.show = false
+    }
+    ,selectDate(opt) {
+      // opt 1: 出生年月 2: 参加工作年月 3: 求职状态
+      this.show = true
+      console.log(11222)
+      switch(opt) {
+        case 1:
+        this.selectStatus = 1
+        break
+        case 2:
+        this.selectStatus = 1
+        break
+        case 3:
+        this.selectStatus = 2
+        this.columns = this.qiuzhi
+        break
+      }
+    }
+    ,getDate(event) { // 选择日期
+      this.show = false
+      console.log(event)
+    }
+    ,getPicker(event) {// 单选
+      this.show = false
+      console.log(event)
+    }
   },
   mounted () {
     this.opt = this.$mp.query.opt
@@ -278,6 +332,10 @@ export default {
     font-size: 16px;
     line-height: 50px;
     text-align: center;
+  }
+  .h-s100 {
+    min-height: 100px;
+    background: #FFFFFF;
   }
 }
 </style>

@@ -26,6 +26,14 @@
           <img src="../../asset/imgs/ye_xinzeng.png" alt="" class="img">
           <div>设备新增管理</div>
         </a>
+        <a href="../nengyuan/main" class="option-item">
+          <img src="../../asset/imgs/ye_nengyuan.png" alt="" class="img">
+          <div>能源管理</div>
+        </a>
+         <a href="../jiaoyi/main?id=2" class="option-item">
+          <img src="../../asset/imgs/ye_weixiu.png" alt="" class="img">
+          <div>设备维修</div>
+        </a>
       </div>
     </div>
     <div class="yewu-item van-hairline--top">
@@ -48,13 +56,16 @@
         </a> -->
          <a href="../zhaoping/main?id=1" class="option-item">
           <img src="../../asset/imgs/ye_zhili.png" alt="" class="img">
-          <div>求职</div>
+          <div>个人求职</div>
         </a>
         <a href="../yewu_detail/main?id=8" class="option-item">
           <img src="../../asset/imgs/ye_peixun.png" alt="" class="img">
           <div>人员培训</div>
         </a>
-        
+        <a href="../jiaoyi/main?id=1" class="option-item">
+          <img src="../../asset/imgs/ye_jiaoyi.png" alt="" class="img">
+          <div>零部件交易</div>
+        </a>
       </div>
     </div>
     <tab-bar active="3"/>
