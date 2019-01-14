@@ -79,8 +79,8 @@ export default {
       align-items: center;
       justify-content: space-between;
       line-height: 20px;
-      .name {color:#1C2627;font-size: 14px;}
-      .price {color:#FDC915;font-size: 12px;}
+      .name {color:#1C2627;font-size: 15px;}
+      .price {color:#FDC915;font-size: 13px;}
     }
     .req {
       display: flex;
@@ -90,8 +90,8 @@ export default {
         flex:1;
         display: flex;
         flex-direction: column;
-        .zhi {font-size: 13px;color:#757980;}
-        .addr {font-size: 12px;color:#A1A2A4;}
+        .zhi {font-size: 14px;color:#757980;}
+        .addr {font-size: 13px;color:#A1A2A4;}
       }
       .ri-img {
         width: 8px;
@@ -102,6 +102,9 @@ export default {
           display: flex;
           padding-top:5px;
           .brand-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 53px;
             height: 17px;
             font-size: 11px;

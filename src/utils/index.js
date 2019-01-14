@@ -64,6 +64,17 @@ function setBackGroup(){
     backgroundColor: '#EEEFF4', // 窗口的背景色
   })
 }
+function chooseImage(cb) {
+  wx.chooseImage({
+    count: 1,
+    sizeType: ['original', 'compressed'],
+    sourceType: ['album', 'camera'],
+    success(res) {
+      // tempFilePath可以作为img标签的src属性显示图片
+      cb != undefined ? cb(res) : ''
+    }
+  })
+}
 export default {
   formatNumber,
   formatTime,
@@ -75,5 +86,6 @@ export default {
   setTitle,
   preview,
   setBackGroup,
-  getDate
+  getDate,
+  chooseImage
 }

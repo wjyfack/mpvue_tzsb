@@ -124,7 +124,7 @@ export default {
       align-items: center;
       padding:  11px 20px;
       color:#1C2627;
-      font-size: 14px;
+      font-size: 16px;
       .br {background: #FDC915;width: 2px;height: 13px;margin-right:10px; }
     }
     .option {
@@ -139,7 +139,7 @@ export default {
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-        font-size: 10px;
+        font-size: 12px;
         margin-top: 15px;
         .img {width: 22px; height: 22px;margin-bottom: 5px;}
       }

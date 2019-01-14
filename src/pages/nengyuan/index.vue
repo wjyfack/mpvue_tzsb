@@ -12,10 +12,10 @@
         duration="1000"
         indicator-color="#FFF"
         indicator-active-color="#FDC915"
-        style="height:210px;"
+        :style="{'height':height}"
       >
           <swiper-item v-for="(item,index) in inimgUrls" :key="index">
-            <img :src="item" class="slide-image" mode="aspectFill"  height="210" />
+            <img :src="item" class="slide-image" mode="scaleToFill"  height="210" />
           </swiper-item>
       </swiper>
   </div>
@@ -65,10 +65,21 @@ export default {
      'http://placekitten.com/100/100',
      'http://placekitten.com/100/100',
     ],
+    height: '100px'
     }
   },
   methods: {
-
+     getPhoneHeight () {
+      let _this = this
+      wx.getSystemInfo({
+        success: function(res) {
+         _this.height = (~~res.windowHeight-325) +'px'
+        }
+      })
+    }
+  },
+  mounted() {
+    this.getPhoneHeight()
   }
 }
 </script>
@@ -83,10 +94,10 @@ export default {
     align-items: center;
     color:#FFF;
     background: #FDC915;
-    .title {font-size: 16px;line-height: 22px;}
+    .title {font-size: 18px;line-height: 29px;}
     .min-title {
-      font-size: 12px;
-      line-height: 17px;
+      font-size: 14px;
+      line-height: 20px;
     }
   }
    .swiper {}
@@ -95,7 +106,7 @@ export default {
       display: flex;
       padding: 10px 20px;
       .border {width:2px;height: 13px;background: #FDC915;}
-      .name {color:#1C2627;font-size: 13px;padding-left: 5px;}
+      .name {color:#1C2627;font-size: 16px;padding-left: 5px;}
     }
     .good {
       display: flex;
@@ -105,12 +116,12 @@ export default {
       padding-bottom: 20px;
       .good-item {
         width:145px;
-        height: 30px;
+        height: 32px;
         margin-top:10px;
         border-radius: 15px;
         border:1px solid #FDC915;
         color:#1C2627;
-        font-size: 13px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         padding-left: 25px;

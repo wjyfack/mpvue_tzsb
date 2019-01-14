@@ -119,7 +119,7 @@ export default {
       align-items: center;
       padding:  11px 20px;
       color:#1C2627;
-      font-size: 14px;
+      font-size: 16px;
       .br {background: #FDC915;width: 2px;height: 13px;margin-right:10px; }
     }
     .tui-item {
@@ -140,14 +140,14 @@ export default {
           justify-content: space-between;
           align-items: center;
           color:#1C2627;
-          font-size: 14px;
+          font-size: 15px;
           .act {
-            font-size: 12px;
+            font-size: 13px;
             color:#FDC915;
           }
         }
-        .name {color: #757980;font-size: 13px;}
-        .addr {color: #A1A2A4;font-size: 12px;}
+        .name {color: #757980;font-size: 14px;}
+        .addr {color: #A1A2A4;font-size: 13px;}
         .brand {
           display: flex;
           padding-top:5px;
@@ -168,7 +168,7 @@ export default {
       padding: 5px 0;
       justify-content: center;
       color:#FF4444;
-      font-size: 10px;
+      font-size: 14px;
     }
   }
 </style>
