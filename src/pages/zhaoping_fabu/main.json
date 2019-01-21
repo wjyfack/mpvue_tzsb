@@ -1,7 +1,9 @@
 {
     "usingComponents": {
-        "van-search": "../../../static/dist/search/index",
-        "van-toast": "../../../static/dist/toast/index"
+        "van-datetime-picker": "../../../static/dist/datetime-picker/index",
+        "van-toast": "../../../static/dist/toast/index",
+        "van-popup": "../../../static/dist/popup/index",
+        "van-picker": "../../../static/dist/picker/index"
       },
       "navigationBarTitleText": "发布职位"
 }

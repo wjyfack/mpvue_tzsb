@@ -317,8 +317,8 @@ export default {
         deviceAreaName2: this.addrShi[this.addrShiId]||baseInfo.deviceUseAreaName2||'',
         deviceArea3: this.addrQuId||baseInfo.deviceUseArea3||'',
         deviceAreaName3: this.addrQu[this.addrQuId]||baseInfo.deviceUseAreaName3||'',
-        deviceArea4: this.addZhenId||baseInfo.deviceUseArea4||'',
-        deviceAreaName4: this.addZhen[this.addZhenId]||baseInfo.deviceUseAreaName4||'',
+        deviceArea4: this.addrZhenId||baseInfo.deviceUseArea4||'',
+        deviceAreaName4: this.addrZhen[this.addrZhenId]||baseInfo.deviceUseAreaName4||'',
         deviceAddress: baseInfo.deviceFullAddress||'',
       }
       for(let i  in baseInfo.deviceParams) {

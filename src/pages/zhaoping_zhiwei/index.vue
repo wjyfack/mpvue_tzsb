@@ -2,42 +2,42 @@
 <div class="zhiwei-detail van-hairline--top">
   <div class="header van-hairline--bottom">
     <div class="top">
-      <div class="name">叉车司机</div>
-      <div class="price">3000-3999元/月</div>
+      <div class="name">{{info.jobName}}</div>
+      <div class="price" v-if="info.salaryMin != info.salaryMax">{{info.salaryMin}}-{{info.salaryMax}}元/月</div>
+      <div class="price" v-else>{{info.salaryMin}}</div>
     </div>
     <div class="brand">
-      <div class="brand-item">大专</div>
+      <div class="brand-item">{{xueliStatus[info.educationalBg-1]}}</div>
     </div>
   </div>
   <div class="cont van-hairline--bottom">
     <div class="title">职位要求</div>
-    <div class="con">
-      1.持有效叉车证，身体健康，能承受工作压力； 
-      2.工作三班倒，购买五险一金；
-      </div>
+    <div class="con">{{info.jobRequire}}</div>
   </div>
   <div class="cont van-hairline--bottom">
     <div class="title">技能要求</div>
     <div class="brand">
-      <div class="brand-item">N2</div>
+      <div class="brand-item" v-for="(item,index) in info.brands" :key="index">{{item}}</div>
     </div>
   </div>
   <div class="cont van-hairline--bottom">
     <div class="title">工作地点</div>
-    <div class="con"> 佛山市南海区平西工业园 </div>
+    <div class="con"> {{info.workSiteProvince||''}}  {{info.workSiteCity||''}} {{info.workSiteArea||''}} {{info.workSiteAddress||''}}</div>
   </div>
   <div class="info">
-    <img src="http://placekitten.com/100/100" alt="" class="avatar">
+    <img v-if="info.company.logoImg" :src="base+info.company.logoImg" alt="" class="avatar">
+    <img v-else src="../../asset/imgs/default_com.png" alt="" class="avatar">
     <div class="detail">
-      <div class="name">香瓜科技</div>
-      <div class="addr">佛山市南海区平西工业园</div>
+      <div class="name">{{info.company.companyName}}</div>
+      <div class="addr">{{info.company.fullAddress||''}}</div>
       <div class="brand">
-        <div class="brand-item act">五险一金</div>
-        <div class="brand-item act">带薪年假</div>
+        <div class="brand-item act">{{info.company.holiday}}</div>
+        <div class="brand-item act" v-for="(item,index) in info.company.fulis" :key="index">{{item}}</div>
       </div>
     </div>
   </div>
-  <div class="btn-su">投递简历</div>
+    <van-toast id="van-toast" />
+  <div class="btn-su" @click="touJianli">投递简历</div>
 </div>
 </template>
 <script>
@@ -45,11 +45,17 @@
 import Toast from '@/../static/dist/toast/toast'
 
 import Util from '@/utils/index'
+import {xueliStatus,baseUrl} from '@/utils/config'
 export default {
 
   data () {
     return {
-      
+      id:0,
+      xueliStatus: xueliStatus,
+      base: baseUrl+'/file/show/img/base/',
+      info: {
+        company: {}
+      }
     }
   },
   computed: {
@@ -58,10 +64,61 @@ export default {
     }
   },
   methods: {
+    getJianli() {
+    
+       const params = JSON.stringify({
+         id: `${this.id}`
+       })
+      this.$http.post(`/recruitment/dt/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
 
+        if(data.resultCode == '0000000') {
+          let info = data.returnData
+           info.brands = Util.getCertifSort(info.skillRequires)
+           info.company.fulis = info.company.treatments.split(',')
+           this.info = info
+           Util.setTitle(this.info.jobName)
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    
+    }
+    ,touJianli() {
+     
+       const params = JSON.stringify({
+         recruitmentId:`${ this.id}`
+       })
+      this.$http.post(`/recruitment/apply/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+            Toast('投递成功，正在返回')
+            setTimeout(()=> {
+              wx.navigateBack({
+                delta: 1
+              })
+            },1000)
+        } else {
+          Toast(data.resultDesc)
+        }
+      }).catch(()=> {
+        Toast('投递失败')
+      })
+    
+    }
   }
   ,mounted() {
-    Util.setTitle('叉车司机')
+    
+    this.id = this.$mp.query.id
+    this.getJianli()
   }
 }
 </script>
@@ -93,6 +150,7 @@ export default {
     .avatar {
       width: 36px;
       height: 36px;
+      border-radius: 50%;
     }
     .detail {
       flex:1;
@@ -106,16 +164,18 @@ export default {
   }
   .brand {
     display: flex;
+    flex-wrap: wrap;
     .brand-item {
-      width:53px;
+     min-width:53px;
       height: 17px;
       display: flex;
+      padding: 0 5px;
       justify-content: center;
       align-items: center;
       border: 1px solid #E5E7EC;
       font-size: 11px;
       color:#757980;
-      margin-right: 20px;
+      margin-right: 10px;
       margin-top:10px;
     }
   }

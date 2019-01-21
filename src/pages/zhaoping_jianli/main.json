@@ -3,6 +3,7 @@
         "van-datetime-picker": "../../../static/dist/datetime-picker/index",
         "van-toast": "../../../static/dist/toast/index",
         "van-popup": "../../../static/dist/popup/index",
-        "van-picker": "../../../static/dist/picker/index"
+        "van-picker": "../../../static/dist/picker/index",
+        "van-dialog": "../../../static/dist/dialog/index"
       }
 }

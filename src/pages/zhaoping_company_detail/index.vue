@@ -3,15 +3,15 @@
     <div class="header">
       <div class="left">
         <div>
-          <span class="title">香瓜科技</span>
+          <span class="title">{{info.companyName}}</span>
         </div>
           
         <div class="brand">
-          <div class="brand-item">五险一金</div>
-          <div class="brand-item">带薪年假</div>
+          <div class="brand-item" v-for="(item,index) in info.brands" :key="index">{{item}}</div>
         </div>
       </div>
-      <img src="http://placekitten.com/100/100" alt="" class="ri-img">
+      <img v-if="info.logoImg == ''" :src="base+info.logoImg" alt="" class="ri-img">
+      <img v-else src="../../asset/imgs/default_avatar.png" alt="" class="ri-img">
     </div>
     <div class="company van-hairline--bottom">
       <div class="com-item" :class="{'com-act':show}" @click="onChangeCom(1)">企业信息</div>
@@ -21,32 +21,38 @@
         <div class="detail" v-if="show">
             <div class="detail-item van-hairline--bottom">
               <div class="title">企业简介</div>
-              <div class="cont">服务：计算机技术开发、技术服务、技术咨询，计算机网络设计，计算机系统集成，计算机维修；销售：计算机软硬件、计算机设备、自动控制设备。(依法须经批准的项目，经相关部门批准后方可开展经营活动)</div>
+              <div class="cont">
+                {{info.introduce}}
+              </div>
             </div>
             <div class="detail-item van-hairline--bottom">
               <div class="title">企业地点</div>
-              <div class="cont">佛山市南海区平西工业园</div>
+              <div class="cont">{{info.fullAddress}}</div>
             </div>
           </div>
       </van-transition>
     <van-transition :show="!show"> 
-      <zhao-item opt="person" line="false" v-if="!show" ></zhao-item>
+      <zhao-item opt="person" :line="true" :show="false" :list="zhiweiList" v-if="!show" ></zhao-item>
     </van-transition>
-    
+      <van-toast id="van-toast" />
 </div>
 </template>
 <script>
 import zhaoItem from '@/components/zhaoItem'
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
+
 export default { 
   components: { 
     zhaoItem
   },
   data () {
     return {
-      show: true
+      show: true,
       
+      id: 0,
+      info: {},
+      zhiweiList: []
     }
   },
   computed: {
@@ -58,10 +64,53 @@ export default {
    onChangeCom(opt) {
      opt == 1 ?this.show = true :this.show=false
    }
+   ,getCompanyDetail() {
+     const params = JSON.stringify({
+       companyId: `${this.id}`
+     })
+       this.$http.post(`/company/dt/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+           let base =  data.returnData
+             base.brands = base.treatments.split(',')
+              this.info = base
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+   }
+  ,getZhiWei() {
+        const params = JSON.stringify({
+       "companyId": this.userInfo.companyId,
+       })
+      this.$http.post(`/recruitment/list/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+           let base =  data.returnData
+              for(let i in base) {
+                  base[i].brands = Util.getCertifSort(base[i].skillRequires)
+              }
+            console.log(base)
+            this.zhiweiList = base
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
   },
 
   mounted () {
-
+    this.id = this.$mp.query.id
+    this.getCompanyDetail()
+    this.getZhiWei()
   }
  
 }
@@ -79,7 +128,7 @@ export default {
        flex-direction: column;
        .title {
          display: inline-block;
-          font-size: 18px;
+          font-size: 16px;
           color:#1C2627;
           border-bottom: 2px solid #FDC915;
           margin-bottom: 5px;

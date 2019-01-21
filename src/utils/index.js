@@ -1,3 +1,4 @@
+import {certifKey,salarySort} from './config'
 function formatNumber (n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
@@ -60,9 +61,9 @@ function getDate(date = '') {
   return dateFormat(now, 'yyyy-mm-dd');
 }
 function setBackGroup(){
-  wx.setBackgroundColor({
-    backgroundColor: '#EEEFF4', // 窗口的背景色
-  })
+  // wx.setBackgroundColor({
+  //   backgroundColor: '#EEEFF4', // 窗口的背景色
+  // })
 }
 function chooseImage(cb) {
   wx.chooseImage({
@@ -74,6 +75,57 @@ function chooseImage(cb) {
       cb != undefined ? cb(res) : ''
     }
   })
+}
+function getCertifSort(str) {
+  let arr = str.split(',')
+  let atArr = []
+  for(let i in arr) {
+     if(arr[i])
+     atArr = [...atArr,certifKey[arr[i]]]
+  }
+   
+  return atArr
+}
+function CerifSort2keys(arr) { 
+  let atArr = []
+  for(let i in certifKey) {
+    for(let j in arr) {
+       if(certifKey[i] == arr[j])
+        atArr = [...atArr, i]
+    }
+  }
+  return atArr
+}
+function salaryMinMax(index) {
+  // ["面议","3k-4k","4k-5k","5k-6k","6k-8k","8k-10k","10k以上"]
+  let obj = {"salaryMin":"",	"salaryMax":"",	}
+  switch(index) {
+    case 6:
+    case 0: 
+      obj.salaryMin = obj.salaryMax = salarySort[index]
+    break
+    case 1:
+      obj.salaryMin = '3k'
+      obj.salaryMax = '4k'
+    break
+    case 2:
+      obj.salaryMin = '4k'
+      obj.salaryMax = '5k'
+    break
+    case 3:
+    obj.salaryMin = '5k'
+    obj.salaryMax = '6k'
+    break
+    case 4:
+    obj.salaryMin = '6k'
+    obj.salaryMax = '8k'
+    break
+    case 5:
+    obj.salaryMin = '8k'
+    obj.salaryMax = '10k'
+    break
+  }
+  return obj
 }
 export default {
   formatNumber,
@@ -87,5 +139,8 @@ export default {
   preview,
   setBackGroup,
   getDate,
-  chooseImage
+  chooseImage,
+  getCertifSort,
+  CerifSort2keys,
+  salaryMinMax
 }

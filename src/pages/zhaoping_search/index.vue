@@ -5,13 +5,14 @@
       placeholder="搜索企业信息"
       show-action
      @search="onSearch"
+     @change="onChange"
        use-action-slot
      custom-class="va-search"
     >
-    <div class="cancel-class" slot="action">搜索</div>
+    <div class="cancel-class" slot="action" @click="onSearch">搜索</div>
     </van-search>
 
-    <zhao-item opt="company"></zhao-item>
+    <zhao-item opt="company" :list="gsList"></zhao-item>
 
       <van-toast id="van-toast" />
 </div> 
@@ -32,7 +33,10 @@ export default {
       ,list: []
       ,isEmpty: false
       ,loading: false
-      ,isBottom: false
+      ,isBottom: false,
+      gsList: [],
+      gsOrderType: '',
+      gsPage: 1,
     }
   },
   computed: {
@@ -42,19 +46,50 @@ export default {
   },
   methods: {
     onSearch(event) {
-      const val = event.mp.detail // value
-      console.log(event, val)
+      console.log(this.value)
+      this.getCompany()
+    },
+    onChange(event) {
+        this.value = event.mp.detail
     },
     onCancel() {
       this.value = ''
     }
-  },
-
-  mounted () {
-    Util.setBackGroup()
-  
+    ,getCompany() {
+       Toast('正在加载...')
+     const params = JSON.stringify({
+        companyName: `${this.value}`,
+        pageNum: `${this.gsPage}`,
+        pageSize:"10",
+        orderType: `${this.gsOrderType}`
+       })
+      this.$http.post(`/company/page/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+            if(data.returnData.length != 0) {
+              let base =  data.returnData.list
+              for(let i in base) {
+                  base[i].brands = base[i].treatments.split(',')
+              }
+              this.gsList = [...this.gsList, ...base]
+             // setTimeout(()=> {Toast.clear()},1000)
+            } else {
+              Toast('没有更多了')
+            }
+            
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
   }
- 
+  ,onReachBottom() {
+    this.getCompany()
+  }
 }
 </script>
 

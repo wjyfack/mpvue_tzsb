@@ -1,113 +1,79 @@
 <template>
     <div>
       <div class="tui" v-if="opt == 'person'">
-        <div class="tui-item " :class="{'van-hairline--top': line}">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
+        <a :href="'../zhaoping_zhiwei/main?id='+item.id" class="tui-item " :class="{'van-hairline--top': line}" v-for="(item,index) in list" :key="item.id">
+          <img v-if="item.logoImg == ''" :src="base+item.logoImg" alt="" class="tui-img">
+          <img v-else src="../asset/imgs/default_com.png" alt="" class="tui-img">
           <div class="cont">
             <div class="titles">
-              <div>叉车司机</div>
-              <div class="act">3000-3999元/月</div>
+              <div>{{item.jobName}}</div>
+              <div class="act" v-if="item.salaryMin != item.salaryMax">{{item.salaryMin}}-{{item.salaryMax}}元/月</div>
+              <div class="act" v-else>{{item.salaryMin}}</div>
             </div>
-            <div class="name">佛山市佛朗斯叉车有限公司</div>
-            <div class="addr">佛山市南海区狮山镇博爱路</div>
+            <div class="name">{{item.companyName}}</div>
+            <div class="addr">{{item.workSiteFullAddress}}</div>
             <div class="brand">
-              <div class="brand-item">大专</div>
-              <div class="brand-item">N2</div>
-           </div>
-          </div>
-        </div>
-        <div class="tui-item" :class="{'van-hairline--top': line}">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
-          <div class="cont">
-            <div class="titles">
-              <div>叉车司机</div>
-              <div class="act">3000-3999元/月</div>
-            </div>
-            <div class="name">佛山市佛朗斯叉车有限公司</div>
-            <div class="addr">佛山市南海区狮山镇博爱路</div>
-            <div class="brand">
-              <div class="brand-item">大专</div>
-              <div class="brand-item">N2</div>
-           </div>
-          </div>
-        </div>
-        <div class="more  van-hairline--top">查看更多职位</div>
-      </div>
-      <div class="tui" v-else-if="opt == 'company'">
-        <a href="../zhaoping_company_detail/main" class="tui-item van-hairline--bottom">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
-          <div class="cont">
-            <div class="titles">
-              <div>香瓜科技</div>
-              <div class="act"></div>
-            </div>
-            <div class="name"></div>
-            <div class="addr">佛山市南海区平西工业园</div>
-            <div class="brand">
-              <div class="brand-item">五险一金</div>
-              <div class="brand-item">带薪年假</div>
-           </div>
-          </div>
-        </a>
-       <a href="../zhaoping_company_detail/main" class="tui-item van-hairline--bottom">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
-          <div class="cont">
-            <div class="titles">
-              <div>香瓜科技</div>
-              <div class="act"></div>
-            </div>
-            <div class="name"></div>
-            <div class="addr">佛山市南海区平西工业园</div>
-            <div class="brand">
-              <div class="brand-item">五险一金</div>
-              <div class="brand-item">带薪年假</div>
-           </div>
-          </div>
-        </a>
-        <div class="more  van-hairline--top" v-if="more">查看更多企业</div>
-      </div>
-      <div class="tui" v-if="opt == 'jianli'">
-        <a href="../zhaoping_jianli_detail/main" class="tui-item " :class="{'van-hairline--top': line}">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
-          <div class="cont">
-            <div class="titles">
-              <div>林虞浩</div>
-              <div class="act">3000-3999元/月</div>
-            </div>
-            <div class="name">叉车司机   工龄5年</div>
-            <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
-            <div class="brand">
-              <div class="brand-item">大专</div>
-              <div class="brand-item">N2</div>
-           </div>
-          </div>
-        </a>
-        <a href="../zhaoping_jianli_detail/main" class="tui-item " :class="{'van-hairline--top': line}">
-          <img src="http://placekitten.com/100/100" alt="" class="tui-img">
-          <div class="cont">
-            <div class="titles">
-              <div>林虞浩</div>
-              <div class="act">3000-3999元/月</div>
-            </div>
-            <div class="name">叉车司机   工龄5年</div>
-            <div class="addr">佛山市佛朗斯叉车有限公司(1年2个月)</div>
-            <div class="brand">
-              <div class="brand-item">大专</div>
-              <div class="brand-item">N2</div>
+              <div class="brand-item" v-for="(items,indexs) in item.brands" :key="indexs">{{items}}</div>
+            
            </div>
           </div>
         </a>
         <div class="more  van-hairline--top" v-if="show">查看更多职位</div>
       </div>
+      <div class="tui" v-else-if="opt == 'company'">
+        <a :href="'../zhaoping_company_detail/main?id='+item.id" class="tui-item van-hairline--top" v-for="(item,index) in list" :key="item.id">
+            <img v-if="item.logoImg" :src="base+item.logoImg" alt="" class="tui-img">
+            <img v-else src="../asset/imgs/default_com.png" alt="" class="tui-img">
+            <div class="cont">
+              <div class="titles">
+                <div>{{item.companyName}}</div>
+                <div class="act"></div>
+              </div>
+              <div class="name"></div>
+              <div class="addr">{{item.fullAddress}}</div>
+              <div class="brand">
+                <div class="brand-item">{{item.holiday}}</div>
+                <div class="brand-item" v-for="(items,indexs) in item.brands" :key="indexs" >{{items}}</div>
+            </div>
+            </div>
+          </a>
+        <div class="more  van-hairline--top" v-if="show">查看更多企业</div>
+      </div>
+      <div class="tui" v-if="opt == 'jianli'">
+         <a :href="'../zhaoping_jianli_detail/main?id='+item.customerUserId" class="tui-item van-hairline--top" v-for="(item,index) in list" :key="index">
+            <img v-if="item.headPhoto" :src="base+item.headPhoto" alt="" class="tui-img">
+            <img v-else src="../asset/imgs/default_avatar.png" alt="" class="tui-img">
+            <div class="cont">
+              <div class="titles">
+                <div>{{item.name}}</div>
+                <div class="act" v-if="item.salaryMin != item.salaryMax">{{item.salaryMin}}-{{item.salaryMax}}元/月</div>
+                <div class="act" v-else>{{item.salaryMin}}</div>
+              </div>
+              <div class="name">{{item.expectJobName}}   工龄{{~~(item.diffMon /12)}}年 </div>
+              <div class="addr">{{item.addr}}</div>
+              <div class="brand">
+                <div class="brand-item" v-for="(items,indexs) in item.brands" :key="indexs">{{items}}</div>
+            </div>
+            </div>
+          </a>
+        <div class="more  van-hairline--top" v-if="show">查看更多职位</div>
+      </div>
     </div>
      </template>
 <script>
+import {baseUrl} from '@/utils/config'
 export default {
     props: {
       opt: {required: true},
       line: {default: true},
-      show: {default: false}
+      show: {default: false},
+      list: {required: true}
+    },
+  data() {
+    return {
+      base: baseUrl+ '/file/show/img/base/',
     }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -150,15 +116,17 @@ export default {
         .addr {color: #A1A2A4;font-size: 13px;}
         .brand {
           display: flex;
+          flex-wrap: wrap;
           padding-top:5px;
           .brand-item {
-            width: 53px;
+            min-width: 53px;
             height: 17px;
             font-size: 11px; 
             text-align: center;
             background: #EEEFF4;
             color:#757980;
             margin-right: 10px;
+            margin-bottom: 10px;
           }
         }
       }

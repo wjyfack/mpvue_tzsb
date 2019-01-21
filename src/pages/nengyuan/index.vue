@@ -104,6 +104,7 @@ export default {
   .good-for {
     .hed {
       display: flex;
+      align-items: center;
       padding: 10px 20px;
       .border {width:2px;height: 13px;background: #FDC915;}
       .name {color:#1C2627;font-size: 16px;padding-left: 5px;}

@@ -35,13 +35,13 @@
 				{
 					"id": 0,
 					"name": "ss",
-					"pathName": "pages/zhaoping_jianli/main",
-					"query": "opt=person"
+					"pathName": "pages/zhaoping_fabu/main",
+					"query": ""
 				},
 				{
 					"id": 1,
 					"name": "yewu",
-					"pathName": "pages/zhaoping/main",
+					"pathName": "pages/yewu/main",
 					"query": "id=2"
 				}
 			]

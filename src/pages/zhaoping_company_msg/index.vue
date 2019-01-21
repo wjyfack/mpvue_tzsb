@@ -1,33 +1,40 @@
 <template>
 <div>
   <div class="zhiwei-msg" v-if="opt == 'zhiwei'">
-        <div class="zhiwei-item  van-hairline--top" v-for="(item,index) in 2" :key="index">
+        <div class="zhiwei-item  van-hairline--top" @longpress="delZhiwei(index)" v-for="(item,index) in zhiweiList" :key="index">
           <div class="title">
-            <div class="name">叉车司机</div>
-            <div class="price">3000-3999元/月</div>
+            <div class="name">{{item.jobName}}</div>
+            <div class="price" v-if="item.salaryMin != item.salaryMax">{{item.salaryMin}}-{{item.salaryMax}}元/月</div>
+            <div class="price" v-else>{{item.salaryMin}}</div>
           </div>
           <div class="req">
             <div class="left">
-              <div class="zhi">职位要求</div>
-              <div class="addr">工作地点</div>
+              <div class="zhi">{{item.jobRequire}}</div>
+              <div class="addr" v-if="item.workSiteArea">{{item.workSiteProvince}}/{{item.workSiteCity}}/{{item.workSiteArea}}/{{item.workSiteFullAddress}}</div>
+              <div class="addr" v-else>{{item.workSiteFullAddress}}</div>
             </div>
             <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
           </div>
           <div class="brand">
-            <div class="brand-item">大专</div>
-            <div class="brand-item">N2</div>
+            <div class="brand-item" v-for="(items,indexs) in item.brands" :key="indexs">{{items}}</div>
+            
           </div>
         </div>
         <a href="../zhaoping_fabu/main" class="btn-su">发布职位</a>
         <van-toast id="van-toast" />
   </div>
-  <zhao-item opt="jianli" :show="false" v-else-if="opt == 'record'"></zhao-item>
-  <zhao-item opt="person" :show="false" v-else-if="opt == 'shenqing'"></zhao-item>
+  <zhao-item opt="jianli" :show="false" :list="recordList" v-else-if="opt == 'record'"></zhao-item>
+  <zhao-item opt="person" :show="false" :list="shenqingList" v-else-if="opt == 'shenqing'"></zhao-item>
+  <div class="more  van-hairline--top" @click="more" v-if="isEmpty">查看更多职位</div>
+  <!-- <div class="more  van-hairline--top">没有了</div> -->
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
 </div>
 </template>
 <script>
 
 import Toast from '@/../static/dist/toast/toast'
+import Dialog from '@/../static/dist/dialog/dialog'
 import zhaoItem from '@/components/zhaoItem'
 import Util from '@/utils/index'
 export default {
@@ -36,7 +43,13 @@ export default {
   },
   data () {
     return {
-      opt: '' // zhiwei,record 职位、投递记录
+      opt: '', // zhiwei,record 职位、投递记录
+      recordList: [],
+      zhiweiList: [],
+      shenqingList: [],
+      sqPage: 1,
+      rePage: 1,
+      isEmpty: false
     }
   },
   computed: {
@@ -45,10 +58,114 @@ export default {
     }
   },
   methods: {
-
-  },
-  created () {
-    Util.setBackGroup()
+    getRecord() {
+      const params = JSON.stringify({
+       "companyId": this.userInfo.companyId,
+        // "recruitmentId": ''//招聘职位ID
+        pageSize: "10",
+        pageNum: `${this.rePage}`
+       })
+      this.$http.post(`/resume/job/apply/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+           let base =  data.returnData.list
+              for(let i in base) {
+                  base[i].brands = Util.getCertifSort(base[i].certificates)
+                  base[i].addr = this.getworkCompany(base.resumeWorkExpList)
+              }
+            this.recordList = [...this.recordList, ...base]
+            console.log(base)
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,getZhiWei() {
+        const params = JSON.stringify({
+       "companyId": this.userInfo.companyId,
+       })
+      this.$http.post(`/recruitment/list/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+           let base =  data.returnData
+              for(let i in base) {
+                  base[i].brands = Util.getCertifSort(base[i].skillRequires)
+              }
+            this.zhiweiList = base
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,getShengQing() {
+      const params = JSON.stringify({
+        pageSize: `${this.sqPage}`,
+        pageNum: '10'
+      })
+      this.$http.post(`/recruitment/cust/apply/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+           let base =  data.returnData.list
+           if(base.length !=0) {
+              for(let i in base) {
+                  base[i].brands = Util.getCertifSort(base[i].skillRequires)
+              }
+              console.log(base)
+              this.isEmpty = true
+              this.shenqingList = [...this.shenqingList,...base]
+           } else {
+             this.isEmpty = false
+           }
+             
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+    }
+    ,more() {
+      ++this.sqPage
+      this.getShengQing()
+    }
+    ,getworkCompany(resumeWorkExpList) {
+      if(resumeWorkExpList)  return resumeWorkExpListk[0].companyName
+      return ''
+    }
+    ,delZhiwei(index) {
+      console.log(this.zhiweiList[index])
+      const params = JSON.stringify({
+        companyId: this.userInfo.companyId,
+        id: this.zhiweiList[index].id
+      })
+      Dialog.confirm({
+        message: '删除该职位？'
+      }).then(() => {
+        // on confirm
+         this.$http.post(`/recruitment/del/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+              let data = res.data
+              if(data.resultCode == '0000000') {
+                Toast('操作成功')
+                this.getZhiWei()
+              }
+          })
+      })
+       
+    }
   },
   mounted() {
     this.opt = this.$mp.query.opt
@@ -56,18 +173,28 @@ export default {
     switch(this.opt) {
       case 'record':
        title = '投递记录'
+       this.getRecord()
       break
       case 'shenqing':
       title = '申请记录'
-
+      this.getShengQing()
+      break
+      case 'zhiwei':
+        this.getZhiWei()
       break
     }
     Util.setTitle(title)
   }
+  ,onReachBottom() {
+    if(this.opt == 'record') {
+      ++ this.rePage
+      this.getRecord()
+    }
+  }
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" scoped>
 .zhiwei-msg {
 
   .zhiwei-item {
@@ -105,7 +232,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 53px;
+            min-width: 53px;
             height: 17px;
             font-size: 11px;
             text-align: center;
@@ -114,6 +241,7 @@ export default {
           }
         }
   }
+  
   .btn-su {
     height: 50px;
     position:fixed;
@@ -127,4 +255,11 @@ export default {
     text-align: center;
   }
 }
+  .more {
+      display: flex;
+      padding: 5px 0;
+      justify-content: center;
+      color:#FF4444;
+      font-size: 14px;
+    }
 </style>
