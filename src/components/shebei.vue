@@ -10,8 +10,8 @@
             <img src="../asset/imgs/seshi.png" alt="" class="img" v-else-if="item.deviceType1 == 5">
             <img src="../asset/imgs/guangdao.png" alt="" class="img" v-else-if="item.deviceType1 == 6">
             <div class="con">
-              <div class="title">{{item.deviceName }}</div>
-              <div class="zhi">资料完善度100%</div>
+              <div class="title">{{item.deviceCertNo }}</div>
+              <div class="zhi">资料完善度</div>
             </div>
           </div>
           <div class="togo">
@@ -40,7 +40,7 @@
       </a>
       <div class="kong" v-if="isEmpty">
           <img src="../asset/imgs/kong.png" alt="" class="kong-img">
-          <div class="tips">设备列表为空，请先 <a href="" class="link">通过认证</a></div>
+          <div class="tips">设备列表为空　<!-- <a href="../my_rengzheng/main" class="link">通过认证</a>--></div>
       </div>
     </div>
 </template>

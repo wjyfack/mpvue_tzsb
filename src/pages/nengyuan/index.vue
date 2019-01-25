@@ -15,7 +15,7 @@
         :style="{'height':height}"
       >
           <swiper-item v-for="(item,index) in inimgUrls" :key="index">
-            <img :src="item" class="slide-image" mode="scaleToFill"  height="210" />
+            <img :src="item" class="slide-image"   />
           </swiper-item>
       </swiper>
   </div>
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="footer">
-    <img src="http://placekitten.com/100/100" alt="" class="l-img">
+    <img :src="qCode" alt="" class="l-img" @click="toPreview">
     <div class="cont">
       <div class="title">广州艾欣能能源有限责任公司</div>
       <div class="info">地址:佛山市禅城区张槎塱宝西路60号</div>
@@ -57,14 +57,19 @@
 <script>
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
+const lunbo_1  = require('@/asset/imgs/lunbo_1.jpg')
+const lunbo_2  = require('@/asset/imgs/lunbo_2.jpg')
+const lunbo_3  = require('@/asset/imgs/lunbo_3.jpg')
+const qCode  = require('@/asset/imgs/qCode.png')
 export default {
   data () {
     return {  
       inimgUrls: [
-     'http://placekitten.com/100/100',
-     'http://placekitten.com/100/100',
-     'http://placekitten.com/100/100',
+     lunbo_1,
+     lunbo_2,
+     lunbo_3,
     ],
+    qCode: qCode,
     height: '100px'
     }
   },
@@ -73,9 +78,14 @@ export default {
       let _this = this
       wx.getSystemInfo({
         success: function(res) {
-         _this.height = (~~res.windowHeight-325) +'px'
+         _this.height = (~~res.windowHeight-425) +'px'
+        //  console.log(res.windowHeight)
         }
       })
+    }
+    ,toPreview(event) {
+      // console.log(event)
+      // Util.preview([ require('@/asset/imgs/qCode.png')])
     }
   },
   mounted() {
@@ -100,7 +110,12 @@ export default {
       line-height: 20px;
     }
   }
-   .swiper {}
+   .swiper {
+     .slide-image {
+       width: 100%;
+       max-height: 100%;
+     }
+   }
   .good-for {
     .hed {
       display: flex;

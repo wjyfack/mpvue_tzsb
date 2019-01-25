@@ -127,6 +127,11 @@ function salaryMinMax(index) {
   }
   return obj
 }
+function back() {
+  wx.navigateBack({
+    delta: 1
+  })
+}
 export default {
   formatNumber,
   formatTime,
@@ -142,5 +147,6 @@ export default {
   chooseImage,
   getCertifSort,
   CerifSort2keys,
-  salaryMinMax
+  salaryMinMax,
+  back
 }

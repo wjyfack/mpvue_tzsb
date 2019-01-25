@@ -287,22 +287,31 @@ export default {
       return arr
     }
     ,onSub() {
-     if(this.isSub) {
-       this.isSub = false
+   
       const {salaryMin,	salaryMax	} = Util.salaryMinMax(this.position.salary)
       const allAddr = this.position.allAddr.split('/')
+      const  {
+        jobTile, // 职位名称
+        skill, // 技能
+        education , // 学历
+        salary , // 薪资
+        workAddr, // 工作地点
+        jobReq, // 职位要求
+        enterIntr, // 企业介绍
+      } = this.position
+
       const params = JSON.stringify({	
-          "jobName": this.position.jobTile,	
-          "educationalBg": this.position.education+1,	
+          "jobName": jobTile,	
+          "educationalBg": education+1,	
           "workSiteProvince":allAddr[0],	
-          "workSiteCity": allAddr[1],	
-          "workSiteArea": allAddr[2],	
-          "workSiteAddress":this.position.workAddr,	
+          "workSiteCity": allAddr[1]||'',	
+          "workSiteArea": allAddr[2]||'',	
+          "workSiteAddress":workAddr,	
           "salaryMin": salaryMin,	
           "salaryMax": salaryMax,	
-          "salaryId":this.position.salary+1,	
-          "jobRequire":this.position.jobReq,	
-          "skillRequires":this.position.skill.join(','),	
+          "salaryId":salary+1,	
+          "jobRequire":jobReq,	
+          "skillRequires":skill.join(','),	
           "companyId": this.userInfo.companyId
         }	)
       this.$http.post( `/recruitment/update/${this.userInfo.id}`,params,{
@@ -319,13 +328,23 @@ export default {
           } else {
             Toast(data.resultDesc)
           }
-           this.isSub = false
+       
       })
-    }
     }
   }, 
   mounted() {
     this.getArea()
+    this.brands = []
+    this.position =  {
+        jobTile: '', // 职位名称
+        skill: [], // 技能
+        education: 0, // 学历
+        salary: 0, // 薪资
+        allAddr: '' ,
+        workAddr: '', // 工作地点
+        jobReq: '', // 职位要求
+        enterIntr: '', // 企业介绍
+      }
   }
 }
 </script>

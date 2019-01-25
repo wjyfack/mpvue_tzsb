@@ -3,5 +3,5 @@
         "van-toast": "../../../static/dist/toast/index",
         "van-dialog": "../../../static/dist/dialog/index"
       },
-      "navigationBarTitleText": "发布职位"
+      "navigationBarTitleText": ""
 }

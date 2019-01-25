@@ -143,6 +143,7 @@
         <div class="h-50"></div> 
   </div>
   <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
 </div>
 </template>
 <script>
@@ -151,6 +152,7 @@ import Toast from '@/../static/dist/toast/toast'
 import myLoad from '@/components/myLoad'
 import Util from '@/utils/index'
 import { baseUrl } from '@/utils/config'
+import Dialog from '@/../static/dist/dialog/dialog'
 export default {
   components: {
     myLoad
@@ -213,7 +215,7 @@ export default {
         let data = res.data
         this.loading = false
         if(data.resultCode == '0000000') {
-            if(data.returnData.length != 0) {
+            if(data.returnData.list.length != 0) {
               let base =  data.returnData.list
               for(let i in base) {
                   base[i].brands = base[i].treatments.split(',')
@@ -245,7 +247,7 @@ export default {
         let data = res.data
         this.loading = false
         if(data.resultCode == '0000000') {
-            if(data.returnData.length != 0) {
+            if(data.returnData.list.length != 0) {
               let base =  data.returnData.list
               for(let i in base) {
                   base[i].brands = Util.getCertifSort(base[i].skillRequires)
@@ -288,7 +290,7 @@ export default {
         let data = res.data
         this.loading = false
         if(data.resultCode == '0000000') {
-            if(data.returnData.length != 0) {
+            if(data.returnData.list.length != 0) {
 
               let base =  data.returnData.list
               for(let i in base) {
@@ -342,13 +344,32 @@ export default {
         break
       }
     }
+    ,checkCompany() {
+      if(this.userInfo.companyId == null || this.userInfo.companyName == null) {
+        Dialog.confirm({
+            message: '暂未认证企业，请先认证'
+          }).then(() => {
+            // on confirm
+            Util.redTo('../my_rengzheng/main')
+          }).catch(() => {
+            // on cancel
+            Util.back()
+          });
+      }
+    }
   },
 
   mounted () {
     this.id = this.$mp.query.id
     if(this.id ==2) {
+      this.comJianli = []
       this.getJianli()
+      Util.setTitle('技术人员招聘')
+      this.checkCompany()
     } else {
+      this.zhiweiList = []
+      this.gsList = []
+      Util.setTitle('个人求职')
       this.getZhiWei()
       this.getCompany()
     }

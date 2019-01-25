@@ -17,7 +17,7 @@
     <input type="password" v-model.trim="account.agnPwd" class="input" placeholder="请再次输入新密码">
   </div>
   <div class="btn van-hairline--top">
-    <van-button round size="small" type="primary" custom-class="pro" @click="onSub">确定</van-button>
+    <van-button round  type="primary" custom-class="pro" @click="onSub">确定</van-button>
   </div>
   <van-toast id="van-toast" />
 </div> 

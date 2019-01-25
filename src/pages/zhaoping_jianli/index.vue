@@ -111,7 +111,7 @@
         <div class="info">
           <div class="header">
             <a href="" class="left" @click="selectEdit(20)">
-              <div class="name van-ellipsis" v-if="companyInfo.companyName">{{companyInfo.companyName}}</div>
+              <div class="name" v-if="companyInfo.companyName">{{companyInfo.companyName}}</div>
               <div class="name" v-else>未填写</div>
               <img src="../../asset/imgs/xiugaih.png" alt="" class="left-img">
             </a>
@@ -151,7 +151,7 @@
               </div>
           </a>
           <div class="info-brand">
-            <div class="info-brand-item">{{companyInfo.holiday}}</div>
+            <div class="info-brand-item" v-if="companyInfo.holiday">{{companyInfo.holiday}}</div>
               <div class="info-brand-item"  v-for="(item,index) in companyInfo.brands" :key="index">{{item}}</div>
           </div>
         </div>
@@ -436,6 +436,7 @@ export default {
         break
         case 23:
           this.isBrands = true
+          this.isInput = false
           // 标签固定
           const brands = this.companyInfo.brands
           const daiyu  = this.daiyu
@@ -777,11 +778,12 @@ export default {
             let data = res.data
             if(data.resultCode == '0000000') {
               let base =  data.returnData
-                base.brands = base.treatments ? base.treatments.split(',') : []
+                base.brands = base.treatments != '' ? base.treatments.split(',') : []
                 const prov = base.province ? `${base.province}/` : ''
                 const area = base.area ? `${base.area}/` : ''
                 const addr = base.addr ? `${base.addr}/` : ''
                 base.workAddr = `${prov}${area}${addr}`
+                base.holiday = base.holiday == 'null' ? '': base.holiday
                   this.companyInfo = base
             } else {
               Toast(data.resultDesc)
@@ -890,15 +892,18 @@ export default {
       .left{
         display: flex;
        align-items: flex-end;
+       width: 90%;
         .name {
           font-size: 16px;
           border-bottom: 2px solid #FDC915;
           color:#1C2627;
           margin-right: 5px;
+          width: 85%;
         }
         .left-img  {
           width: 18px;
           height: 18px;
+          align-self: center;
         }
       }
       .avatar {
@@ -1102,14 +1107,14 @@ export default {
           padding-bottom: 20px;
           .title {
             padding-top: 20px;
-            font-size: 13px;
+            font-size: 14px;
             color:#1C2627;
 
           }
         }
         .choose-title {
           padding-top: 20px;
-          font-size: 12px;
+          font-size: 13px;
           color:#1C2627;
         }
         .brand {
@@ -1121,7 +1126,7 @@ export default {
               .name {
                 width: 58px;
                 height: 18px;
-                font-size: 11px;
+                font-size: 13px;
                 line-height: 11px;
                 text-align: center;
                 border: 1px solid #E5E7EC;

@@ -7,7 +7,7 @@
             <div>请输入设备编号搜索</div> 
          </a>
           <img v-if="isbell" src="../../asset/imgs/bell_r.png" alt="" class="bell" @click="toMessage">
-          <img v-else src="../../asset/imgs/bell.png" alt="" class="bell" @click="toMessage">
+          <img v-else src="../../asset/imgs/bell.png" alt="" class="bell" >
       </div>
      </div>  
      <div class="shuliang">
@@ -21,7 +21,7 @@
        <div class="shu-item">
          <div class="title">不合格数量</div>
          <div class="cont">
-           <div class="num">{{total.noPassCount}}</div>
+           <div class="num">{{total.noPassCount|| 0}}</div>
            <div class="tai">台</div>
          </div>
        </div>
@@ -163,19 +163,23 @@ export default {
               this.clickSort ?  this.list =  [ ...data.returnData] : ''
              
             } else {
-               this.isBottom=true 
+               this.isBottom = true 
             }
             } else {
               if(this.clickSort) {
                 this.list =  [ ...data.returnData]
-               
+             
               } else{
                 this.list =  [...this.list, ...data.returnData]
+               
               }
           }
            this.clickSort = false
         } else {
           Toast(data.resultDesc)
+        }
+        if(this.list.length != 0) {
+          this.isEmpty = false
         }
       })
     }

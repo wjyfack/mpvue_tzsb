@@ -36,7 +36,7 @@ export default {
       ,isBottom: false,
       gsList: [],
       gsOrderType: '',
-      gsPage: 1,
+      gsPage: 0,
     }
   },
   computed: {
@@ -47,6 +47,7 @@ export default {
   methods: {
     onSearch(event) {
       console.log(this.value)
+      this.gsPage = 0
       this.getCompany()
     },
     onChange(event) {
@@ -57,7 +58,9 @@ export default {
     }
     ,getCompany() {
        Toast('正在加载...')
-     const params = JSON.stringify({
+       ++ this.gsPage
+       this.gsList = []
+      const params = JSON.stringify({
         companyName: `${this.value}`,
         pageNum: `${this.gsPage}`,
         pageSize:"10",
@@ -70,7 +73,7 @@ export default {
       }).then((res) => {
         let data = res.data
         if(data.resultCode == '0000000') {
-            if(data.returnData.length != 0) {
+            if(data.returnData.list.length != 0) {
               let base =  data.returnData.list
               for(let i in base) {
                   base[i].brands = base[i].treatments.split(',')

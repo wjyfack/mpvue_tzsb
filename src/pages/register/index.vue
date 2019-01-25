@@ -25,6 +25,7 @@
 <script>
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
+import md5 from 'js-md5'
 export default {
   data () {
     return {
@@ -108,7 +109,7 @@ export default {
         }) 
     }
     ,forget() {
-       const data = `{"customerLoginPwdNew":"${this.password}","bingTel":"${this.phone}"}`
+       const data = `{"customerLoginPwdNew":"${md5(this.password)}","bingTel":"${this.phone}"}`
         this.$http.post('/customer/user/pwd/forget',data)
         .then(res => {
           if(res.status == 200 && res.data.resultCode == '0000000') {
@@ -122,7 +123,7 @@ export default {
         })
     }
     ,register() {
-        const data = `{"customerLoginPwd":"${this.password}","customerLinkTel":"${this.phone}"}`
+        const data = `{"customerLoginPwd":"${md5(this.password)}","customerLinkTel":"${this.phone}"}`
         this.$http.post('/customer/register',data)
         .then(res => {
           if(res.status == 200 && res.data.resultCode == '0000000') {

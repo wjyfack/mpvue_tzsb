@@ -3,21 +3,21 @@
   <div class="part" v-if="id == 1">
     <div class="item van-hairline--top">
       <div class="title">单位名称</div>
-      <div class="cont">{{cName}}</div>
+      <div class="cont">{{cName || ''}}</div>
     </div>
     <div class="item van-hairline--top">
       <div class="title">单位地址</div>
-      <div class="cont">{{cAddr}}</div>
+      <div class="cont">{{cAddr || ''}}</div>
     </div>
   </div>
   <div class="part" v-if="id == 2">
     <div class="item van-hairline--top">
       <div class="title">联系人</div>
-      <div class="cont">{{name}}</div>
+      <div class="cont">{{name || ''}}</div>
     </div>
     <div class="item van-hairline--top">
       <div class="title">联系方式</div>
-      <div class="cont">{{phone}}</div>
+      <div class="cont">{{phone || ''}}</div>
     </div>
   </div>
 </div>
@@ -61,11 +61,11 @@ export default {
     switch(this.id) {
       case 1: 
         title = '企业信息'
-         this.cName = data.cName
-        this.cAddr = data.cAddr
+         this.cName = data.cName== 'null' ? '': data.cName
+        this.cAddr = data.cAddr == 'null' ? '': data.cAddr
       case 2:
         title = '联系人信息'
-        this.name = data.name
+        this.name = data.name == 'null' ? '': data.name
         this.phone = data.phone
     }
     Util.setTitle(title)

@@ -85,7 +85,7 @@ export default {
    }
   ,getZhiWei() {
         const params = JSON.stringify({
-       "companyId": this.userInfo.companyId,
+       "companyId": `${this.id}`
        })
       this.$http.post(`/recruitment/list/${this.userInfo.id}`,params,{
         headers:{
@@ -126,12 +126,14 @@ export default {
      .left {
        display: flex;
        flex-direction: column;
+       width: 90%;
        .title {
          display: inline-block;
           font-size: 16px;
           color:#1C2627;
           border-bottom: 2px solid #FDC915;
           margin-bottom: 5px;
+          
        }
         .brand {
           display: flex;

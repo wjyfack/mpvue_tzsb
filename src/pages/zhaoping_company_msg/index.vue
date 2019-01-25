@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="van-hairline--top">
   <div class="zhiwei-msg" v-if="opt == 'zhiwei'">
         <div class="zhiwei-item  van-hairline--top" @longpress="delZhiwei(index)" v-for="(item,index) in zhiweiList" :key="index">
           <div class="title">
@@ -26,6 +26,7 @@
   <zhao-item opt="jianli" :show="false" :list="recordList" v-else-if="opt == 'record'"></zhao-item>
   <zhao-item opt="person" :show="false" :list="shenqingList" v-else-if="opt == 'shenqing'"></zhao-item>
   <div class="more  van-hairline--top" @click="more" v-if="isEmpty">查看更多职位</div>
+  <div class="more  van-hairline--top" @click="more" v-if="isShengqEmpty">暂无记录</div>
   <!-- <div class="more  van-hairline--top">没有了</div> -->
     <van-toast id="van-toast" />
     <van-dialog id="van-dialog" />
@@ -49,7 +50,8 @@ export default {
       shenqingList: [],
       sqPage: 1,
       rePage: 1,
-      isEmpty: false
+      isEmpty: false,
+      isShengqEmpty: false
     }
   },
   computed: {
@@ -127,6 +129,7 @@ export default {
               this.shenqingList = [...this.shenqingList,...base]
            } else {
              this.isEmpty = false
+             this.isShengqEmpty = true
            }
              
         } else {
@@ -169,6 +172,7 @@ export default {
   },
   mounted() {
     this.opt = this.$mp.query.opt
+     this.isShengqEmpty = false
     let title = '职位管理'
     switch(this.opt) {
       case 'record':
@@ -228,6 +232,7 @@ export default {
     .brand {
           display: flex;
           padding-top:5px;
+          flex-wrap: wrap;
           .brand-item {
             display: flex;
             justify-content: center;

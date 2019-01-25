@@ -12,7 +12,7 @@
           style="height:250px;"
         >
             <swiper-item v-for="(item,index) in inimgUrls" :key="index">
-              <img :src="item" class="slide-image" mode="aspectFill"  />
+              <img :src="item" class="slide-image"  />
             </swiper-item>
         </swiper>
   </div>
@@ -25,7 +25,7 @@
     <div>联系人：林先生</div>
     <div>联系方式：19082317723</div>
   </div>
-  <div class="option">
+  <div class="option" v-if="false">
     <div class="option-item act">编辑</div>
     <div class="option-item">删除</div>
   </div>
@@ -34,13 +34,16 @@
 <script>
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
+const lunbo_1  = require('@/asset/imgs/lunbo_1.jpg')
+const lunbo_2  = require('@/asset/imgs/lunbo_2.jpg')
+const lunbo_3  = require('@/asset/imgs/lunbo_3.jpg')
 export default {
   data () {
     return {
       inimgUrls: [
-      'http://placekitten.com/100/100',
-      'http://placekitten.com/100/100',
-      'http://placekitten.com/100/100',
+       lunbo_1,
+      lunbo_2,
+      lunbo_3,
       ],
       show:false,
     }
@@ -63,6 +66,10 @@ export default {
   }
   .swiper {
     padding-bottom: 11px;
+      .slide-image {
+        width: 100%;
+        max-height: 100%;
+      }
   }
   .cont {
     margin: 0 30px;

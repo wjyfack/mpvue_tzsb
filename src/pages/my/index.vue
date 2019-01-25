@@ -34,10 +34,10 @@
     </div>
   </a>
   <div class="list-item">
-    <div class="cont">
+    <!-- <div class="cont">
       <img src="../../asset/imgs/my_about.png" alt="" class="b-img">
       <div class="title">关于软件</div>
-    </div>
+    </div> -->
   </div>
   <div class="list-item mar-top" @click="outLogin">
     <div class="cont">
@@ -45,7 +45,7 @@
       <div class="title">退出登陆</div>
     </div>
   </div>
-  <tab-bar active="2"/>
+  <tab-bar active="4"/>
 </div>
 
 </div>

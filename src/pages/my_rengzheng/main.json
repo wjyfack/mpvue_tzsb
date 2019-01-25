@@ -1,7 +1,8 @@
 {
 "usingComponents": {
     "van-button": "../../../static/dist/button/index",
-    "van-transition": "../../../static/dist/transition/index"
+    "van-transition": "../../../static/dist/transition/index",
+    "van-toast": "../../../static/dist/toast/index"
   },
   "navigationBarTitleText": "设备认证"
 }

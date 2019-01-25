@@ -24,7 +24,7 @@
     <div class="title">工作地点</div>
     <div class="con"> {{info.workSiteProvince||''}}  {{info.workSiteCity||''}} {{info.workSiteArea||''}} {{info.workSiteAddress||''}}</div>
   </div>
-  <div class="info">
+  <a :href="'../zhaoping_company_detail/main?id='+info.companyId" class="info">
     <img v-if="info.company.logoImg" :src="base+info.company.logoImg" alt="" class="avatar">
     <img v-else src="../../asset/imgs/default_com.png" alt="" class="avatar">
     <div class="detail">
@@ -35,7 +35,7 @@
         <div class="brand-item act" v-for="(item,index) in info.company.fulis" :key="index">{{item}}</div>
       </div>
     </div>
-  </div>
+  </a>
     <van-toast id="van-toast" />
   <div class="btn-su" @click="touJianli">投递简历</div>
 </div>

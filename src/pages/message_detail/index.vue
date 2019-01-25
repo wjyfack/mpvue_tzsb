@@ -1,6 +1,6 @@
 <template>
 <div class="message-detail" :style="{'height': height}">
-  <div class="title van-hairline--top"><div class="mes">{{title}}</div> <div>{{endTime}}</div></div>
+  <div class="title van-hairline--top"><div class="mes">{{title}}</div> <div>{{endTime|| ''}}</div></div>
   <div class="cont van-hairline--top"> {{context}}</div>
 </div>
 </template>
@@ -60,8 +60,9 @@ export default {
       this.id = data.id
       this.title = data.title
       this.context = data.context
-      this.endTime = data.endTime
-      this.readed()
+      this.endTime = data.endTime == 'null' ?'': data.endTime
+      // console.log(data.endTime)
+      //this.readed()
     }
 }
 </script>

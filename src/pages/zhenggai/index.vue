@@ -3,7 +3,7 @@
     <van-tabs swipeable  active="0" color="#FDC915" @change="onChange">
       <van-tab title="待整改"> 
         <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
+          <a :href="'../zhenggai_detail/main?isEdit=1&id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in list" :key="item.id">
             <div class="top van-hairline--bottom">
               <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
@@ -34,7 +34,7 @@
       </van-tab>
       <van-tab title="已提交">
       <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listTi" :key="item.id">
+          <a :href="'../zhenggai_detail/main?isEdit=0&id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listTi" :key="item.id">
             <div class="top van-hairline--bottom">
               <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
@@ -65,7 +65,7 @@
       </van-tab>
       <van-tab title="全部">
         <div class="zhen">
-          <a :href="'../zhenggai_detail/main?id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listQuan" :key="item.id">
+          <a :href="'../zhenggai_detail/main?isEdit=0&id='+item.sourceCommandId+'&ids='+item.id+'&sign='+item.sourceSySign"  class="zhen-item" v-for="(item,index) in listQuan" :key="item.id">
             <div class="top van-hairline--bottom">
               <div class="title">整改截止日期 {{item.commandChangedEndDate}}</div>
               <div class="status" v-if="item.rectifyStatus == 0">
@@ -226,6 +226,12 @@ export default {
   created () {
   }
   ,mounted() {
+    this.list = []
+    this.listTi = []
+    this.listQuan = []
+    this.zhengNum =0
+    this.tijiaoNum =0
+    this.allNum =0
     this.getData(0)
     this.getData(1)
     this.getData(2)

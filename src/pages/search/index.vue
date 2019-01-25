@@ -27,10 +27,18 @@ export default {
   data () {
     return {
       value: ''
-      ,list: []
       ,isEmpty: false
-      ,loading: false
-      ,isBottom: false
+      ,loading: false,
+      isBottom: false,
+      isEmpty: false,
+      clickSort: false,
+      isbell: false,
+      pageSize: 10,
+      page: 1
+      ,list: []
+      ,deviceType: ''
+      ,orderType: ''
+      ,deviceCertNo: ''
     }
   },
   computed: {
@@ -41,40 +49,58 @@ export default {
   methods: {
     onSearch(event) {
       const val = event.mp.detail // value
-      console.log(event, val)
-        if(this.loading || this.isEmpty) {
-          --this.page
-          return ''
-        } 
-     const params = `{"id":"${val}"}`
-       Toast(params)
-      // this.loading = true
-      // this.$http.post(`/device/getDt/${this.userInfo.id}`,params,{
-      //   headers:{
-      //     'Access-Token':this.userInfo.token,
-      //   }, //http请求头，
-      // }).then((res) => {
-      //   let data = res.data
-      //   this.loading = false
-      //   if(data.resultCode == '0000000') {
-      //     if(data.returnData.length == 0) { // 返回数据为空
-      //       if(this.page == 1){
-      //         this.isEmpty = true
-      //         this.isBottom = false
-      //       } else {
-      //          this.isBottom=true 
-      //       }
-      //       } else {
-      //       this.list =  [ data.returnData]
-      //     }
-      //   } else {
-      //     Toast(data.resultDesc)
-      //   }
-      // })
-
+      this.deviceCertNo = val
+      this.list = []
+       this.getDrived()
     },
     onCancel() {
       this.value = ''
+       wx.navigateBack({
+        delta: 1
+      })
+    }
+     ,getDrived(){
+      if(!this.clickSort)
+      if(this.loading || this.isEmpty) return ''
+     const params = Util.getData({
+        "pageSize": this.pageSize,
+        "pageNum": this.page,
+        "deviceUseName": this.userInfo.realName,
+         "deviceType1": this.deviceType,
+         "deviceCertNo": this.deviceCertNo,
+        "orderType": this.orderType
+      })
+      this.loading = true
+      this.$http.post(`/device/get/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        this.loading = false
+        if(data.resultCode == '0000000') {
+          if(data.returnData.length == 0) { // 返回数据为空
+            if(this.page == 1){
+              this.isEmpty = true
+              this.isBottom = false
+              this.clickSort ?  this.list =  [ ...data.returnData] : ''
+             
+            } else {
+               this.isBottom=true 
+            }
+            } else {
+              if(this.clickSort) {
+                this.list =  [ ...data.returnData]
+               
+              } else{
+                this.list =  [...this.list, ...data.returnData]
+              }
+          }
+           this.clickSort = false
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
     }
   },
 

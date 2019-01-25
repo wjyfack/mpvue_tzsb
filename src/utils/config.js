@@ -1,5 +1,5 @@
-////  'http://120.77.34.115:8507'
-export const baseUrl ='http://192.168.0.116:8507'
+////    https://sdsfs.free.idcfengye.com 
+export const baseUrl = 'http://120.77.34.115:8507' //'http://192.168.0.116:8507'
 export const deviceTypes= [
     {id:1,name: '锅炉'},
     {id:2,name: '压力容器'},
@@ -104,7 +104,7 @@ export const certifKey = {
     '0040':	'客运索道安装(S1)',
     '0041':	'客运索道维修(S2)',
     '0042':	'客运索道司机(S3)',
-    '0043':	'客运索道编索(S4)	',
+    '0043':	'客运索道编索(S4)',
     '0044':	'大型游乐设施安装',
     '0045':	'大型游乐设施维修',
     '0046':	'大型游乐设施操作',
@@ -130,6 +130,63 @@ export const positionSort = ["锅炉作业人员",
 export const qiuzhiStatus = ['离职-随时到岗','在职-暂不考虑','在职-考虑机会','在职-月内到岗']
 export const xueliStatus =  ["小学", "初中", "高中", "中专", "大专", "本科以上"]
 export const salarySort = ["面议","3k-4k","4k-5k","5k-6k","6k-8k","8k-10k","10k以上"]
+export const zhengSort = [
+    {
+        "id": "s001",
+        "subjectName": "特种设备相关管理",
+        "pid": "0"
+    },
+    {
+        "id": "s002",
+        "subjectName": "锅炉作业",
+        "pid": "0"
+    },
+    {
+        "id": "s003",
+        "subjectName": "压力容器作业",
+        "pid": "0"
+    },
+    {
+        "id": "s004",
+        "subjectName": "气瓶作业",
+        "pid": "0"
+    },
+    {
+        "id": "s005",
+        "subjectName": "压力管道作业",
+        "pid": "0"
+    },
+    {
+        "id": "s006",
+        "subjectName": "电梯作业",
+        "pid": "0"
+    },
+    {
+        "id": "s007",
+        "subjectName": "起重机械作业",
+        "pid": "0"
+    },
+    {
+        "id": "s008",
+        "subjectName": "客运索道作业",
+        "pid": "0"
+    },
+    {
+        "id": "s009",
+        "subjectName": "大型游乐设施作业",
+        "pid": "0"
+    },
+    {
+        "id": "s010",
+        "subjectName": "场(厂)内专用机动车辆作业",
+        "pid": "0"
+    },
+    {
+        "id": "s011",
+        "subjectName": "安全附件维修作业",
+        "pid": "0"
+    }
+]
 export default {
     baseUrl,
     deviceTypes,
@@ -138,5 +195,6 @@ export default {
     positionSort,
     xueliStatus,
     qiuzhiStatus,
+    zhengSort,
     salarySort
 }
