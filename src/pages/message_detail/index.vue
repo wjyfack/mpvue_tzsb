@@ -36,7 +36,7 @@ export default {
     
     ,readed() {
       const params = Util.getData({
-        "msgId": this.id
+        "msgId": `${this.id}`
         })
         this.$http.post(`/msg/read/${this.userInfo.id}`,params,{
             headers:{
@@ -44,9 +44,9 @@ export default {
             }, //http请求头，
           }).then((res) => {
             let data = res.data
-            console.log(data)
+            
             if(data.resultCode  == '0000000') {
-
+                console.log('已读')
             }
         })
     }
@@ -62,7 +62,7 @@ export default {
       this.context = data.context
       this.endTime = data.endTime == 'null' ?'': data.endTime
       // console.log(data.endTime)
-      //this.readed()
+      this.readed()
     }
 }
 </script>

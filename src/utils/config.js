@@ -1,6 +1,7 @@
-////    https://sdsfs.free.idcfengye.com 
-export const baseUrl = 'http://120.77.34.115:8507' //'http://192.168.0.116:8507'
+////    https://sdsfs.free.idcfengye.com  'http://120.77.34.115:8507' //
+export const baseUrl = 'http://192.168.0.116:8507'
 export const deviceTypes= [
+    // {id:'',name: '全部'},
     {id:1,name: '锅炉'},
     {id:2,name: '压力容器'},
     {id:3,name: '电梯'},

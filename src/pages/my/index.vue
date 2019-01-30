@@ -63,6 +63,7 @@ export default {
   },
   computed: {
     userInfo () {
+      console.log(Util.getStorage('userInfo') )
       return Util.getStorage('userInfo') 
     }
   },

@@ -5,5 +5,5 @@
         "van-popup": "../../../static/dist/popup/index",
         "van-picker": "../../../static/dist/picker/index"
       },
-      "navigationBarTitleText": "发布出售/收购"
+      "navigationBarTitleText": ""
 }

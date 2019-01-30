@@ -26,6 +26,7 @@
     "pages/jiaoyi/main",
     "pages/jiaoyi_publish/main",
     "pages/jiaoyi_detail/main",
+    "pages/jiaoyi_edit/main",
     "pages/tiku/main",
     "pages/message/main",
     "pages/message_detail/main",

@@ -1,6 +1,6 @@
 <template>
 <div class="jiaoyi-detail">
-  <div class="title van-hairline--top">商品标题</div>
+  <div class="title van-hairline--top">{{info.title}}</div>
   <div class="swiper">
       <swiper
           indicator-dots="false"
@@ -11,47 +11,119 @@
           indicator-active-color="#FDC915"
           style="height:250px;"
         >
-            <swiper-item v-for="(item,index) in inimgUrls" :key="index">
-              <img :src="item" class="slide-image"  />
+            <swiper-item v-for="(item,index) in info.imgs" :key="index">
+              <img :src="baseUrl+item" class="slide-image"  />
             </swiper-item>
         </swiper>
   </div>
   <div class="cont van-hairline--top">
-    <div class="price">¥价格</div>
-    <div class="con">商品描述:AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、无限可能的数据可视化最佳实践。</div>
+    <div class="price" v-if="info.paymentMax">¥{{info.paymentMin}} - {{info.paymentMax}}</div>
+    <div class="con" v-if="info.problemDesc">问题描述:{{info.problemDesc}}</div>
+    <div class="price" v-if="info.tradePrice">¥{{info.tradePrice}}</div>
+    <div class="con" v-if="info.goodsDesc">商品描述:{{info.goodsDesc}}</div>
   </div>
   <div class="ch-6"></div>
   <div class="info">
-    <div>联系人：林先生</div>
-    <div>联系方式：19082317723</div>
+    <div>联系人：{{info.linkMan}}</div>
+    <div>联系方式：{{info.linkTel}}</div>
+    <div v-if="info.deviceFullAddress">设备地址：{{info.deviceFullAddress}}</div>
   </div>
-  <div class="option" v-if="false">
+  <div class="option" v-if="isEdit">
     <div class="option-item act">编辑</div>
-    <div class="option-item">删除</div>
+    <div class="option-item" @click="del">删除</div>
   </div>
+    <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
 </div>
 </template>
 <script>
 import Toast from '@/../static/dist/toast/toast'
+import Dialog from '@/../static/dist/dialog/dialog'
 import Util from '@/utils/index'
-const lunbo_1  = require('@/asset/imgs/lunbo_1.jpg')
-const lunbo_2  = require('@/asset/imgs/lunbo_2.jpg')
-const lunbo_3  = require('@/asset/imgs/lunbo_3.jpg')
+import { baseUrl } from '@/utils/config'
 export default {
   data () {
     return {
-      inimgUrls: [
-       lunbo_1,
-      lunbo_2,
-      lunbo_3,
-      ],
       show:false,
+      id: 0,
+      baseUrl: `${baseUrl}/file/show/img/custOther/`,
+      info: {},
+      opt: '',
+      isEdit: false
+    }
+  },
+  computed: {
+    userInfo: ()=> {
+      return Util.getStorage('userInfo')
     }
   },
   methods: {
     onShow() {
       this.show = !this.show
     }
+    ,del() {
+      Dialog.confirm({
+        message: '确认删除？'
+      }).then(() => {
+        // on confirm
+        this.delData()
+      }).catch(() => {
+        // on cancel
+      })
+    }
+    ,delData() {
+      
+    }
+    ,getData() {
+       let url = ''
+        switch(this.opt) {
+          case 'rep':
+            url = `/device/trade/dt/${this.id}/${this.userInfo.id}`
+          break
+          case 'fab':
+            url = `/device/maintain/dt/${this.id}/${this.userInfo.id}`
+          break
+        }
+        this.$http.post(url,'',{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+               let info  = data.returnData
+                let arr = []
+               switch(this.opt) {
+                  case 'rep':
+                     arr  = info.goodsImgs.split('&')
+                    if(!arr[arr.length - 1]) {
+                      arr.pop()
+                    }
+                    info.imgs = arr
+                  break
+                  case 'fab':
+                    arr  = info.problemImgs.split('&')
+                    if(!arr[arr.length - 1]) {
+                      arr.pop()
+                    }
+                    info.imgs = arr
+                  break
+                }
+              this.info = info
+
+            }
+          })
+    }
+  }
+  ,mounted() {
+    const {opt,id,isEdit} = this.$mp.query
+    this.id = id
+    this.opt = opt // rep , fab
+    if(isEdit == 'edit') {
+      this.isEdit  = true
+    }
+    console.log(this.opt)
+      this.getData()
   }
 }
 </script>
@@ -62,7 +134,7 @@ export default {
   .title {
     padding: 20px 30px;
     color:#1C2627;
-    font-size: 13px;
+    font-size: 15px;
   }
   .swiper {
     padding-bottom: 11px;

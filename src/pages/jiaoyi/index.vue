@@ -17,53 +17,56 @@
   </div>
   <div v-if="id== 1">
     <div class="sort van-hairline--bottom van-hairline--top">
-        <div class="sort-item" @click="onSort"><div>筛选</div> <div class="triangle_border_down"></div></div>
-        <div class="sort-item bor-l">
-          <span class="act">出售</span>
+        <div class="sort-item" @click="onSort(3)"><div>筛选</div> <div class="triangle_border_down"></div></div>
+        <div class="sort-item bor-l" @click="onSaleSort">
+          <span :class="{'act': tradeType == 0}">出售</span>
           <span>  /  </span>
-          <span>收购</span>
+          <span :class="{'act': tradeType == 1}">收购</span>
         </div>
-        <div class="down-group" :class="{'down-act': isDown}">
-          <div class="down-item "  @click="onSort" v-for="(item,index) in sort" :key="index">{{item.name}}</div>
+        <div class="down-group" :class="{'down-act': isDown2}">
+          <div class="down-item "  @click="onSelectSort(3,index)" v-for="(item,index) in sort" :key="index">{{item.name}}</div>
         </div>
-      </div>
-      
+    </div> 
       <div class="cont">
-        <a href="../jiaoyi_detail/main" class="yi-item" v-for="(item,index) in 4" :key="index">
-          <img :src="inimgUrls[0]" alt="" class="l-img">
+        <a :href="'../jiaoyi_detail/main?opt=rep&id='+item.id" class="yi-item" v-for="(item,index) in repArr" :key="index">
+          <img :src="baseUrl+item.imgs[0]" alt="" class="l-img">
           <div class="yi-con van-hairline--bottom">
-            <div class="c-title"><div class="title">电梯供电中断</div> <div class="time">今天10:20</div></div>
-            <div class="price">¥1500-2000</div>
-            <div class="fen">电梯</div>
-            <div class="title">广东省佛山市南海区</div>
+            <div class="c-title"><div class="title">{{item.title}}</div> <div class="time">{{item.applyTime}}</div></div>
+            <div class="price">¥{{item.tradePrice}}         <!--数量 {{item.tradeCount}}--></div>
+            <div class="fen">{{sort[item.deviceType1-1].name}}</div>
+            <div class="title">{{item.tradeFullAddress}}</div>
           </div>
         </a>
       </div>
   </div>
   <div v-if="id == 2">
        <div class="sort van-hairline--bottom van-hairline--top">
-        <div class="sort-item" @click="onSort"><div>筛选</div> <div class="triangle_border_down"></div></div>
-        <div class="sort-item bor-l">
+        <div class="sort-item" @click="onSort(1)"><div>筛选</div> <div class="triangle_border_down"></div></div>
+        <div class="sort-item bor-l" @click="onSort(2)">
          <div>排序方式</div> <div class="triangle_border_down"></div>
         </div>
         <div class="down-group" :class="{'down-act': isDown}">
-          <div class="down-item "  @click="onSort" v-for="(item,index) in sort" :key="index">{{item.name}}</div>
+          <div class="down-item "  @click="onSelectSort(1,index)" v-for="(item,index) in sort" :key="index">{{item.name}}</div>
+        </div>
+        <div class="down-group" :class="{'down-act': isDown1}">
+          <div class="down-item "  @click="onSelectSort(2,index)" v-for="(item,index) in orderTypeStatus" :key="index">{{item}}</div>
         </div>
       </div>
       <div class="cont">
-        <a href="../jiaoyi_detail/main" class="yi-item" v-for="(item,index) in 4" :key="index">
-          <img :src="inimgUrls[1]" alt="" class="l-img">
+        <a :href="'../jiaoyi_detail/main?opt=fab&id='+item.id" class="yi-item" v-for="(item,index) in fabArr" :key="index">
+          <img :src="baseUrl+item.imgs[0]" alt="" class="l-img">
           <div class="yi-con van-hairline--bottom">
-             <div class="title">叉车电源</div>
-            <div class="price">¥1500-2000</div>
-            <div class="fen">叉车</div>
+             <div class="title">{{item.title}}</div>
+            <div class="price">¥ {{item.paymentMin}}- {{item.paymentMax}}</div>
+            <div class="fen">{{item.deviceFullAddress}}</div>
           </div>
         </a>
       </div>
     </div>
   <div class="opt">
-    <img src="../../asset/imgs/yi_shougou.png" alt="" @click="toSort(1)" class="b-img mai" :class="{'chu':show}">
-    <img src="../../asset/imgs/yi_chushou.png" alt="" @click="toSort(2)" class="b-img nai" :class="{'chu':show}">
+    <img v-if="id == 1" src="../../asset/imgs/yi_shougou.png" alt="" @click="toSort(1)" class="b-img mai" :class="{'chu':show}">
+    <img v-if="id == 1" src="../../asset/imgs/yi_chushou.png" alt="" @click="toSort(2)" class="b-img nai" :class="{'chu':show}">
+    <img v-if="id == 2" src="../../asset/imgs/ye_xinzeng.png" alt="" @click="toSort(4)" class="b-img nai" :class="{'chu':show}">
     <img src="../../asset/imgs/yi_liebiao.png" alt="" @click="toSort(3)" class="b-img fenlei" :class="{'chu':show}">
     <img @click="onShow" src="../../asset/imgs/yi_add.png" alt="" class="a-img add"  :class="{'add-act':show}">
   </div>
@@ -75,7 +78,8 @@ import Util from '@/utils/index'
 const lunbo_1  = require('@/asset/imgs/lunbo_1.jpg')
 const lunbo_2  = require('@/asset/imgs/lunbo_2.jpg')
 const lunbo_3  = require('@/asset/imgs/lunbo_3.jpg')
-import {deviceTypes} from '@/utils/config'
+import {deviceTypes,baseUrl} from '@/utils/config'
+import dateformat from 'dateformat'
 export default {
   data () {
     return { 
@@ -87,36 +91,177 @@ export default {
       ],
       show:false,
       isDown: true,
-      sort: deviceTypes
+      isDown1: true,
+      isDown2: true,
+      sort: deviceTypes,
+      baseUrl: `${baseUrl}/file/show/img/custOther/`,
+      // 1:
+      repPageNum: 0,
+      repdeviceType: '',
+      reporderType: '',
+      repArr: [],
+      tradeType: 0,
+      // 1
+      // 2:维修
+      orderTypeStatus: ['薪酬从大到小','薪酬从小到大','发布时间从近到远','发布时间从远到近'],
+      fabPageNum: 0,
+      fabdeviceType: '',
+      faborderType: '',
+      fabArr: []
+      // 2:维修
+    }
+  },
+   computed: {
+    userInfo: ()=> {
+      return Util.getStorage('userInfo')
     }
   },
   methods: {
     onShow() {
       this.show = !this.show
     }
+    ,onSaleSort() {
+      this.tradeType = this.tradeType == 0 ? 1 : 0
+      this.repPageNum = 0
+      this.repArr = []
+      this.repDatas()
+    }
     ,toSort(opt) {
         // opt : 1: 买　2: 卖　3:不知道
         this.show = false
-        let url = ''
+        let url = '../jiaoyi_publish/main'
         switch(opt) {
           case 1:
-          
+          url = `${url}?id=${this.id}`
           break
           case 2:
+          url = `${url}?id=${this.id}`
           break
           case 3:
-        
+          url = `${url}?id=${this.id}`
+          break
+          case 4:
+          url = `../jiaoyi_edit/main?id=1`
           break
         }
-        url = `../jiaoyi_publish/main`
         Util.navTo(url)
     }
-    ,onSort() {
-      this.isDown = !this.isDown
+    ,onSort(opt) {
+     
+      switch(opt) {
+        case 1:
+          this.isDown = false
+          this.isDown1 = true
+        break
+        case 2:
+          this.isDown1 = false
+          this.isDown = true
+        break
+        case 3:
+          this.isDown2 =  false
+        break
+      }
+    }
+    ,onSelectSort(opt,index) {
+        this.isDown = true
+        this.isDown1 = true
+        this.isDown2 = true
+      switch(opt) {
+        case 1:
+          this.fabdeviceType = this.sort[index].id
+          this.fabArr = []
+          this.fabPageNum =0
+          this.fabDatas()
+        break
+        case 2:
+          this.faborderType = index
+          this.fabPageNum = 0
+          this.fabArr = []
+          this.fabDatas()
+        break
+        case 3:
+          this.repdeviceType = this.sort[index].id
+          this.repPageNum = 0
+          this.repArr = []
+          this.repDatas()
+        break
+      }
+    }
+    ,fabDatas() {
+      ++this.fabPageNum
+      const params = JSON.stringify({
+        deviceType1: this.fabdeviceType,
+        pageNum:  `${this.fabPageNum}`,
+        pageSize: '10',
+        orderType:`${this.faborderType}`
+      })
+        this.$http.post(`/device/maintain/page/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+              let list  = data.returnData.list
+                for(let i in list) {
+                  let arr = list[i].problemImgs.split('&')
+                  if(!arr[arr.length-1]) {
+                    arr.pop()
+                  }
+                  list[i].imgs = arr
+                }
+                this.fabArr = [...this.fabArr,...list]
+            }
+          })
+    }
+    ,repDatas() {
+        ++this.repPageNum
+      const params = JSON.stringify({
+        deviceType1: this.repdeviceType,
+        pageNum:  `${this.repPageNum}`,
+        pageSize: '10',
+        orderType:`${this.reporderType}`,
+        tradeType: `${this.tradeType}`
+      })
+        this.$http.post(`/device/trade/page/${this.userInfo.id}`,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+              let list  = data.returnData.list
+                for(let i in list) {
+                  let arr = list[i].goodsImgs ? list[i].goodsImgs.split('&') : []
+                  if(!arr[arr.length-1]) {
+                    arr.pop()
+                  }
+                  list[i].imgs = arr
+                  list[i].applyTime = dateformat(list[i].applyTime,'yyyy-mm-dd')
+                }
+                this.repArr = [...this.repArr,...list]
+            }
+          })
+    }
+  }
+  ,onReachBottom () {
+    if(this.id == 1) {
+      this.repDatas()
+    } else {
+      this.fabDatas()
     }
   }
   ,mounted() {
     this.id = this.$mp.query.id
+    let title = ''
+    if(this.id == 1) {
+      title = '零部件交易'
+      this.repDatas()
+    } else {
+      title =  '设备维修'
+      this.fabDatas()
+    }
+    Util.setTitle(title)
   }
 }
 </script>

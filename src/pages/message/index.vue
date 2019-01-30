@@ -1,6 +1,6 @@
 <template>
 <div class="message">
-  <a :href="'../message_detail/main?id='+item.id+'&title='+item.title+'&endTime='+item.sendTime||''+'&context='+item.context" class="message-item van-hairline--top" v-for="(item,index) in lists" :key="item.id">
+  <a :href="'../message_detail/main?id='+item.id+'&title='+item.title+'&endTime='+item.sendTime+'&context='+item.context" class="message-item van-hairline--top" v-for="(item,index) in lists" :key="item.id">
     <div class="top">
       <div class="left">
         <div class="red"></div>

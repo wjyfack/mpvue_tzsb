@@ -35,14 +35,14 @@
 				{
 					"id": 0,
 					"name": "ss",
-					"pathName": "pages/zhaoping_fabu/main",
-					"query": ""
+					"pathName": "pages/jiaoyi_publish/main",
+					"query": "id=1"
 				},
 				{
 					"id": 1,
 					"name": "yewu",
 					"pathName": "pages/yewu/main",
-					"query": "id=2"
+					"query": ""
 				}
 			]
 		}
