@@ -163,10 +163,10 @@
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
           </div>
-          <div class="info-item van-hairline--bottom"  @click="selectInput(10)">
+          <div class="info-item van-hairline--bottom"  @click="selectInput(5)">
             <div class="left">设备地址</div>
             <div class="right">
-              <div v-if="sale.addr">{{sale.addr}}</div>
+              <div v-if="repair.addr">{{repair.addr}}</div>
               <div v-else>未填写</div>
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
@@ -224,6 +224,7 @@ export default {
       workAddr: '',
       saleStatus: ['收购','出售'],
       repair: {
+        id: 0,
         sort: 0,
         title: '',
         desc: '',
@@ -234,6 +235,7 @@ export default {
         addr: ''
       }
       ,sale: {
+        id: 0,
         title: '',
         desc: '',
         price: '',
@@ -263,6 +265,7 @@ export default {
         return ''
       }
       const {
+        id,
         sort,
         title,
         desc,
@@ -291,13 +294,14 @@ export default {
       }
       const diqu = this.workAddr.split('/')
       const params = JSON.stringify({
+        id: id == 0? '': id,
         companyId: companyId,
         linkTel: link,
         linkMan: conact,
         deviceType1: `${sort+1}`,
         title: title,
         problemDesc: desc,
-        problemImgs: this.imgs.join(','),
+        problemImgs: this.imgs.join('&'),
         paymentMin:minPrice,
         paymentMax: maxPrice,
         deviceProvince: diqu[0],
@@ -306,14 +310,23 @@ export default {
         deviceAddress: addr
       })
       console.log(params)
-      this.$http.post(`/area/device/init/${this.userInfo.id}`,params,{
+      let url = `/device/maintain/apply/${this.userInfo.id}`
+      if(id != 0) {
+        url = `/device/maintain/update/${this.userInfo.id}`
+      }
+      this.$http.post(url,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
           }).then((res) => {
              let data = res.data
             if(data.resultCode == '0000000') {
-              Toast('发布成功，正在返回')
+              if(id == 0) {
+                Toast('发布成功，正在返回')
+              } else {
+                Toast('修改成功，正在返回')
+              }
+              
               setTimeout(()=>{
                 Util.back()
               },1000)
@@ -329,6 +342,7 @@ export default {
         return ''
       }
       const {
+        id,
         addr,
         conact,
         desc,
@@ -346,15 +360,17 @@ export default {
           Toast('请输入完整')
           return ''
       }
+
        const diqu = this.workAddr.split('/')
       const  params = JSON.stringify({
+        id: id != 0? id: '',
         companyId:companyId,
         linkTel: link,
         linkMan:conact,
         deviceType1: `${this.repair.sort +1}`,
         title:  title,
         goodsDesc: desc,
-        goodsImgs: this.imgs.join(','),
+        goodsImgs: this.imgs.join('&'),
         tradePrice: price,
         tradeType: status,
         tradeCount: num,
@@ -363,14 +379,22 @@ export default {
         tradeArea: diqu[2],
         tradeAddress: addr
       })
-      this.$http.post(`/device/trade/publish/${this.userInfo.id}`,params,{
+      let url = `/device/trade/publish/${this.userInfo.id}`
+      if(id != 0) {
+        url = `/device/trade/update/${this.userInfo.id}`
+      }
+      this.$http.post(url,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
           }).then((res) => {
              let data = res.data
             if(data.resultCode == '0000000') {
-              Toast('发布成功，正在返回')
+             if(id == 0) {
+                Toast('发布成功，正在返回')
+              } else {
+                Toast('修改成功，正在返回')
+              }
               setTimeout(()=>{
                 Util.back()
               },1000)
@@ -602,8 +626,42 @@ export default {
   },
   mounted () {
     this.id = this.$mp.query.id
+    let info = this.$mp.query.info
     let title = ''
     this.id == 2 ?  title='发布维修需求': title='发布出售/收购'
+    if(info) {
+      console.log(info)
+       info = JSON.parse(info)
+      if(this.id == 1) {
+        this.sale.id = info.id 
+        this.sale.title = info.title
+        this.sale.desc = info.goodsDesc
+        this.sale.sort = ~~info.deviceType1-1
+        this.sale.price = info.tradePrice
+        this.imgs = info.imgs
+        this.sale.status =  info.tradeType
+        this.sale.num   =  info.tradeCount
+        this.sale.conact = info.linkMan
+        this.sale.link = info.linkTel
+        this.sale.addr = info.tradeAddress
+        this.workAddr = `${info.tradeProvince|| ''}/${info.tradeCity|| ''}/${info.tradeArea|| ''}`
+      } else { 
+        this.repair.id = info.id
+        this.repair.sort = ~~info.deviceType1-1
+        this.repair.title = info.title
+        this.repair.desc = info.problemDesc
+        this.repair.minPrice = info.paymentMin
+        this.repair.maxPrice = info.paymentMax
+        this.repair.conact = info.linkMan
+        this.repair.link = info.linkTel
+        this.repair.addr = info.deviceAddress
+        
+        this.imgs = info.imgs
+        this.workAddr = `${info.deviceProvince|| ''}/${info.deviceCity|| ''}/${info.deviceArea|| ''}`
+      
+      }
+
+    }
     Util.setTitle(title)
     this.getArea()
   }

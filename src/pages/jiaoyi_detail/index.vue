@@ -12,7 +12,7 @@
           style="height:250px;"
         >
             <swiper-item v-for="(item,index) in info.imgs" :key="index">
-              <img :src="baseUrl+item" class="slide-image"  />
+              <img v-if="item"  :src="baseUrl+item" class="slide-image"  />
             </swiper-item>
         </swiper>
   </div>
@@ -29,7 +29,7 @@
     <div v-if="info.deviceFullAddress">设备地址：{{info.deviceFullAddress}}</div>
   </div>
   <div class="option" v-if="isEdit">
-    <div class="option-item act">编辑</div>
+    <div class="option-item act" @click="edit">编辑</div>
     <div class="option-item" @click="del">删除</div>
   </div>
     <van-dialog id="van-dialog" />
@@ -41,6 +41,7 @@ import Toast from '@/../static/dist/toast/toast'
 import Dialog from '@/../static/dist/dialog/dialog'
 import Util from '@/utils/index'
 import { baseUrl } from '@/utils/config'
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -49,14 +50,15 @@ export default {
       baseUrl: `${baseUrl}/file/show/img/custOther/`,
       info: {},
       opt: '',
-      isEdit: false
+      isEdit: false,
+      userInfo: Util.getStorage('userInfo')
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onShow() {
       this.show = !this.show
@@ -72,7 +74,31 @@ export default {
       })
     }
     ,delData() {
+      let url = ''
+      let params = ''
+      if(this.opt == 'rep') {
+        params = JSON.stringify({tradeId: this.id})
+        url =`/device/trade/del/${this.userInfo.id}`
+      } else {
+        url = `/device/maintain/del/${this.userInfo.id}`
+        params =  JSON.stringify({maintainId: this.id})
+      }
+
       
+       this.$http.post(url,params,{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode == '0000000') {
+            
+               Toast('删除成功，正在返回')
+               setTimeout(()=>{
+                Util.back()
+               },1000)
+            }
+          })
     }
     ,getData() {
        let url = ''
@@ -110,12 +136,22 @@ export default {
                   break
                 }
               this.info = info
-
+              console.log(info)
             }
           })
     }
+    ,edit() {
+      let params = JSON.stringify(this.info)
+      params = params.replace(/&/g,'')
+      if(this.opt == 'rep') {
+         Util.navTo(`../jiaoyi_publish/main?id=1&info=${params}`)
+      } else {
+         Util.navTo(`../jiaoyi_publish/main?id=2&info=${params}`)
+      }
+     
+    }
   }
-  ,mounted() {
+  ,onShow() {
     const {opt,id,isEdit} = this.$mp.query
     this.id = id
     this.opt = opt // rep , fab

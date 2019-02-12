@@ -132,7 +132,7 @@ export default {
         let url = '../jiaoyi_publish/main'
         switch(opt) {
           case 1:
-          url = `${url}?id=${this.id}`
+          url = `../jiaoyi_edit/main?id=2`
           break
           case 2:
           url = `${url}?id=${this.id}`
@@ -251,7 +251,7 @@ export default {
       this.fabDatas()
     }
   }
-  ,mounted() {
+  ,onShow() {
     this.id = this.$mp.query.id
     let title = ''
     if(this.id == 1) {
