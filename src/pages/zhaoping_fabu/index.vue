@@ -123,14 +123,15 @@ export default {
         workAddr: '', // 工作地点
         jobReq: '', // 职位要求
         enterIntr: '', // 企业介绍
+        userInfo: {}
       }
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     slelectPicker(opt) {
       this.selectOpt = opt
@@ -333,6 +334,7 @@ export default {
     }
   }, 
   mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.getArea()
     this.brands = []
     this.position =  {

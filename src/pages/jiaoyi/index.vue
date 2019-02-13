@@ -109,12 +109,14 @@ export default {
       faborderType: '',
       fabArr: []
       // 2:维修
+      ,userInfo: {}
     }
+
   },
    computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: ()=> {
+    //   return Util.getStorage('userInfo')
+    // }
   },
   methods: {
     onShow() {
@@ -252,6 +254,7 @@ export default {
     }
   }
   ,onShow() {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     let title = ''
     if(this.id == 1) {

@@ -61,12 +61,12 @@ export default {
     return {
     }
   },
-  computed: {
-    userInfo () {
-      console.log(Util.getStorage('userInfo') )
-      return Util.getStorage('userInfo') 
-    }
-  },
+  // computed: {
+  //   userInfo () {
+  //     console.log(Util.getStorage('userInfo') )
+  //     return Util.getStorage('userInfo') 
+  //   }
+  // },
   methods: {
     outLogin() {
       wx.showToast({

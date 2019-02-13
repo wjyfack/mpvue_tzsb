@@ -172,14 +172,15 @@ export default {
       zhiweiJobName: '',
       gsList: [],
       gsPage: 1,
-      gsOrderType: 1
+      gsOrderType: 1,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onSearch() {
       if(this.id ==2) {
@@ -360,6 +361,7 @@ export default {
   },
 
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     if(this.id ==2) {
       this.comJianli = []

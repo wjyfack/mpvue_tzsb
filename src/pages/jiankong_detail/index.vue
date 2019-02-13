@@ -231,12 +231,13 @@ export default {
     return {
      id: 1,
      height: 0
+     ,userInfo: {}
     }
   },
   computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: () => {
+    //   return Util.getStorage('userInfo')
+    // }
   },
   methods: {
     getPhoneHeight () {
@@ -264,7 +265,8 @@ export default {
     this.getPhoneHeight()
   }
   ,mounted() {
-    console.log(this)
+    // console.log(this)
+    this.userInfo = Util.getStorage('userInfo')
       this.id = this.$mp.query.id || 1
   }
 

@@ -81,12 +81,13 @@ export default {
       tradeType: 0,
       reporderType: '',
       repdeviceType: ''
+      ,userInfo: {}
     }
   },
   computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: ()=> {
+    //   return Util.getStorage('userInfo')
+    // }
   },
   methods: {
     onShow() {
@@ -202,7 +203,8 @@ export default {
     }
   }
   ,onShow() {
-    console.log(this)
+    // console.log(this)
+    this.userInfo = Util.getStorage('userInfo')
     const {opt,id} = this.$mp.query
 
     this.id = id

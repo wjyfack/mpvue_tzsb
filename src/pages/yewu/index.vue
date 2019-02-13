@@ -85,11 +85,11 @@ export default {
      height: 0
     }
   },
-  computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: () => {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
        getPhoneHeight () {
           let _this = this

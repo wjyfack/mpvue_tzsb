@@ -164,13 +164,14 @@ export default {
       bases: 'http://120.31.143.223:8088',
       baseImg: `${baseUrl}/file/show/rectify/`,
       tasks:[],
-      regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/
+      regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/,
+      userInfo: {}
     }
   },
   computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: () => {
+    //   return Util.getStorage('userInfo')
+    // }
     // ,baseImg: () => {
     //   return `${baseUrl}/file/show/rectify/`
     // }
@@ -377,6 +378,7 @@ export default {
   },
 
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     this.ids = this.$mp.query.ids
     this.sign = this.$mp.query.sign

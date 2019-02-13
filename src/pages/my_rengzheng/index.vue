@@ -151,14 +151,15 @@ export default {
       isQI: true,
       isPs: true,
       isFm: true,
-      isYy: true
+      isYy: true,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: () => {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onSub() {
       let obj = {
@@ -329,7 +330,8 @@ export default {
     Util.setTitle('设备认证')
   }
   ,mounted() {
-    console.log(123)
+    // console.log(123)
+    this.userInfo = Util.getStorage('userInfo')
     this.checkStatus()
   }
 

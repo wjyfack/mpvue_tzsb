@@ -39,13 +39,14 @@ export default {
       ,deviceType: ''
       ,orderType: ''
       ,deviceCertNo: ''
+      ,userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onSearch(event) {
       const val = event.mp.detail // value
@@ -104,8 +105,8 @@ export default {
     }
   },
 
-  created () {
-
+  mounted () {
+    this.userInfo = Util.getStorage('userInfo')
   }
   ,onReachBottom () {
     console.log(123)

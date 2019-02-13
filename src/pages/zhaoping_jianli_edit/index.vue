@@ -95,14 +95,15 @@ export default {
         {id: 3, name: '大小周',sort: 'dan',check: false},
         {id: 4, name: '排班轮休',sort: 'dan',check: false},
       ],
-      yixuan: [] // 已选标签 
+      yixuan: [], // 已选标签 
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     slectBrand(opt,index) {
       // opt 1: 删除　2: 单选　3: 多选
@@ -188,6 +189,7 @@ export default {
     Util.setBackGroup()
   },
   mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.opt = this.$mp.query.opt
     this.setTitle()
   }

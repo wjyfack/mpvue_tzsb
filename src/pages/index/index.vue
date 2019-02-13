@@ -93,13 +93,14 @@ export default {
         ,noPassCount: 0
       }
       ,deviceType: ''
-      ,orderType: ''
+      ,orderType: '',
+     userInfo: {}
     }
   },
   computed: {
-    userInfo: function() {
-      return Util.getStorage('userInfo')
-    },
+    // userInfo: function() {
+    //   return Util.getStorage('userInfo')
+    // },
     sorts: function()  {
       return deviceTypes
     },
@@ -231,6 +232,13 @@ export default {
     this.getPhoneHeight()
   },
   mounted() {
+    this.userInfo = Util.getStorage('userInfo')
+    this.page= 1
+    this.list= []
+    this.total = {
+        totailCount: 0
+        ,noPassCount: 0
+      }
     this.getDrived()
     this.getTotal()
     this.getData()

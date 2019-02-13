@@ -50,14 +50,15 @@ export default {
       info:{
          salaryMax: '',
          "resumeWorkExpList": [ ],
-      }
+      },
+      userInfo:{}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     date2year(date) {
       if(!date) {
@@ -89,6 +90,7 @@ export default {
     }
   },
   mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id || 0
     this.getJianli()
   }

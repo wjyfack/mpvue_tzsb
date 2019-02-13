@@ -166,14 +166,15 @@ export default {
        addrZhenId:0,
       columns: [],
       addrTitle: '请选择省',
-      addrSelect: '请选择地址'
+      addrSelect: '请选择地址',
+      userInfo: {}
     }
   },
- computed: {
-    userInfo: function() {
-      return Util.getStorage('userInfo')
-    }
-  },
+//  computed: {
+//     userInfo: function() {
+//       return Util.getStorage('userInfo')
+//     }
+//   },
 
   methods: {
     onCheck() {
@@ -411,6 +412,7 @@ export default {
   },
 
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     this.getAddr()
     this.getData()

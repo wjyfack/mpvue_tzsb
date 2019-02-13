@@ -26,13 +26,14 @@ export default {
       isbt: false,
       isload: false,
       lists: []
+      ,userInfo: {}
     }
   },
-  computed: {
-    userInfo: function() {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: function() {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     getData() {
       this.isload = true
@@ -62,6 +63,7 @@ export default {
   },
 
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.lists = []
     this.getData()
   }

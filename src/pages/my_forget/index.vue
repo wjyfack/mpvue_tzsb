@@ -35,15 +35,16 @@ export default {
        account: {
          oldPwd: '',
          newPwd: '',
-         agnPwd: ''
+         agnPwd: '',
+         userInfo:{}
        }
     }
   },
-  computed: {
-    userInfo () {
-      return Util.getStorage('userInfo') 
-    }
-  },
+  // computed: {
+  //   userInfo () {
+  //     return Util.getStorage('userInfo') 
+  //   }
+  // },
   methods: {
     getPhoneHeight () {
           let _this = this
@@ -95,7 +96,9 @@ export default {
         })
     }
   },
-
+  onShow() {
+    this.userInfo = Util.getStorage('userInfo')
+  },
   created () {
     this.getPhoneHeight()
   }

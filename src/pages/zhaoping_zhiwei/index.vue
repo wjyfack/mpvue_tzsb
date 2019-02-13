@@ -55,14 +55,15 @@ export default {
       base: baseUrl+'/file/show/img/base/',
       info: {
         company: {}
-      }
+      },
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     getJianli() {
     
@@ -116,7 +117,7 @@ export default {
     }
   }
   ,mounted() {
-    
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     this.getJianli()
   }

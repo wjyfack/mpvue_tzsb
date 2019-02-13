@@ -128,14 +128,15 @@ export default {
       parTreLoad: false,
       parTreBottom: false,
       chaTi: false,
-      chaQuan: false
+      chaQuan: false,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: () => {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onChange(event) {
      // console.log(event,this.active)
@@ -226,6 +227,7 @@ export default {
   created () {
   }
   ,mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.list = []
     this.listTi = []
     this.listQuan = []
@@ -276,7 +278,9 @@ export default {
         }
       }
     }
-    .no-driver {
+   
+  }
+   .no-driver {
       border-top: 3px solid #EEEFF4;
       font-size: 12px;
       color:#A1A2A4;
@@ -285,6 +289,5 @@ export default {
       padding: 15px;
       background: #ffffff;
     }
-  }
 }
 </style>

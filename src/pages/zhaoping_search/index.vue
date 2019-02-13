@@ -37,13 +37,14 @@ export default {
       gsList: [],
       gsOrderType: '',
       gsPage: 0,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onSearch(event) {
       console.log(this.value)
@@ -89,6 +90,9 @@ export default {
         }
       })
     }
+  }
+  ,onShow() {
+    this.userInfo = Util.getStorage('userInfo')
   }
   ,onReachBottom() {
     this.getCompany()

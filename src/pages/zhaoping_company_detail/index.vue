@@ -52,14 +52,15 @@ export default {
       
       id: 0,
       info: {},
-      zhiweiList: []
+      zhiweiList: [],
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
    onChangeCom(opt) {
      opt == 1 ?this.show = true :this.show=false
@@ -108,6 +109,7 @@ export default {
   },
 
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     this.getCompanyDetail()
     this.getZhiWei()

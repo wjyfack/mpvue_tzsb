@@ -337,14 +337,15 @@ export default {
       // ],
       fangjia: ['双休','单休','大小周','排班轮休'],
       yixuan: [], // 已选标签 
-      yifangjia: ''
+      yifangjia: '',
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     onClose() {
       this.show = false
@@ -862,6 +863,7 @@ export default {
     }
  },
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.opt = this.$mp.query.opt
     let title = '我的简历'
     if(this.opt == 'person') {

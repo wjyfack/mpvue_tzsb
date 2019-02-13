@@ -100,13 +100,14 @@ export default {
   },
   data () {
     return {
-      id: 0
+      id: 0,
+      userInfo: {}
     }
   },
   computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: () => {
+    //   return Util.getStorage('userInfo')
+    // }
   },
   methods: {
    
@@ -132,6 +133,7 @@ export default {
   created () {
   }
   ,mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id || 0
     Dialog.alert({
       message: '功能正在开发中，查看功能演示'

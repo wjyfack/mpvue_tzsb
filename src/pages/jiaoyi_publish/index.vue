@@ -245,12 +245,13 @@ export default {
         num: 1,
         addr: ''
       }
+      ,userInfo: {}
     }
   },
   computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
+    // userInfo: ()=> {
+    //   return Util.getStorage('userInfo')
+    // }
   },
   methods: {
     onClose() {
@@ -625,6 +626,7 @@ export default {
     }
   },
   mounted () {
+    this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     let info = this.$mp.query.info
     let title = ''

@@ -16,14 +16,15 @@ export default {
       ,context: ''
       ,endTime:''
       ,id: 0
+      ,userInfo: {}
     }
 
   },
-  computed: {
-    userInfo: function() {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: function() {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
      getPhoneHeight () {
       let _this = this
@@ -56,6 +57,7 @@ export default {
     this.getPhoneHeight()
   },
     mounted() {
+      this.userInfo = Util.getStorage('userInfo')
       const data = this.$mp.query
       this.id = data.id
       this.title = data.title

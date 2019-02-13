@@ -359,15 +359,16 @@ export default {
         'tc003',
       ],
       jtaocans: [ '套餐一', '套餐二', '套餐三'],
-      jtaocanSelect :0
+      jtaocanSelect :0,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: () => {
-      return Util.getStorage('userInfo')
-    },
+  // computed: {
+  //   userInfo: () => {
+  //     return Util.getStorage('userInfo')
+  //   },
     
-  },
+  // },
   methods: {
     getPhoneHeight () {
           let _this = this
@@ -739,6 +740,7 @@ export default {
     
   }
   ,mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     const {id} = this.$mp.query
     this.id = id || 0
     this.setTitle(this.id)

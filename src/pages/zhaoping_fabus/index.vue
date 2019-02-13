@@ -26,11 +26,11 @@ export default {
       opt: '' // addr,req 编辑手机号和工作经验
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
 
   },

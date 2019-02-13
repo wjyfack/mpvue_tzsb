@@ -51,14 +51,15 @@ export default {
       sqPage: 1,
       rePage: 1,
       isEmpty: false,
-      isShengqEmpty: false
+      isShengqEmpty: false,
+      userInfo: {}
     }
   },
-  computed: {
-    userInfo: ()=> {
-      return Util.getStorage('userInfo')
-    }
-  },
+  // computed: {
+  //   userInfo: ()=> {
+  //     return Util.getStorage('userInfo')
+  //   }
+  // },
   methods: {
     getRecord() {
       const params = JSON.stringify({
@@ -171,6 +172,7 @@ export default {
     }
   },
   mounted() {
+    this.userInfo = Util.getStorage('userInfo')
     this.opt = this.$mp.query.opt
      this.isShengqEmpty = false
     let title = '职位管理'
