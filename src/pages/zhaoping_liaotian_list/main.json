@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "van-swipe-cell": "../../../static/dist/swipe-cell/index",
+        "van-toast": "../../../static/dist/toast/index"
+      },
+      "navigationBarTitleText": "消息"
+}

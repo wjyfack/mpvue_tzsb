@@ -3,7 +3,8 @@
   <a :href="'../message_detail/main?id='+item.id+'&title='+item.title+'&endTime='+item.sendTime+'&context='+item.context" class="message-item van-hairline--top" v-for="(item,index) in lists" :key="item.id">
     <div class="top">
       <div class="left">
-        <div class="red"></div>
+        <div class="red" v-if="item.readFlag == 0"></div>
+        <div class="reds" v-else></div>
         <div class="title van-ellipsis">{{item.title}}</div>
       </div>
       <div class="right">{{item.sendTime || ''}}</div>
@@ -62,7 +63,7 @@ export default {
     }
   },
 
-  mounted () {
+  onShow () {
     this.userInfo = Util.getStorage('userInfo')
     this.lists = []
     this.getData()
@@ -92,6 +93,7 @@ export default {
         align-items: center;
        
         .red  { width: 6px;height: 6px;background: #FF4444;border-radius: 50%;}
+        .reds{width: 6px;height: 6px;}
         .title {font-size: 14px;color:#1C2627; padding-left: 10px;}
       }
       .right{font-size: 12px;color:#A1A2A4}

@@ -31,6 +31,8 @@
     "pages/message/main",
     "pages/message_detail/main",
     "pages/search/main",
+    "pages/zhaoping_liaotian_list/main",
+    "pages/zhaoping_liaotian_neir/main",
     "pages/shebei_detail/main"
   ],
   "window": {

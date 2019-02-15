@@ -239,6 +239,9 @@ export default {
         totailCount: 0
         ,noPassCount: 0
       }
+    this.loading= false
+    this.isBottom= false
+    this.isEmpty= false
     this.getDrived()
     this.getTotal()
     this.getData()

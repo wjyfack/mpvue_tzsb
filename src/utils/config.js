@@ -1,5 +1,6 @@
 ////    https://sdsfs.free.idcfengye.com  'http://120.77.34.115:8507' //
 export const baseUrl = 'http://192.168.0.116:8507'
+export const  smsUrl = 'https://api2.bmob.cn' // 字体 https://img.yzcdn.cn
 export const deviceTypes= [
     // {id:'',name: '全部'},
     {id:1,name: '锅炉'},
@@ -190,6 +191,7 @@ export const zhengSort = [
 ]
 export default {
     baseUrl,
+    smsUrl,
     deviceTypes,
     dateSort,
     certifSort,

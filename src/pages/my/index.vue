@@ -59,6 +59,7 @@ export default {
   },
   data () {
     return {
+      userInfo: {}
     }
   },
   // computed: {
@@ -82,8 +83,8 @@ export default {
     }
   },
 
-  created () {
-
+  onShow () {
+     this.userInfo = Util.getStorage('userInfo')
   }
   ,onReachBottom () {
   }

@@ -26,6 +26,7 @@
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
 import md5 from 'js-md5'
+import { smsUrl } from '@/utils/config'
 export default {
   data () {
     return {
@@ -68,7 +69,7 @@ export default {
            "X-Bmob-REST-API-Key": this.apiID,
           "Content-Type": "application/json"
          }, //http请求头，
-          baseURL:"https://api2.bmob.cn", //请求基地址
+          baseURL:smsUrl, //请求基地址
         }).then((res) => {
           console.log(res)
           if(res.status == 200) {
@@ -90,7 +91,7 @@ export default {
            "X-Bmob-REST-API-Key": this.apiID,
           "Content-Type": "application/json"
          }, //http请求头，
-          baseURL:"https://api2.bmob.cn", //请求基地址
+          baseURL:"", //请求基地址
         }).then((res) => {
           
             if(res.status == 200) {

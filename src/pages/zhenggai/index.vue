@@ -234,9 +234,23 @@ export default {
     this.zhengNum =0
     this.tijiaoNum =0
     this.allNum =0
-    this.getData(0)
-    this.getData(1)
-    this.getData(2)
+    
+    this.parOneDev= false
+    this.parOneLoad= false
+    this.parOneBottom= false
+    this.parTwoDev= false
+    this.parTwoLoad= false
+    this.parTwoBottom= false
+    this.parTreDev= false
+    this.parTreLoad= false
+    this.parTreBottom= false
+
+    setTimeout(()=> {
+      this.getData(0)
+      this.getData(1)
+      this.getData(2)
+    },300)
+    
   }
   ,onReachBottom () {
     this.getData()
