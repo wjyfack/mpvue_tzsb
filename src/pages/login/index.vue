@@ -24,6 +24,7 @@
 import Toast from '@/../static/dist/toast/toast'
 import Util from '@/utils/index'
 import md5 from 'js-md5'
+
 export default {
   data () {
     return {
@@ -31,7 +32,8 @@ export default {
       phone: '',
       password: '',
       pwd: '',
-      regPhone:  /^1[34578]\d{9}$/ 
+      regPhone:  /^1[34578]\d{9}$/ ,
+      openId:''
     }
   },
 
@@ -55,9 +57,10 @@ export default {
           return ''
         } else {
          
-         const params = Util.getData({
+         const params = JSON.stringify({
             customerLoginName: this.phone,
-            customerLoginPwd: pwds
+            customerLoginPwd: pwds,
+            wxOpenId: this.openId
           })
           this.$http.post('/customer/logon',params).then((res)=> {
               let data = res.data
@@ -91,6 +94,28 @@ export default {
           
        }
     }
+    ,getUserInfo() {
+       let _this = this
+        wx.login({
+          success(res) {
+            // console.log(res)
+            let code = res.code
+            wx.request({
+              url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxe783c24562705a90&secret=e7e37ccc968b2bc8dae410163bb25a40&js_code='+ code +'&grant_type=authorization_code',
+              data: {},
+              header: {
+                  'content-type': 'application/json'
+              },
+              success: function(res) {
+                const openid = res.data.openid //返回openid
+                _this.openId = openid
+                _this.autoLogin()
+              }
+            })
+          }
+        })
+        
+    }
   },
 
   created () {
@@ -99,8 +124,8 @@ export default {
   }
   ,mounted() {
     // 自动登录
-    
-    this.autoLogin()
+    this.getUserInfo()
+    // this.autoLogin()
   }
 }
 </script>

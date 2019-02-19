@@ -161,7 +161,7 @@ export default {
       command: {
         shebeis: []
       },
-      bases: 'http://120.31.143.223:8088',
+      bases: 'http://120.31.143.223:8066',
       baseImg: `${baseUrl}/file/show/rectify/`,
       tasks:[],
       regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/,

@@ -17,7 +17,7 @@
           <img src="../../asset/imgs/zhao_sou.png" alt="" class="zhao-img">
           <div>公司搜索</div>
         </a>
-        <div class="zhao-item">
+        <div class="zhao-item" @click="toSms">
           <img src="../../asset/imgs/zhao_xiaoxi.png" alt="" class="zhao-img">
           <div>消息</div>
         </div>
@@ -100,7 +100,7 @@
           <img src="../../asset/imgs/zhao_jianli.png" alt="" class="zhao-img">
           <div>职位管理</div>
         </a>
-        <div class="zhao-item">
+        <div class="zhao-item" @click="toSms">
           <img src="../../asset/imgs/zhao_xiaoxi.png" alt="" class="zhao-img">
           <div>消息</div>
         </div>
@@ -357,6 +357,16 @@ export default {
             Util.back()
           });
       }
+    }
+    ,toSms(opt=1) {
+      Toast('功能正在开发。')
+      // switch(opt) {
+      //   case 1:
+      //   break
+      //   case 2:
+      //   break
+      // }
+      // Util.navTo()
     }
   },
 

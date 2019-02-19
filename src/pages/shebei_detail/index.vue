@@ -210,7 +210,8 @@ export default {
         case '请选择镇':
          this.addrZhenId = index
          this.isAddr = false
-         console.log(this.addrSheng[this.addrShengId].areaName)
+          this.addrTitle = '请选择省'
+          //  console.log(this.addrSheng[this.addrShengId].areaName)
            this.addrSelect = `${this.addrSheng[this.addrShengId].areaName}/${this.addrShi[this.addrShiId].areaName}/${this.addrQu[this.addrQuId].areaName}/${this.addrZhen[this.addrZhenId].areaName}`
         break
       }
@@ -297,6 +298,10 @@ export default {
     }
     ,onSubmit() {
       const baseInfo = this.baseInfo
+      const addrShi = this.addrShi[this.addrShiId] || {}
+      const addrQu = this.addrQu[this.addrQuId] || {}
+      const addrZhen = this.addrZhen[this.addrZhenId] || {}
+
       let data = {
         deviceCertNo: baseInfo.deviceCertNo,
         deviceNextYearTestDate: baseInfo.deviceNextYearTestDate,
@@ -312,21 +317,22 @@ export default {
         deviceInstallName: baseInfo.deviceInstallName,  
         deviceStatus: baseInfo.deviceStatus,
         deviceId: baseInfo.id,
-        deviceArea1: this.addrShengId||baseInfo.deviceUseArea1||'',
-        deviceAreaName1: this.addrSheng[this.addrShengId]||baseInfo.deviceUseAreaName1||'',
-        deviceArea2: this.addrShiId||baseInfo.deviceUseArea2||'',
-        deviceAreaName2: this.addrShi[this.addrShiId]||baseInfo.deviceUseAreaName2||'',
-        deviceArea3: this.addrQuId||baseInfo.deviceUseArea3||'',
-        deviceAreaName3: this.addrQu[this.addrQuId]||baseInfo.deviceUseAreaName3||'',
-        deviceArea4: this.addrZhenId||baseInfo.deviceUseArea4||'',
-        deviceAreaName4: this.addrZhen[this.addrZhenId]||baseInfo.deviceUseAreaName4||'',
+         deviceArea1: this.addrSheng[this.addrShengId].id||baseInfo.deviceUseArea1||'',
+         deviceAreaName1: this.addrSheng[this.addrShengId].areaName||baseInfo.deviceUseAreaName1||'',
+         deviceArea2: addrShi.id||baseInfo.deviceUseArea2||'',
+         deviceAreaName2: addrShi.areaName||baseInfo.deviceUseAreaName2||'',
+        deviceArea3: addrQu.id||baseInfo.deviceUseArea3||'',
+        deviceAreaName3: addrQu.areaName||baseInfo.deviceUseAreaName3||'',
+        deviceArea4: addrZhen.id||baseInfo.deviceUseArea4||'',
+        deviceAreaName4: addrZhen.areaName||baseInfo.deviceUseAreaName4||'',
         deviceAddress: baseInfo.deviceFullAddress||'',
       }
       for(let i  in baseInfo.deviceParams) {
         data[`paramName${i+1}`] = baseInfo.deviceParams[i].name
         data[`paramValue${i+1}`] = baseInfo.deviceParams[i].value
       }
-      console.log(data)
+      // console.log(data)
+      // return ''
        const params = Util.getData(data)
        this.$http.post(`/device/update/${this.userInfo.id}`,params,{
         headers:{
@@ -337,6 +343,7 @@ export default {
         if(data.resultCode == '0000000') {
           console.log(data.returnData)
            Toast('操作成功')
+           this.isEdit = false
         } else {
           Toast(data.resultDesc)
         }

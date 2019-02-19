@@ -90,7 +90,7 @@
               <div class="info-brand-item" @click="DelBrand(index)" v-for="(item,index) in brands" :key="index">{{item}}</div>
           </div>
           <div class="worker">工作经历</div>
-          <div class="worker-item  van-hairline--bottom" @click="editWork(index)"  @longtap="deleteTap(index)" v-for="(item,index) in person.workExp" :key="index">
+          <div class="worker-item  van-hairline--bottom" @click.stop="editWork(index)"  @longpress.stop="deleteTap(index)" v-for="(item,index) in person.workExp" :key="index">
             <div class="cont  van-hairline--bottom">
               <div class="left">
                 <div>{{item.companyName}}</div>
@@ -692,7 +692,11 @@ export default {
     }
     ,save() {
       const person = this.person
-      const workSite = person.workAddr.split('/')
+      const workSite = person.workAddr ? person.workAddr.split('/'): []
+      if(workSite.length == 0) {
+        Toast('请选择工作地点')
+        return ''
+      }
       // 待遇上下限
       //["面议","3k-4k","4k-5k","5k-6k","6k-8k","8k-10k","10k以上"],
       const {salaryMin,	salaryMax	} = Util.salaryMinMax(person.salary)
@@ -731,6 +735,8 @@ export default {
                   delta: 1
                 })
               },1000)
+          } else {
+            Toast(data.resultDesc)
           }
       })
     }
@@ -894,7 +900,7 @@ export default {
       .left{
         display: flex;
        align-items: flex-end;
-       width: 90%;
+      //  width: 90%;
         .name {
           font-size: 16px;
           border-bottom: 2px solid #FDC915;

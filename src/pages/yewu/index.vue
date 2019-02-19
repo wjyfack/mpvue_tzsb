@@ -6,31 +6,31 @@
         <div>企业业务</div>
       </div>
       <div class="option">
-        <a href="../yewu_detail/main?id=1" class="option-item">
+        <a href="" @click="qiyeNavTo(1)" class="option-item">
           <img src="../../asset/imgs/ye_yewu.png" alt="" class="img">
           <div>行政许可业务</div>
         </a>
-        <a href="../yewu_detail/main?id=2" class="option-item">
+        <a href="" @click="qiyeNavTo(2)" class="option-item">
           <img src="../../asset/imgs/ye_jianshi.png" alt="" class="img">
           <div>新增设备监视</div>
         </a>
-        <a href="../yewu_detail/main?id=3" class="option-item">
+        <a href="" @click="qiyeNavTo(3)" class="option-item">
           <img src="../../asset/imgs/ye_yuyue.png" alt="" class="img">
           <div>预约检查</div>
         </a>
-        <a href="../zhaoping/main?id=2" class="option-item">
+        <a href="" @click="qiyeNavTo(4)" class="option-item">
           <img src="../../asset/imgs/ye_zhaopin.png" alt="" class="img">
           <div>技术人员招聘</div>
         </a>
-        <a href="../yewu_detail/main?id=5" class="option-item">
+        <a href="" @click="qiyeNavTo(5)" class="option-item">
           <img src="../../asset/imgs/ye_xinzeng.png" alt="" class="img">
           <div>设备新增管理</div>
         </a>
-        <a href="../nengyuan/main" class="option-item">
+        <a href="" @click="qiyeNavTo(6)" class="option-item">
           <img src="../../asset/imgs/ye_nengyuan.png" alt="" class="img">
           <div>能源管理</div>
         </a>
-         <a href="../jiaoyi/main?id=2" class="option-item">
+         <a href="" @click="qiyeNavTo(7)" class="option-item">
           <img src="../../asset/imgs/ye_weixiu.png" alt="" class="img">
           <div>设备维修</div>
         </a>
@@ -68,6 +68,7 @@
         </a>
       </div>
     </div>
+     <van-dialog id="van-dialog" />
     <tab-bar active="3"/>
   </div>
 </template>
@@ -75,6 +76,8 @@
 import Util from '@/utils/index'
 import tabBar from '@/components/tabBar'
 import myLoad from '@/components/myLoad'
+import Dialog from '@/../static/dist/dialog/dialog'
+
 export default {
   components: {
     tabBar,
@@ -82,7 +85,8 @@ export default {
   },
   data () {
     return {
-     height: 0
+     height: 0,
+     userInfo:{}
     }
   },
   // computed: {
@@ -91,13 +95,48 @@ export default {
   //   }
   // },
   methods: {
-       getPhoneHeight () {
+      getPhoneHeight () {
           let _this = this
           wx.getSystemInfo({
             success: function(res) {
             _this.height = (res.windowHeight) +'px'
             }
           })
+      }
+        ,qiyeNavTo(opt) {
+          if(this.userInfo.companyId == null || this.userInfo.companyName == null) {
+            Dialog.alert({
+              message: '暂未认证企业，请先认证'
+            }).then(() => {
+                //Util.redTo('../my_rengzheng/main')
+            })
+          } else {
+            let url = ''
+              switch(opt) {
+                case 1:
+                  url = `../yewu_detail/main?id=1`
+                break
+                case 2:
+                  url = `../yewu_detail/main?id=2`
+                break
+                case 3:
+                  url = `../yewu_detail/main?id=3`
+                break
+                case 4:
+                  url = `../zhaoping/main?id=2`
+                break
+                case 5:
+                  url = `../yewu_detail/main?id=5`
+                break
+                case 6:
+                  url = `../nengyuan/main`
+                break
+                case 7:
+                  url = `../jiaoyi/main?id=2`
+                break
+              }
+              Util.navTo(url)
+          }
         }
   },
 
@@ -105,7 +144,7 @@ export default {
     this.getPhoneHeight()
   }
   ,mounted() {
-
+     this.userInfo = Util.getStorage('userInfo')
   }
   ,onReachBottom () {
 

@@ -1,12 +1,12 @@
 <template>
 <div class="liaotian-list van-hairline--top">
   <!-- <van-swipe-cell right-width="65"> -->
-      <a href=".../zhaoping_liaotian_neir/id=1" class="group van-hairline--bottom" v-for="(item,index) in 5" :key="index">
+      <a href="../zhaoping_liaotian_neir/main?id=1" class="group van-hairline--bottom" >
         <div class="g-img">
           <img src="http://placehold.it/100x100" alt="" class="img"></div>
         <div class="con">
           <div class="name">姓名</div>
-          <div class="content">内d容</div>
+          <div class="content">消息</div>
         </div>
         <div class="time">11.11</div>
       </a>
@@ -67,7 +67,7 @@ export default {
     this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     Util.setTitle('消息')
-    this.getMessages()
+    // this.getMessages()
   }
 }
 </script>

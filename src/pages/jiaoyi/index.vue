@@ -64,8 +64,8 @@
       </div>
     </div>
   <div class="opt">
-    <img v-if="id == 1" src="../../asset/imgs/yi_shougou.png" alt="" @click="toSort(1)" class="b-img mai" :class="{'chu':show}">
-    <img v-if="id == 1" src="../../asset/imgs/yi_chushou.png" alt="" @click="toSort(2)" class="b-img nai" :class="{'chu':show}">
+    <img v-if="id == 1" src="../../asset/imgs/ye_xinzeng.png" alt="" @click="toSort(1)" class="b-img nai" :class="{'chu':show}">
+    <!-- <img v-if="id == 1" src="../../asset/imgs/yi_chushou.png" alt="" @click="toSort(2)" class="b-img mai" :class="{'chu':show}"> -->
     <img v-if="id == 2" src="../../asset/imgs/ye_xinzeng.png" alt="" @click="toSort(4)" class="b-img nai" :class="{'chu':show}">
     <img src="../../asset/imgs/yi_liebiao.png" alt="" @click="toSort(3)" class="b-img fenlei" :class="{'chu':show}">
     <img @click="onShow" src="../../asset/imgs/yi_add.png" alt="" class="a-img add"  :class="{'add-act':show}">
@@ -134,16 +134,19 @@ export default {
         let url = '../jiaoyi_publish/main'
         switch(opt) {
           case 1:
-          url = `../jiaoyi_edit/main?id=2`
+          // url = `../jiaoyi_edit/main?id=2`
+           url = `${url}?id=${this.id}`
           break
           case 2:
           url = `${url}?id=${this.id}`
           break
           case 3:
-          url = `${url}?id=${this.id}`
+          // url = `${url}?id=${this.id}`
+            this.id == 1 ?  url = `../jiaoyi_edit/main?id=2`: url = `../jiaoyi_edit/main?id=1`
           break
           case 4:
-          url = `../jiaoyi_edit/main?id=1`
+          // url = `../jiaoyi_edit/main?id=1`
+           url = `${url}?id=${this.id}`
           break
         }
         Util.navTo(url)
@@ -259,9 +262,11 @@ export default {
     let title = ''
     if(this.id == 1) {
       title = '零部件交易'
+      this.repPageNum = 0
       this.repDatas()
     } else {
       title =  '设备维修'
+      this.fabPageNum = 0
       this.fabDatas()
     }
     Util.setTitle(title)
