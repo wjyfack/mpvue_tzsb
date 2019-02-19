@@ -1,7 +1,7 @@
 <template>
 <div class="van-hairline--top">
   <div class="zhiwei-msg" v-if="opt == 'zhiwei'">
-        <div class="zhiwei-item  van-hairline--top" @longpress="delZhiwei(index)" v-for="(item,index) in zhiweiList" :key="index">
+        <div class="zhiwei-item  van-hairline--top" @click="inToZhiwei(item)"  @longpress="delZhiwei(index)" v-for="(item,index) in zhiweiList" :key="index">
           <div class="title">
             <div class="name">{{item.jobName}}</div>
             <div class="price" v-if="item.salaryMin != item.salaryMax">{{item.salaryMin}}-{{item.salaryMax}}元/月</div>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <a href="../zhaoping_fabu/main" class="btn-su">发布职位</a>
-        <van-toast id="van-toast" />
+       
   </div>
   <zhao-item opt="jianli" :show="false" :list="recordList" v-else-if="opt == 'record'"></zhao-item>
   <zhao-item opt="person" :show="false" :list="shenqingList" v-else-if="opt == 'shenqing'"></zhao-item>
@@ -138,6 +138,11 @@ export default {
         }
       })
     }
+    ,inToZhiwei(obj) {
+      // console.log(obj)
+      const str = JSON.stringify(obj)
+      Util.navTo(`../zhaoping_fabu/main?obj=${str}`)
+    }
     ,more() {
       ++this.sqPage
       this.getShengQing()
@@ -176,6 +181,9 @@ export default {
     this.opt = this.$mp.query.opt
      this.isShengqEmpty = false
     let title = '职位管理'
+    this.recordList= []
+    this.zhiweiList= []
+    this.shenqingList= []
     switch(this.opt) {
       case 'record':
        title = '投递记录'

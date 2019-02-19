@@ -263,10 +263,12 @@ export default {
     if(this.id == 1) {
       title = '零部件交易'
       this.repPageNum = 0
+      this.repArr = []
       this.repDatas()
     } else {
       title =  '设备维修'
       this.fabPageNum = 0
+      this.fabArr = []
       this.fabDatas()
     }
     Util.setTitle(title)

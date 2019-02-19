@@ -115,6 +115,7 @@ export default {
       areaSheng: [],
       areaQu: [],
       position: {
+        id: 0,
         jobTile: '', // 职位名称
         skill: [], // 技能
         education: 0, // 学历
@@ -292,6 +293,7 @@ export default {
       const {salaryMin,	salaryMax	} = Util.salaryMinMax(this.position.salary)
       const allAddr = this.position.allAddr.split('/')
       const  {
+        id,
         jobTile, // 职位名称
         skill, // 技能
         education , // 学历
@@ -302,6 +304,7 @@ export default {
       } = this.position
 
       const params = JSON.stringify({	
+          "id": id !=0 ? id : '',
           "jobName": jobTile,	
           "educationalBg": education+1,	
           "workSiteProvince":allAddr[0],	
@@ -332,12 +335,39 @@ export default {
        
       })
     }
+    ,getSSQ(str) {
+      if(str == '') return []
+      const sheng = str.substring(0, str.indexOf('省')+1)
+      const shi = str.substring(str.indexOf('省')+1,str.indexOf('市')+1 )
+      const qu = str.substring(str.indexOf('市')+1,str.indexOf('区')+1)
+      console.log(sheng,shi,qu)
+      return `${sheng}/${shi}/${qu}`
+    }
   }, 
-  mounted() {
+  onShow() {
     this.userInfo = Util.getStorage('userInfo')
     this.getArea()
-    this.brands = []
-    this.position =  {
+   
+    let { obj } = this.$mp.query
+    console.log( obj)
+    obj = obj != '' ?JSON.parse(obj) : {}
+    if(obj) {
+      this.brands = obj.brands
+      console.log(this.getSSQ(obj.workSiteFullAddress))
+      this.position  = {
+          id: obj.id,
+          jobTile: obj.jobName, // 职位名称
+          skill: obj.skillRequires, // 技能
+          education: obj.educationalBg -1, // 学历
+          salary: obj.salaryId -1 , // 薪资
+          allAddr: this.getSSQ(obj.workSiteFullAddress) ,
+          workAddr: obj.workSiteFullAddress, // 工作地点
+          jobReq: obj.jobRequire, // 职位要求
+          enterIntr: '', // 企业介绍
+      }
+    }  else  {
+      this.brands = []
+      this.position =  {
         jobTile: '', // 职位名称
         skill: [], // 技能
         education: 0, // 学历
@@ -347,6 +377,9 @@ export default {
         jobReq: '', // 职位要求
         enterIntr: '', // 企业介绍
       }
+    }
+
+   
   }
 }
 </script>
