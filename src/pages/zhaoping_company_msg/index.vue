@@ -152,7 +152,7 @@ export default {
       return ''
     }
     ,delZhiwei(index) {
-      console.log(this.zhiweiList[index])
+      //console.log(this.zhiweiList[index])
       const params = JSON.stringify({
         companyId: this.userInfo.companyId,
         id: this.zhiweiList[index].id
@@ -172,7 +172,9 @@ export default {
                 this.getZhiWei()
               }
           })
-      })
+      }).catch(() => {
+		  
+	  })
        
     }
   },

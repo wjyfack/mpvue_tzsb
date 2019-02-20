@@ -18,7 +18,7 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
-function setTitle(title){
+function setTitle(title = ''){
   wx.setNavigationBarTitle({
     title: title 
   })

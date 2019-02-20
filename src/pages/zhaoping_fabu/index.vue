@@ -302,7 +302,7 @@ export default {
         jobReq, // 职位要求
         enterIntr, // 企业介绍
       } = this.position
-
+	  
       const params = JSON.stringify({	
           "id": id !=0 ? id : '',
           "jobName": jobTile,	
@@ -340,7 +340,7 @@ export default {
       const sheng = str.substring(0, str.indexOf('省')+1)
       const shi = str.substring(str.indexOf('省')+1,str.indexOf('市')+1 )
       const qu = str.substring(str.indexOf('市')+1,str.indexOf('区')+1)
-      console.log(sheng,shi,qu)
+//      console.log(sheng,shi,qu)
       return `${sheng}/${shi}/${qu}`
     }
   }, 
@@ -349,15 +349,15 @@ export default {
     this.getArea()
    
     let { obj } = this.$mp.query
-    console.log( obj)
+    //console.log( obj)
     obj = obj != '' ?JSON.parse(obj) : {}
     if(obj) {
       this.brands = obj.brands
-      console.log(this.getSSQ(obj.workSiteFullAddress))
+      //console.log(this.getSSQ(obj.workSiteFullAddress))
       this.position  = {
           id: obj.id,
           jobTile: obj.jobName, // 职位名称
-          skill: obj.skillRequires, // 技能
+          skill: obj.skillRequires.split(','), // 技能
           education: obj.educationalBg -1, // 学历
           salary: obj.salaryId -1 , // 薪资
           allAddr: this.getSSQ(obj.workSiteFullAddress) ,

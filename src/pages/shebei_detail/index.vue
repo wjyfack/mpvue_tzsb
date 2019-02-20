@@ -178,10 +178,15 @@ export default {
 
   methods: {
     onCheck() {
-      this.isEdit = true
-      wx.pageScrollTo({
-        scrollTop: 0
-      })
+	  if(this.baseInfo.isUpdate == 1) {
+			Toast('正在审核中')
+	  } else {
+			this.isEdit = true
+			wx.pageScrollTo({
+				scrollTop: 0
+			})
+	  }
+      
     }
     ,bindPickerChange(event) {
       const val = ~~event.mp.detail.value+1
@@ -342,8 +347,11 @@ export default {
         let data = res.data
         if(data.resultCode == '0000000') {
           console.log(data.returnData)
-           Toast('操作成功')
+           Toast('操作成功，待审核')
            this.isEdit = false
+            setTimeout(()=> {
+              Util.back()
+            },2000)
         } else {
           Toast(data.resultDesc)
         }
