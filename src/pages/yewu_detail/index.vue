@@ -573,9 +573,19 @@ export default {
     }
     ,onSub() {
       console.log(this.id)
-      switch(~~this.id) {
+      switch(~~this.id) { 
         case 1:
           let {linkTel,linkMan,deviceRegNo} = this.xingz
+          if(!linkMan){
+            Toast('请输入联系人')
+            return ''
+          } else if(!linkTel) {
+           Toast('请输入电话码')
+           return ''
+          } else if(!deviceRegNo) {
+           Toast('请输入注册码')
+           return '' 
+          }
           let params = JSON.stringify({
             companyId: this.userInfo.companyId,
             linkTel: linkTel,
@@ -640,8 +650,17 @@ export default {
             })
         break
         case 3:
-        
           const xingz = this.xingz
+          if(!xingz.linkMan){
+            Toast('请输入联系人')
+            return ''
+          } else if(!xingz.linkTel) {
+           Toast('请输入电话码')
+           return ''
+          } else if(!xingz.deviceRegNo) {
+           Toast('请输入注册码')
+           return '' 
+          }
           params = JSON.stringify({
             companyId: `${this.userInfo.companyId}`,
             linkTel: xingz.linkTel,

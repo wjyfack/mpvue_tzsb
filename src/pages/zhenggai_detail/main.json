@@ -1,7 +1,8 @@
 {
 "usingComponents": {
   "van-transition": "../../../static/dist/transition/index",
-  "van-toast": "../../../static/dist/toast/index"
+  "van-toast": "../../../static/dist/toast/index",
+  "van-dialog": "../../../static/dist/dialog/index"
   },
   "navigationBarTitleText": "任务详情"
 }

@@ -47,7 +47,7 @@
             <div class="mes-item">
               <div class="title">指令书图片</div>
               <div class="input">
-                <img :src="bases+command.commandImgUrl" alt="" class="img" @click="previews(bases+command.commandImgUrl)">
+                <img v-if="bases+command.commandImgUrl" :src="bases+command.commandImgUrl" alt="" class="img" @click="previews(bases+command.commandImgUrl)">
               </div>
             </div>
           </div>
@@ -96,62 +96,68 @@
         </div>
       </van-transition>
       <van-transition :show="!show" name="slide-right">
-        <div class="padd-bottm">
-          <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
-            <div class="header van-hairline--bottom">
-              <div class="title">任务{{index+1}}</div>
-            </div>
-            <div class="mes">
-              <div class="mes-item">
-                <div class="title">任务编号 </div>
-                <div class="input">{{item.checkNo}} </div>
-              </div>
-              <div class="mes-item">
-                <div class="title">任务要求 </div>
-                <div class="input">{{item.trackIntro}}</div>
-              </div>
-              <div class="mes-item">
-                <div class="title">设备编号 </div>
-                <div class="input">{{item.deviceCertNo}}</div>
-              </div>
-              <div class="mes-item">
-                <div class="title">单位内编号 </div>
-                <div class="input">{{item.deviceNo}}</div>
-              </div>
-              <div class="pic-item">
-                <div class="title">整改图片 </div>
-                <div class="input_img">
-                  <div class="img-list" v-for="(items,indexs) in item.imgs" :key="indexs">
-                    <div class="close" v-if="isEdit" @click="deleteImg(index,indexs)"><img src="../../asset/imgs/z_cuo.png" alt="" class="img-c"></div>
-                    <img :src="baseImg+items" alt="" class="img-item" @click="previews(item.imgs,indexs)">
-                  </div>
-                  <div class="add" v-if="isEdit" @click="uploadImg(index)">
-                      <img src="../../asset/imgs/add.png" alt="" class="add_img">
-                  </div>
-                </div>
-              </div>
-              <div class="mes-item">
-                <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
-                <input @focus="onInput(index)" class="input" v-model="item.remark" :disabled="!isEdit" placeholder="已经根据要求整改">
-              </div>
-            </div>
+        <div class="set-height" :style="{'min-height':height}">
+         <div class="padd-bottm">
+           <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
+             <div class="header van-hairline--bottom">
+               <div class="title">任务{{index+1}}</div>
+             </div>
+             <div class="mes">
+               <div class="mes-item">
+                 <div class="title">任务编号 </div>
+                 <div class="input">{{item.checkNo}} </div>
+               </div>
+               <div class="mes-item">
+                 <div class="title">任务要求 </div>
+                 <div class="input">{{item.trackIntro}}</div>
+               </div>
+               <div class="mes-item">
+                 <div class="title">设备编号 </div>
+                 <div class="input">{{item.deviceCertNo}}</div>
+               </div>
+               <div class="mes-item">
+                 <div class="title">单位内编号 </div>
+                 <div class="input">{{item.deviceNo}}</div>
+               </div>
+               <div class="pic-item">
+                 <div class="title">整改图片 </div>
+                 <div class="input_img">
+                   <div class="img-list" v-for="(items,indexs) in item.imgs" :key="indexs">
+                     <div class="close" v-if="isEdit" @click="deleteImg(index,indexs)"><img src="../../asset/imgs/z_cuo.png" alt="" class="img-c"></div>
+                     <img v-if="baseImg+items" :src="baseImg+items" alt="" class="img-item" @click="previews(item.imgs,indexs)">
+                   </div>
+                   <div class="add" v-if="isEdit" @click="uploadImg(index)">
+                       <img src="../../asset/imgs/add.png" alt="" class="add_img">
+                   </div>
+                 </div>
+               </div>
+               <div class="mes-item">
+                 <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
+                 <input @focus="onInput(index)" class="input" v-model="item.remark" :disabled="!isEdit" placeholder="已经根据要求整改">
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="set-fixed van-hairline--top" v-if="isEdit" :style="{'top':scrollHeight+'px'}"> 
+             <div class="btn" @click="changTab">上一步</div>
+             <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
           </div>
-        </div>
-        <div class="set-fixed van-hairline--top" v-if="isEdit">
-            <div class="btn" @click="changTab">上一步</div>
-            <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
-          </div>
-        </van-transition>
+         </div>
+       </van-transition>
       <van-toast id="van-toast" />
+     <van-dialog id="van-dialog" />
   </div>
 </template>
 <script>
 import Util from '@/utils/index'
-import {baseUrl} from '@/utils/config'
+import {baseUrl ,zhilingUrl} from '@/utils/config'
 import Toast from '@/../static/dist/toast/toast'
+import Dialog from '@/../static/dist/dialog/dialog'
 export default {
   data() {
     return {
+      height: 0,
+      scrollHeight: 0,
       isEdit: false,
       active: 0,
       show: true,
@@ -161,7 +167,7 @@ export default {
       command: {
         shebeis: []
       },
-      bases: 'http://120.31.143.223:8066',
+      bases: zhilingUrl,
       baseImg: `${baseUrl}/file/show/rectify/`,
       tasks:[],
       regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/,
@@ -223,19 +229,23 @@ export default {
             let data = res.data
             if(data.resultCode == '0000000') {
               data.returnData.shebeis = this.getSheBeis(data.returnData.deviceCertNoList)
-              data.returnData.commandChangedEndDate = Util.getDate(data.returnData.commandChangedEndDate)
-              data.returnData.commandDate = Util.getDate(data.returnData.commandDate)
+              data.returnData.commandChangedEndDate = this.selectDate(data.returnData.commandChangedEndDate)
+              data.returnData.commandDate = this.selectDate(data.returnData.commandDate)
            
              data.returnData.rectifyStatusName = this.getrectifyStatusName(data.returnData.rectifyStatus)
-              if(data.returnData.rectifyStatus == 0) {
-                this.isEdit = true
-              } else { 
-                this.isEdit = false
+             data.returnData.remark = data.returnData.remark == 'null' ? '' : data.returnData.remark
+              if(data.returnData.rectifyStatus == 3) {
+                 this.isEdit = false
+              } else {
+                 this.isEdit = true
               }
               this.command = data.returnData
             }
             
           })
+    },
+    selectDate(str) {
+      return str ?str.substring(0,10) : ''
     }
     ,getrectifyStatusName(status) {
       let name = ''  
@@ -344,6 +354,10 @@ export default {
         Toast('暂无整改任务')
         return ''
       }
+     Dialog.confirm({
+       message: '提交整改反馈？'
+     }).then(() => {
+       // on confirm
       const tasks = this.tasks
       let list  = []
     
@@ -359,7 +373,7 @@ export default {
           "id":  this.command.id
           ,"list": list
         })
-         this.$http.post(`/task/command/rectify/submit/${this.userInfo.id}`,params,{
+       this.$http.post(`/task/command/rectify/submit/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
             }, //http请求头，
@@ -377,15 +391,35 @@ export default {
               Toast(data.resultDesc)
             }
           })
+     }).catch(() => {
+       // on cancel
+     });
+      
     }
     ,onInput(index) {
         console.log(index)
+    },
+    getPhoneHeight () {
+      let _this = this
+      wx.getSystemInfo({
+        success: function(res) {
+         _this.height = (res.windowHeight) +'px'
+         _this.scrollHeight = ~~res.windowHeight -50
+//         console.log(~~res.windowHeight)
+        }
+      })
     }
   },
   onLoad () {
     console.log('loadgin')
+   this.getPhoneHeight()
+  },
+  onPageScroll(e) {
+   console.log(e.scrollTop)
+//   this.scrollHeight = (e.scrollTop +this.scrollHeight)
   },
   mounted () {
+   console.log(this.$mp.query)
     this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     this.ids = this.$mp.query.ids
@@ -467,6 +501,8 @@ export default {
             min-height: 18px;
             font-size: 14px;
             color:#757980;
+            display: flex;
+            align-items: center;
             .img {
               width: 64px;
               height: 85px;
@@ -531,12 +567,12 @@ export default {
    .h-t-50 {height: 50px;background: #ffffff;}
    .set-fixed {
      position: fixed;
-     bottom: 0;
      left: 0;
      right: 0;
       background: #ffffff;
       height: 55px;
       z-index: 99;
+     -webkit-overflow-scrolling:touch;
       .btn {
         width: 50%;
         float: left;
@@ -546,6 +582,12 @@ export default {
        line-height: 55px;
       }
       .btn-c {background: #FDC915;}
+   }
+   .set-height {
+     position: relative;
+     width: 100%;
+     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
    }
    .padd-bottm {
      margin-bottom: 70px;

@@ -125,7 +125,7 @@ export default {
       .cont {
         display: flex;
         align-items: center;
-        padding: 8px 0;
+        padding: 10px 0;
         .b-img {width: 20px;height: 20px;}
         .title {font-size: 14px; color:#1C2627;padding-left: 15px;}
       }

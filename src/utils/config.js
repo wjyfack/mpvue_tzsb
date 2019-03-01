@@ -1,6 +1,7 @@
 ////    https://www.xiangua.net
 export const baseUrl = 'http://120.77.34.115:8507'//'http://192.168.0.116:8507'// 
 export const  smsUrl = 'https://api2.bmob.cn' // 字体 https://img.yzcdn.cn https://api.weixin.qq.com
+export const zhilingUrl = 'http://120.31.143.223:8066'
 export const deviceTypes= [
     // {id:'',name: '全部'},
     {id:1, name: '锅炉'},
@@ -199,5 +200,6 @@ export default {
     xueliStatus,
     qiuzhiStatus,
     zhengSort,
-    salarySort
+    salarySort,
+    zhilingUrl
 }

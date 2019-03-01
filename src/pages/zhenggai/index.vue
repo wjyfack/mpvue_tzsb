@@ -159,11 +159,11 @@ export default {
         this.pageNum = ++this.allNum
         break
       }
-      const params = Util.getData({
+      const params = JSON.stringify({
         "pageSize":"10",
-        "pageNum":this.pageNum,
+        "pageNum":`${this.pageNum}`,
         "DeviceUseName": this.userInfo.realName,
-        "rectifyStatus":this.status})
+        "rectifyStatus":`${this.status}`})
          this.$http.post(`/task/command/page/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
@@ -173,9 +173,15 @@ export default {
             console.log(data)
             if(data.resultCode == '0000000') {
               let returnData = data.returnData
-              for(let i in returnData) {
-                returnData[i].commandChangedEndDate = Util.getDate(returnData[i].commandChangedEndDate)
+              try {
+               for(let i in returnData) {
+                 returnData[i].commandChangedEndDate = this.selectDate(returnData[i].commandChangedEndDate)
+               }
+              }catch(e) {
+               console.log(e)
               }
+              
+             
              switch(active) {
                 case 0: 
                   if(returnData.length == 0) {
@@ -220,8 +226,26 @@ export default {
                   break
               } 
             }
-          })
-    }
+          }).catch(e => {
+           switch(active) {
+            case 1:
+             this.parOneDev= true
+             this.parOneLoad= false
+            case 2:
+             
+
+             this.parTwoDev= true
+             this.parTwoLoad= false
+            case 3:
+              this.parTreDev= true
+             this.parTreLoad= false
+
+           }
+         })
+    },
+    selectDate(str) {
+     return str ?str.substring(0,10) : ''
+   }
   },
 
   created () {
@@ -245,11 +269,11 @@ export default {
     this.parTreLoad= false
     this.parTreBottom= false
 
-    setTimeout(()=> {
+    //setTimeout(()=> {
       this.getData(0)
       this.getData(1)
       this.getData(2)
-    },300)
+    //},300)
     
   }
   ,onReachBottom () {

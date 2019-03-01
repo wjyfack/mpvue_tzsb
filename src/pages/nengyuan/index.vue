@@ -78,7 +78,9 @@ export default {
       let _this = this
       wx.getSystemInfo({
         success: function(res) {
-         _this.height = (~~res.windowHeight-425) +'px'
+//         _this.height = (~~res.windowHeight-425) +'px'
+         _this.height = Math.floor(res.windowHeight*0.36) +'px'
+//         console.log(_this.height)
         //  console.log(res.windowHeight)
         }
       })

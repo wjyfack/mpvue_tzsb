@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="isrenzheng">
  <!-- 1不通过 0待审核 2审核通过 ""未认证 -->
  <div class="my_rengzheng" v-if="status == '2'">
     <div class="bg"></div>
@@ -14,6 +14,11 @@
      <div class="radio-item" @click="onRadio(1)"> <img v-if="!checked" src="./../../asset/imgs/radiod.png" class="radio" alt=""><img v-if="checked"  src="./../../asset/imgs/radio_checked.png" class="radio" alt=""> <label for="qiye" class="label">企业用户</label></div>
      <div class="radio-item" @click="onRadio(2)"> <img  v-if="checked"  src="./../../asset/imgs/radiod.png" class="radio" alt=""><img v-if="!checked"  src="./../../asset/imgs/radio_checked.png" class="radio" alt=""><label for="geren" class="label">个人用户</label></div>
   </div>
+  
+    <div class="ren-list van-hairline--bottom">
+     <div class="ren-list-item van-hairline--top" v-for="(item,index) in 10">xxxxxxx</div>
+     
+    </div>
   <van-transition :show="checked" name="fade-left">
     <div class="part" v-if="checked">
       <div class="form-input van-hairline--top">
@@ -161,6 +166,21 @@ export default {
   //   }
   // },
   methods: {
+   /**
+   * 使用match方法实现模糊查询
+   * @param  {Array}  list     进行查询的数组
+   * @param  {String} keyWord  查询的关键词
+   * @return {Array}           查询的结果
+   */
+    fuzzyQuery(list, keyWord) {
+      var arr = [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].match(keyWord) != null) {
+          arr.push(list[i]);
+        }
+      }
+      return arr;
+    },
     onSub() {
       let obj = {
         businessLicenseImg:this.yyImgsG.join(','),
@@ -339,6 +359,28 @@ export default {
 </script>
 
 <style  lang="less" >
+ .isrenzheng {
+  position: relative;
+  .ren-list {
+   background: #fff;
+   position: absolute;
+   left: 0;
+   right: 0;
+   top:78px;
+   width: 100%;
+   height: 140px;
+   z-index: 99;
+   overflow-y: scroll;
+   .ren-list-item {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 15px 0;
+     font-size: 14px;
+     color:#1C2627;
+   }
+  }
+ }
 .rengzheng {
   background: #EEEFF4;
   .radio-group {

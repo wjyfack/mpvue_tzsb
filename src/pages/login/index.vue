@@ -34,6 +34,7 @@ import md5 from 'js-md5'
 export default {
   data () {
     return {
+      userInfo: {},
       height: '',
       phone: '',
       password: '',
@@ -62,7 +63,24 @@ export default {
 			this.onLogin()
 		}
     ,onLogin() {
-       const pwds = this.pwd == '' ?md5(this.password):this.pwd
+       
+       let pwds = ''
+//       if(this.password == '') {
+//        Toast('请输入密码')
+//        return ''
+//       } else {
+//        pwds = this.pwd == '' ?md5(this.password):this.pwd
+//       }
+        if(!this.pwd) {
+          if(!this.password) {
+           Toast('请输入密码')
+           return ''
+          } else {
+           pwds = md5(this.password)
+          }
+        } else {
+         pwds = this.pwd
+        }
 
         if(!this.regPhone.test(this.phone)) {
           Toast('手机号格式有误')
@@ -99,7 +117,7 @@ export default {
       Util.navTo('../register/main?id=1')
     }
     ,autoLogin() {
-       let userInfo =  Util.getStorage('userInfo')
+       let userInfo = this.userInfo
        if(userInfo) {
          this.phone = userInfo.customerLinkTel
            this.pwd = userInfo.customerLoginPwd
@@ -141,12 +159,23 @@ export default {
 
   created () {
     this.getPhoneHeight()
-    
+  }
+  ,onLoad() {
+   this.userInfo = Util.getStorage('userInfo')
+   this.password= ''
+   this.pwd= ''
+//   console.log(123)
+   this.getUserInfo()
+//   this.autoLogin()
+  }
+  ,onShow() {
+//   console.log(678)
   }
   ,mounted() {
+//   console.log(345)
     // 自动登录
-    this.getUserInfo()
-    //this.autoLogin()
+    
+    
   }
 }
 </script>
