@@ -287,7 +287,7 @@
           :value="currentDate"
          @confirm="getPicker"
          @cancel="onClose"
-        />
+        /> 
         <!-- 单选 -->
         <van-picker
            v-if="selectStatus == 2" 

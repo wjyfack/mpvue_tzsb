@@ -81,8 +81,8 @@ export default {
     padding: 7px 25px;
     align-items: center;
     background: #ffffff;
-    .title {min-width: 120px;font-size: 14px;color:#1C2627;}
-    .cont {font-size: 12px; color:#757980;}
+    .title {min-width: 120px;font-size: 16px;color:#1C2627;}
+    .cont {font-size: 14px; color:#757980;}
   }
 }
 </style>

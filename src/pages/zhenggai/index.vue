@@ -226,7 +226,7 @@ export default {
 
   created () {
   }
-  ,mounted() {
+  ,onShow() {
     this.userInfo = Util.getStorage('userInfo')
     this.list = []
     this.listTi = []

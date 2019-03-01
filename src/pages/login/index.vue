@@ -12,7 +12,13 @@
       </div>
      <div class="btn-group">
         <van-button round size="large" type="primary" custom-class ="s_btn" @click="toRegister">注册</van-button>
-        <van-button round size="large" custom-class ="s_btn2" @click="onLogin">登陆</van-button>
+<!--
+			   <form @submit="toOnLogin" name="pushMsgFm" report-submit='true'>
+					 <button form-type="submit" class="s_btn2" c="s_btn2">登陆</button>
+-->
+					<van-button round size="large" @click="onLogin" custom-class ="s_btn2" >登陆</van-button> 
+<!--				</form> -->
+        
     </div>
     </div>
     <van-toast id="van-toast" />
@@ -33,7 +39,8 @@ export default {
       password: '',
       pwd: '',
       regPhone:  /^1[34578]\d{9}$/ ,
-      openId:''
+      openId:'',
+			formId: ''
     }
   },
 
@@ -46,6 +53,14 @@ export default {
         }
       })
     }
+		,toOnLogin(e) {
+			console.log(e)
+			const { formId } = e.mp.detail
+			if(formId != "the formId is a mock one") { // 在真机才有
+				this.formId = formId	 
+			}
+			this.onLogin()
+		}
     ,onLogin() {
        const pwds = this.pwd == '' ?md5(this.password):this.pwd
 
@@ -56,13 +71,19 @@ export default {
           Toast('请输入密码')
           return ''
         } else {
-         
          const params = JSON.stringify({
             customerLoginName: this.phone,
             customerLoginPwd: pwds,
             wxOpenId: this.openId
           })
-          this.$http.post('/customer/logon',params).then((res)=> {
+//				 const token = this.formId ? {
+//					 headers:{
+//						'FormID': this.formId,
+//					  'AppID': this.openId
+//					}
+//				 }: {};
+//         console.log(token, this.formId);
+				this.$http.post('/customer/logon',params).then((res)=> {
               let data = res.data
               if(data.resultCode == '0000000') {
                 Toast.clear()
@@ -73,7 +94,6 @@ export default {
               }
           })
         }
-        
     }
     ,toRegister() {
       Util.navTo('../register/main?id=1')
@@ -109,6 +129,7 @@ export default {
               success: function(res) {
                 const openid = res.data.openid //返回openid
                 _this.openId = openid
+								Util.setStorage('openid',openid)
                 _this.autoLogin()
               }
             })
@@ -125,7 +146,7 @@ export default {
   ,mounted() {
     // 自动登录
     this.getUserInfo()
-    // this.autoLogin()
+    //this.autoLogin()
   }
 }
 </script>

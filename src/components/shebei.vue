@@ -1,6 +1,6 @@
 <template>
      <div class="shebei">
-      <a :href="'../shebei_detail/main?id='+item.id" class="shebei-item" v-for="(item,index) in list " :key="item.id">
+      <a :href="'../shebei_detail/main?id='+item.id+'&isUpdate='+item.isUpdate+'&applyId='+item.updateApplyId" class="shebei-item" v-for="(item,index) in list " :key="item.id">
         <div class="top van-hairline--bottom">
           <div class="cont">
             <img src="../asset/imgs/goulu.png" alt="" class="img" v-if="item.deviceType1 == 1">

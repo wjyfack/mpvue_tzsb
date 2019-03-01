@@ -43,6 +43,8 @@ line-height: 40px !important;
  height: 40px !important;
 line-height: 40px !important;
  color: #F5A623 !important;
+ border-radius: 20px;
+	font-size: 16px;
 }
 
 </style>

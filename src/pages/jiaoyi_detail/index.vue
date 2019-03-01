@@ -51,7 +51,7 @@ export default {
       info: {},
       opt: '',
       isEdit: false,
-      userInfo: Util.getStorage('userInfo')
+      userInfo: {}
     }
   },
   // computed: {
@@ -152,13 +152,15 @@ export default {
     }
   }
   ,onShow() {
+   this.userInfo = Util.getStorage('userInfo')
     const {opt,id,isEdit} = this.$mp.query
     this.id = id
     this.opt = opt // rep , fab
+    opt == 'fab' ? Util.setTitle('维修详情'):Util.setTitle('零部件详情')
     if(isEdit == 'edit') {
       this.isEdit  = true
     }
-    console.log(this.opt)
+//    console.log(this.opt)
       this.getData()
   }
 }

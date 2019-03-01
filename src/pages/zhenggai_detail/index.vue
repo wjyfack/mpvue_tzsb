@@ -132,7 +132,7 @@
               </div>
               <div class="mes-item">
                 <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
-                <input @focus="onInput(index)" class="input" v-model="item.remark" placeholder="已经根据要求整改">
+                <input @focus="onInput(index)" class="input" v-model="item.remark" :disabled="!isEdit" placeholder="已经根据要求整改">
               </div>
             </div>
           </div>
@@ -245,7 +245,7 @@ export default {
           name = '待整改'
           break
           case 1:
-           name = ' 已提交，待审核'
+           name = '已提交，待审核'
           break
           case 2:
            name = '审核不通过'
@@ -319,7 +319,10 @@ export default {
         this.tasks[index].imgs.splice(indexs,1)
     }
     ,pushTask(index) { // index 为第几个任务
-           const params = Util.getData({
+      if(!this.isEdit) {
+       return ''
+      }
+         const params = Util.getData({
           "sourceSySign":this.tasks[index].sourceSySign,
           "sourceCheckId": this.tasks[index].sourceCheckId,
           "rectifyImg": this.tasks[index].imgs.join('&'),
@@ -364,9 +367,12 @@ export default {
             let data = res.data
             if(data.resultCode == '0000000') {
                  Toast('提交成功')
-                wx.navigateBack({
-                  delta: 1
-                })
+                setTimeout(() => {
+                 wx.navigateBack({
+                   delta: 1
+                 })
+                },1500)
+                
             } else {
               Toast(data.resultDesc)
             }
@@ -376,7 +382,9 @@ export default {
         console.log(index)
     }
   },
-
+  onLoad () {
+    console.log('loadgin')
+  },
   mounted () {
     this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
@@ -384,6 +392,7 @@ export default {
     this.sign = this.$mp.query.sign
     // let isEdit = this.$mp.query.isEdit || 0
     // console.log(isEdit == 1)
+    this.tasks = []
     this.show = true
     this.getDetail()
     this.getTask()

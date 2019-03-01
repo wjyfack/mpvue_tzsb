@@ -97,15 +97,15 @@ export default {
      
       switch(opt) {
         case 1:
-          this.isDown = false
+          this.isDown = !this.isDown
           this.isDown1 = true
         break
         case 2:
-          this.isDown1 = false
+          this.isDown1 = !this.isDown1
           this.isDown = true
         break
         case 3:
-          this.isDown2 =  false
+          this.isDown2 =  !this.isDown2
         break
       }
     }

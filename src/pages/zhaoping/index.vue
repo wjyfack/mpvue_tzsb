@@ -137,10 +137,10 @@
             </div>
             </div>
           </a>
-          <div class="more  van-hairline--top" @click="moreZhiWei">查看更多职位</div>
+          <div class="more  van-hairline--top" @click="moreZhiWei">查看更多简历</div>
         </div>
       </div>
-        <div class="h-50"></div> 
+        <div class="h-50"></div>
   </div>
   <van-toast id="van-toast" />
     <van-dialog id="van-dialog" />

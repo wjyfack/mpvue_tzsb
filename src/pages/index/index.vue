@@ -231,7 +231,7 @@ export default {
   created () {
     this.getPhoneHeight()
   },
-  mounted() {
+  onShow() {
     this.userInfo = Util.getStorage('userInfo')
     this.page= 1
     this.list= []

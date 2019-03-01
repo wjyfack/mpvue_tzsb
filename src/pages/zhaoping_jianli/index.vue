@@ -711,9 +711,9 @@ export default {
         outWorkDay: person.workDate,
         requireJobStatus: person.qiuzhiStatus+1,
         expectJobName: person.expectPosi,
-        workSiteProvince: workSite[0],
-        workSiteCity: workSite[1]|| '',
-        workSiteArea: workSite[2]|| '',
+        workSiteProvince: workSite[0]||person.workSiteProvince||'',
+        workSiteCity: workSite[1]||person.workSiteCity|| '',
+        workSiteArea: workSite[2]||person.workSiteArea|| '',
         salaryMin: salaryMin,
         salaryMax:salaryMax,
         salaryId: person.salary +1,
@@ -762,7 +762,7 @@ export default {
                   workDate: info.outWorkDay, // 工作时间 
                   qiuzhiStatus: ~~(info.requireJobStatus-1), // 求职状态
                   expectPosi: info.expectJobName,// 期望职业
-                  workAddr: info.workSiteFullAddress,// 工作地点
+                  workAddr: `${info.workSiteProvince}/${info.workSiteCity}/${info.workSiteArea}`,// 工作地点
                   salary:~~(info.salaryId-1), //资薪
                   certif: info.certificates ,// 证书
                   workExp: info.resumeWorkExpList
@@ -789,7 +789,8 @@ export default {
                 const prov = base.province ? `${base.province}/` : ''
                 const area = base.area ? `${base.area}/` : ''
                 const addr = base.addr ? `${base.addr}/` : ''
-                base.workAddr = `${prov}${area}${addr}`
+                //base.workAddr = `${prov}${area}${addr}`
+                base.workAddr = `${base.province}/${base.city}/${base.area}`
                 base.holiday = base.holiday == 'null' ? '': base.holiday
                   this.companyInfo = base
             } else {
@@ -830,13 +831,14 @@ export default {
       // console.log(arr)
     }
     ,saveCompany() {
-      const {id,address,area,city,brands,companyName,holiday,logoImg,province,introduce} = this.companyInfo
+      const {id,address,area,city,brands,companyName,holiday,logoImg,province,introduce,workAddr} = this.companyInfo
+      const addr = workAddr ? workAddr.split('/'): []
       const params = JSON.stringify({
         id: id,
         companyName:companyName,
-        province:province,
-        city:city,
-        area:area,
+        province:addr[0]||province,
+        city:addr[1]||city,
+        area:addr[2]||area,
         address:address,
         holiday:holiday,
         introduce:introduce,
@@ -911,7 +913,7 @@ export default {
         .left-img  {
           width: 18px;
           height: 18px;
-          align-self: center;
+          align-self: flex-end;
         }
       }
       .avatar {

@@ -7,33 +7,33 @@
   <div class="mes">
     <div class="mes-item">
       <div class="title">使用登记证</div>
-      <input type="text" class="input" v-model="baseInfo.deviceCertNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceCertNo" :disabled="!isEdit" :placeholder="isEdit?'请输入使用登记证':''">
     </div>
      <div class="mes-item">
       <div class="title">设备名称或型号</div>
-      <input type="text" class="input" v-model="baseInfo.deviceModel " :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceModel " :disabled="!isEdit" :placeholder="isEdit?'请输入设备名称或型号':''">
     </div>
      <div class="mes-item">
       <div class="title">设备类别</div>
-      <input type="text" class="input" v-model="baseInfo.deviceTypeName2" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceTypeName2" :disabled="!isEdit" :placeholder="isEdit?'请输入设备类别':''">
     </div>
      <div class="mes-item">
       <div class="title">单位内编号</div>
-      <input type="text" class="input" value="1＃" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceNo" :disabled="!isEdit" :placeholder="isEdit?'请输入单位内编号':''">
     </div>
      <div class="mes-item">
       <div class="title">产品编号</div>
-      <input type="text" class="input" v-model="baseInfo.deviceProduceNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceNo" :disabled="!isEdit" :placeholder="isEdit?'请输入产品编号':''">
     </div>
      <div class="mes-item">
       <div class="title">设备代码</div>
-      <input type="text" class="input" v-model="baseInfo.deviceRegNo" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceRegNo" :disabled="!isEdit" :placeholder="isEdit?'请输入设备代码':''">
     </div>
      <div class="mes-item">
       <div class="title">设备位置</div>
       <div class="addr">
           <div class="addr-ssq" @click="addrsSelect"><span>{{addrSelect}}</span><div class="triangle_border_down"></div></div>
-          <textarea auto-height  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit"> </textarea>
+          <textarea auto-height  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit" :placeholder="isEdit?'请输入设备位置':''"> </textarea>
       </div>
     
           
@@ -48,15 +48,15 @@
     </div>
      <div class="mes-item">
       <div class="title">制造时间</div>
-      <input type="text" class="input" v-model="baseInfo.deviceProduceDate" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceDate" :disabled="!isEdit" :placeholder="isEdit?'请输入制造时间如:1990-01-01':''">
     </div>
        <div class="mes-item">
       <div class="title">制造单位</div>
-      <input type="text" class="input" v-model="baseInfo.deviceProduceName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceProduceName" :disabled="!isEdit" :placeholder="isEdit?'请输入制造单位':''">
     </div>
        <div class="mes-item">
       <div class="title">安装单位</div>
-      <input type="text" class="input" v-model="baseInfo.deviceInstallName" :disabled="!isEdit">
+      <input type="text" class="input" v-model="baseInfo.deviceInstallName" :disabled="!isEdit" :placeholder="isEdit?'请输入安装单位':''">
     </div>
 
   </div>
@@ -103,7 +103,7 @@
     </div>
   </div>
 </div>
-<div class="check" @click="onCheck"> <span v-if="!isEdit" >是否信息有误？</span></div>
+<div class="check" @click="onCheck"> <span v-if="!isEdit" >{{tips}}</span></div>
 <van-transition :show="isEdit" name="slide-up">
   <div class="set-fixed">
     <div class="btn" @click="onBack">上一步</div>
@@ -130,6 +130,9 @@ export default {
       isEdit: false
       ,id: 0
       ,isAddr: false
+      ,isUpdate: 0
+      ,tips: '是否信息有误？'
+      ,isTips: false
       ,baseInfo: {
         deviceCertNo:'',
         deviceFullAddress:'',
@@ -178,16 +181,56 @@ export default {
 
   methods: {
     onCheck() {
-	  if(this.baseInfo.isUpdate == 1) {
-			Toast('正在审核中')
-	  } else {
-			this.isEdit = true
-			wx.pageScrollTo({
-				scrollTop: 0
-			})
-	  }
-      
+     if(this.isTips) {
+      this.isTips = false
+      this.tips = '查看设备待审核信息'
+      this.getData()
+      return ''
+     }
+     if(this.baseInfo.isUpdate == 1) {
+       Toast('正在获取待审核信息')
+       this.getUpdateData()
+     } else {
+      this.isEdit = true
+       wx.pageScrollTo({
+         scrollTop: 0
+       })
+     }
+     
+     
     }
+   ,getUpdateData(isUpdate = this.baseInfo.isUpdate, applyId = this.baseInfo.updateApplyId) {
+     const params = JSON.stringify({
+//      id:`${this.id}`,
+//      isUpdate: isUpdate,
+//      updateApplyId: applyId
+        id: applyId
+     })
+       this.$http.post(`/device/update/apply/param/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+//          console.log(data.returnData)
+          data.returnData.status = this.checkStatus(data.returnData.deviceStatus)
+          data.returnData.deviceFullAddress = this.checkAddr(data.returnData.deviceFullAddress)
+          data.returnData.deviceParams = this.checkParam(data.returnData.deviceParam)
+          this.addrSelect = this.checkAddrSelect(data.returnData)
+//          console.log(this.checkAddrSelect(data.returnData))
+         if(!data.returnData.deviceFullAddress) {
+          data.returnData.deviceFullAddress = data.returnData.deviceAddress
+         }
+          this.baseInfo = data.returnData
+          this.tips = '返回设备详情'
+          this.isTips = true
+//          Toast.clear()
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+   }
     ,bindPickerChange(event) {
       const val = ~~event.mp.detail.value+1
       this.baseInfo.deviceStatus = val
@@ -258,11 +301,12 @@ export default {
 
     ,onBack() {
       this.isEdit = false
-      this.getData()
+      //Toast('返回未修改信息')
+       this.getData()
     }
      ,getAddr() {
        const url = `/area/device/init/${this.userInfo.id}`
-       this.$http.post(url,{
+       this.$http.post(url,'',{
         headers:{
           'Access-Token':this.userInfo.token,
         }, //http请求头，
@@ -303,9 +347,9 @@ export default {
     }
     ,onSubmit() {
       const baseInfo = this.baseInfo
-      const addrShi = this.addrShi[this.addrShiId] || {}
-      const addrQu = this.addrQu[this.addrQuId] || {}
-      const addrZhen = this.addrZhen[this.addrZhenId] || {}
+//      const addrShi = this.addrShi[this.addrShiId] 
+//      const addrQu = this.addrQu[this.addrQuId] || {}
+//      const addrZhen = this.addrZhen[this.addrZhenId] || {}
 
       let data = {
         deviceCertNo: baseInfo.deviceCertNo,
@@ -321,24 +365,27 @@ export default {
         deviceProduceName:baseInfo.deviceProduceName,
         deviceInstallName: baseInfo.deviceInstallName,  
         deviceStatus: baseInfo.deviceStatus,
-        deviceId: baseInfo.id,
-         deviceArea1: this.addrSheng[this.addrShengId].id||baseInfo.deviceUseArea1||'',
-         deviceAreaName1: this.addrSheng[this.addrShengId].areaName||baseInfo.deviceUseAreaName1||'',
-         deviceArea2: addrShi.id||baseInfo.deviceUseArea2||'',
-         deviceAreaName2: addrShi.areaName||baseInfo.deviceUseAreaName2||'',
-        deviceArea3: addrQu.id||baseInfo.deviceUseArea3||'',
-        deviceAreaName3: addrQu.areaName||baseInfo.deviceUseAreaName3||'',
-        deviceArea4: addrZhen.id||baseInfo.deviceUseArea4||'',
-        deviceAreaName4: addrZhen.areaName||baseInfo.deviceUseAreaName4||'',
+        deviceId: this.id,
+        deviceArea1: this.addrSheng[this.addrShengId].id||baseInfo.deviceArea1||'',
+        deviceAreaName1: this.addrSheng[this.addrShengId].areaName||baseInfo.deviceAreaName1||'',
+        deviceArea2: this.addrShi[this.addrShiId] != undefined? this.addrShi[this.addrShiId].id:baseInfo.deviceArea2,
+        deviceAreaName2: this.addrShi[this.addrShiId]!= undefined?this.addrShi[this.addrShiId].areaName : baseInfo.deviceAreaName2,
+        deviceArea3: this.addrQu[this.addrQuId] != undefined?this.addrQu[this.addrQuId].id : baseInfo.deviceArea3,
+        deviceAreaName3: this.addrQu[this.addrQuId] != undefined?this.addrQu[this.addrQuId].areaName:baseInfo.deviceAreaName3,
+        deviceArea4: this.addrZhen[this.addrZhenId] != undefined?this.addrZhen[this.addrZhenId].id:baseInfo.deviceArea4,
+        deviceAreaName4: this.addrZhen[this.addrZhenId] != undefined?this.addrZhen[this.addrZhenId].areaName:baseInfo.deviceAreaName4,
         deviceAddress: baseInfo.deviceFullAddress||'',
       }
+
+			
       for(let i  in baseInfo.deviceParams) {
         data[`paramName${i+1}`] = baseInfo.deviceParams[i].name
         data[`paramValue${i+1}`] = baseInfo.deviceParams[i].value
       }
-      // console.log(data)
-      // return ''
-       const params = Util.getData(data)
+      console.log(baseInfo.deviceId,this.id)
+//     console.log(this.addrShi[this.addrShiId]? this.addrShi[this.addrShiId].id:baseInfo.deviceArea2)
+//       return ''
+       const params = JSON.stringify(data)
        this.$http.post(`/device/update/${this.userInfo.id}`,params,{
         headers:{
           'Access-Token':this.userInfo.token,
@@ -407,7 +454,7 @@ export default {
        return name
     }
     ,checkAddr(addr) {
-      return addr.split('/').join('')
+      return addr ? addr.split('/').join(''): ''
     }
     ,checkParam(params) {
         let data = []
@@ -418,21 +465,33 @@ export default {
     }
     ,checkAddrSelect(data) {
       let str = ''
-      if(data.deviceAreaName1 != '') str = `${data.deviceAreaName1}`
-      if(data.deviceAreaName2 != '') str += `/${data.deviceAreaName2}`
-      if(data.deviceAreaName3 != '') str += `/${data.deviceAreaName1}`
-      if(data.deviceAreaName4 != '') str += `/${data.deviceAreaName1}`
+      if(data.deviceAreaName1) str = `${data.deviceAreaName1}`
+      if(data.deviceAreaName2) str += `/${data.deviceAreaName2}`
+      if(data.deviceAreaName3) str += `/${data.deviceAreaName3}`
+      if(data.deviceAreaName4) str += `/${data.deviceAreaName4}`
       return str
     }
   },
 
-  mounted () {
+  onShow () {
     this.userInfo = Util.getStorage('userInfo')
-    this.id = this.$mp.query.id
+     const { id,isUpdate,applyId } = this.$mp.query
+    this.id = id
+//    if(isUpdate == 1) {
+//     this.isUpdate = isUpdate
+//     this.getUpdateData(isUpdate,applyId)
+//    } else {
+    if(isUpdate == 1) { // 修改提示
+     this.tips = '查看设备待审核信息'
+    } else {
+     this.tips = '是否信息有误？'
+    }
+     this.getData()
+//    }
     this.getAddr()
-    this.getData()
     this.isEdit = false
-  
+   
+
 
   }
 }

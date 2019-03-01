@@ -71,12 +71,15 @@ export default {
          }, //http请求头，
           baseURL:smsUrl, //请求基地址
         }).then((res) => {
-          console.log(res)
+          // console.log(res)
           if(res.status == 200) {
             this.smsId = res.data.smsId
              this.daojishi()
           }
          
+        }).catch(e => {
+         console.log(e)
+         Toast('短信发送已到上限')
         })
         
       }
@@ -85,7 +88,7 @@ export default {
       const data = {
           "mobilePhoneNumber": this.phone
         }
-        this.$http.post(`/1/verifySmsCode/${this.smsCode}`,data,{
+        this.$http.post(`${smsUrl}/1/verifySmsCode/${this.smsCode}`,data,{
          headers:{
            "X-Bmob-Application-Id": this.appID,
            "X-Bmob-REST-API-Key": this.apiID,

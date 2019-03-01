@@ -37,6 +37,7 @@
             <div class="title">{{item.tradeFullAddress}}</div>
           </div>
         </a>
+       <div class="no-message" v-if="repArr.length ==0">暂无信息</div>
       </div>
   </div>
   <div v-if="id == 2">
@@ -61,6 +62,7 @@
             <div class="fen">{{item.deviceFullAddress}}</div>
           </div>
         </a>
+        <div class="no-message" v-if="fabArr.length ==0">暂无信息</div>
       </div>
     </div>
   <div class="opt">
@@ -70,6 +72,7 @@
     <img src="../../asset/imgs/yi_liebiao.png" alt="" @click="toSort(3)" class="b-img fenlei" :class="{'chu':show}">
     <img @click="onShow" src="../../asset/imgs/yi_add.png" alt="" class="a-img add"  :class="{'add-act':show}">
   </div>
+  <van-toast id="van-toast" />
 </div>
 </template>
 <script>
@@ -155,15 +158,15 @@ export default {
      
       switch(opt) {
         case 1:
-          this.isDown = false
+          this.isDown = !this.isDown
           this.isDown1 = true
         break
         case 2:
-          this.isDown1 = false
+          this.isDown1 = !this.isDown1
           this.isDown = true
         break
         case 3:
-          this.isDown2 =  false
+          this.isDown2 = !this.isDown2
         break
       }
     }
@@ -216,6 +219,7 @@ export default {
                   list[i].imgs = arr
                 }
                 this.fabArr = [...this.fabArr,...list]
+                Toast.clear()
             }
           })
     }
@@ -245,6 +249,7 @@ export default {
                   list[i].applyTime = dateformat(list[i].applyTime,'yyyy-mm-dd')
                 }
                 this.repArr = [...this.repArr,...list]
+              Toast.clear()
             }
           })
     }
@@ -260,6 +265,13 @@ export default {
     this.userInfo = Util.getStorage('userInfo')
     this.id = this.$mp.query.id
     let title = ''
+//		if(this.sort[0].name != '全部') {
+//			this.sort.unshift({id:'',name: '全部'})
+//		}
+    Toast.loading({
+      mask: true,
+      message: '加载中...'
+    })
     if(this.id == 1) {
       title = '零部件交易'
       this.repPageNum = 0
@@ -281,7 +293,7 @@ export default {
   position: relative;
   .slide-image {
      width: 100%;
-       max-height: 100%;
+		 max-height: 100%;
   }
   .sort {
     display: flex;
@@ -351,6 +363,14 @@ export default {
         .fen {color:#A1A2A4;font-size: 10px;line-height: 14px;}
       }
     }
+   .no-message {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #A1A2A4;
+    padding: 15px 0;
+   }
   }
   .opt {
     .a-img {height: 48px;width:48px;}
