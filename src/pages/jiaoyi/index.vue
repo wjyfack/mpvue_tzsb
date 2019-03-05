@@ -219,7 +219,7 @@ export default {
                   list[i].imgs = arr
                 }
                 this.fabArr = [...this.fabArr,...list]
-                Toast.clear()
+                Util.clear()
             }
           })
     }
@@ -249,7 +249,7 @@ export default {
                   list[i].applyTime = dateformat(list[i].applyTime,'yyyy-mm-dd')
                 }
                 this.repArr = [...this.repArr,...list]
-              Toast.clear()
+              Util.clear()
             }
           })
     }
@@ -268,10 +268,7 @@ export default {
 //		if(this.sort[0].name != '全部') {
 //			this.sort.unshift({id:'',name: '全部'})
 //		}
-    Toast.loading({
-      mask: true,
-      message: '加载中...'
-    })
+    Util.loading('加载中...')
     if(this.id == 1) {
       title = '零部件交易'
       this.repPageNum = 0

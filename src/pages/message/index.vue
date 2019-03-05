@@ -11,6 +11,7 @@
     </div>
     <div class="cont van-ellipsis">{{item.context}}</div>
   </a>
+  <div class="no-message" v-if="isN">暂无消息</div>
   <my-load :Loading="isload" :Bottom="isbt"></my-load>
 </div>
 </template>
@@ -23,6 +24,7 @@ export default {
   },
   data () {
     return {
+			isN: false,
       page: 1,
       isbt: false,
       isload: false,
@@ -52,7 +54,7 @@ export default {
             if(data.resultCode  == '0000000') {
               this.isload = false
               if(data.returnData.length == 0) {
-                 this.isbt = true
+								 if(this.page !=1){this.isbt = true} else {this.isN = true}
                  this.page >1 ? --this.page : ''
               } else{
                 this.lists = [...this.lists,...data.returnData]
@@ -64,6 +66,10 @@ export default {
   },
 
   onShow () {
+		this.isN =false
+		this.isbt=false
+    this.isload= false
+    this.page = 1
     this.userInfo = Util.getStorage('userInfo')
     this.lists = []
     this.getData()
@@ -78,8 +84,18 @@ export default {
 </script>
 
 <style  lang="less">
+
 .message {
   background:  #EEEFF4;
+	.no-message {
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #A1A2A4;
+	background: #ffffff;
+	padding: 15px 0;
+ }
   &-item {
     background: #ffffff;
     padding: 12px 0;

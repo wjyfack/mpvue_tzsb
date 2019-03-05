@@ -1,5 +1,5 @@
 <template>
-  <div class="zhengai_detail">
+  <div class="zhengai_detail fixed-posit" :style="{height:height}">
     <div class="zhengai_bar">
         <div class="bar">
            <div class="bar-item" :class="{'act':show}" @click="changTab">任务详情</div>
@@ -96,8 +96,30 @@
         </div>
       </van-transition>
       <van-transition :show="!show" name="slide-right">
-        <div class="set-height" :style="{'min-height':height}">
-         <div class="padd-bottm">
+        <div>
+         <div class="set-height">
+<!--
+          <div class="info info-top">
+           <div class="mes">
+            <div class="mes-item">
+              <div class="title" > <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
+              <input @focus="onInput(index)" class="input" v-model="zhenggaiZhubei" :disabled="!isEdit" placeholder="已经根据要求整改">
+           </div>
+           <div class="pic-item">
+              <div class="title">整改图片 </div>
+              <div class="input_img">
+                <div class="img-list" v-for="(items,indexs) in imgs" :key="indexs">
+                  <div class="close" v-if="isEdit" @click="deleteImg(index,indexs)"><img src="../../asset/imgs/z_cuo.png" alt="" class="img-c"></div>
+                  <img v-if="baseImg+items" :src="baseImg+items" alt="" class="img-item" @click="previews(item.imgs,indexs)">
+                </div>
+                <div class="add" v-if="isEdit" @click="uploadImg(13)">
+                    <img src="../../asset/imgs/add.png" alt="" class="add_img">
+                 </div>
+               </div>
+             </div>
+           </div>
+          </div>
+-->
            <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
              <div class="header van-hairline--bottom">
                <div class="title">任务{{index+1}}</div>
@@ -132,18 +154,21 @@
                  </div>
                </div>
                <div class="mes-item">
-                 <div class="title" @click="pushTask(index)"> <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
+                 <div class="title" > <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
                  <input @focus="onInput(index)" class="input" v-model="item.remark" :disabled="!isEdit" placeholder="已经根据要求整改">
                </div>
              </div>
            </div>
+          
          </div>
-         <div class="set-fixed van-hairline--top" v-if="isEdit" :style="{'top':scrollHeight+'px'}"> 
-             <div class="btn" @click="changTab">上一步</div>
-             <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
-          </div>
+         <div class="padd-bottm"></div>
+         
          </div>
        </van-transition>
+      <div class="set-fixed van-hairline--top" v-if="!show&&isEdit" > 
+          <div class="btn" @click="changTab">上一步</div>
+          <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
+        </div>
       <van-toast id="van-toast" />
      <van-dialog id="van-dialog" />
   </div>
@@ -153,6 +178,7 @@ import Util from '@/utils/index'
 import {baseUrl ,zhilingUrl} from '@/utils/config'
 import Toast from '@/../static/dist/toast/toast'
 import Dialog from '@/../static/dist/dialog/dialog'
+
 export default {
   data() {
     return {
@@ -171,7 +197,10 @@ export default {
       baseImg: `${baseUrl}/file/show/rectify/`,
       tasks:[],
       regs:/^((ht)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/,
-      userInfo: {}
+      userInfo: {},
+     scrollHeights: 0,
+     zhenggaiZhubei: '',
+     imgs: []
     }
   },
   computed: {
@@ -234,11 +263,14 @@ export default {
            
              data.returnData.rectifyStatusName = this.getrectifyStatusName(data.returnData.rectifyStatus)
              data.returnData.remark = data.returnData.remark == 'null' ? '' : data.returnData.remark
-              if(data.returnData.rectifyStatus == 3) {
+              if(data.returnData.rectifyStatus == 3 || data.returnData.rectifyStatus == 1) {
                  this.isEdit = false
+//                 console.log(data.returnData.rectifyStatus)
               } else {
                  this.isEdit = true
               }
+//              this.zhenggaiZhubei = data.returnData.rectifyRemark
+//              this.imgs = data
               this.command = data.returnData
             }
             
@@ -307,9 +339,10 @@ export default {
              wx.hideToast();  
             var data =JSON.parse(res.data)  // string to obj
              if(data.resultCode == '0000000') {
-                console.log(data,index)
+//                console.log(data,index)
                 const url = data.returnData
                 _this.tasks[index].imgs = [..._this.tasks[index].imgs, url]
+//              _this.imgs = [..._this.imgs, url]
             }
           },fail:function(err){
             wx.hideToast();  
@@ -327,6 +360,7 @@ export default {
     }
     ,deleteImg (index,indexs) {
         this.tasks[index].imgs.splice(indexs,1)
+//        this.imgs[index].splice(indexs,1)
     }
     ,pushTask(index) { // index 为第几个任务
       if(!this.isEdit) {
@@ -404,7 +438,8 @@ export default {
       wx.getSystemInfo({
         success: function(res) {
          _this.height = (res.windowHeight) +'px'
-         _this.scrollHeight = ~~res.windowHeight -50
+         _this.scrollHeight = _this.scrollHeights = ~~res.windowHeight -55
+         
 //         console.log(~~res.windowHeight)
         }
       })
@@ -414,10 +449,7 @@ export default {
     console.log('loadgin')
    this.getPhoneHeight()
   },
-  onPageScroll(e) {
-   console.log(e.scrollTop)
-//   this.scrollHeight = (e.scrollTop +this.scrollHeight)
-  },
+
   mounted () {
    console.log(this.$mp.query)
     this.userInfo = Util.getStorage('userInfo')
@@ -430,13 +462,17 @@ export default {
     this.show = true
     this.getDetail()
     this.getTask()
+  },
+
+  onPageScroll(event) {
+//     this.scrollHeight = this.scrollHeights + event.scrollTop
+     
   }
-
-
 }
 </script>
 
 <style  lang="less">
+/* .isFixed {bottom: 0 !important;}*/
 .zhengai_detail {
   .zhengai_bar {
     padding: 7px 0;
@@ -568,11 +604,14 @@ export default {
    .set-fixed {
      position: fixed;
      left: 0;
-     right: 0;
+    
+     bottom: 0;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
       background: #ffffff;
       height: 55px;
       z-index: 99;
-     -webkit-overflow-scrolling:touch;
       .btn {
         width: 50%;
         float: left;
@@ -585,12 +624,24 @@ export default {
    }
    .set-height {
      position: relative;
-     width: 100%;
-     overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
+/*
+     	overflow-y: scroll;
+     box-sizing: border-box;
+     -webkit-overflow-scrolling: touch;
+*/
    }
    .padd-bottm {
-     margin-bottom: 70px;
+/*     margin-bottom: 70px;*/
+    height: 70px;
    }
+ .fixed-posit {
+  position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+  overflow-y: scroll;
+ -webkit-overflow-scrolling: touch;
+/*	height: 100%;*/
+ }
 }
 </style>

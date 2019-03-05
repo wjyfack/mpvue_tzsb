@@ -153,7 +153,6 @@ export default {
             })
           }
         })
-        
     }
   },
 
@@ -165,7 +164,7 @@ export default {
    this.password= ''
    this.pwd= ''
 //   console.log(123)
-   this.getUserInfo()
+   
 //   this.autoLogin()
   }
   ,onShow() {
@@ -174,7 +173,7 @@ export default {
   ,mounted() {
 //   console.log(345)
     // 自动登录
-    
+    this.getUserInfo()
     
   }
 }

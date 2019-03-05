@@ -132,6 +132,21 @@ function back() {
     delta: 1
   })
 }
+function loading(title) {
+// wx.showToast({
+//  title: title,
+//  icon: 'loading',
+//  duration: 3000
+//})
+ wx.showLoading({
+   title: title,
+   mask: true
+ })
+}
+function clear(){
+// wx.hideToast()
+ wx.hideLoading()
+}
 export default {
   formatNumber,
   formatTime,
@@ -148,5 +163,7 @@ export default {
   getCertifSort,
   CerifSort2keys,
   salaryMinMax,
-  back
+  back,
+ loading,
+ clear
 }

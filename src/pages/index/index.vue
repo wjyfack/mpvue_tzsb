@@ -6,8 +6,10 @@
             <img src="../../asset/imgs/search.png" alt="" class="s-icon">
             <div>请输入设备编号搜索</div> 
          </a>
-          <img v-if="isbell" src="../../asset/imgs/bell_r.png" alt="" class="bell" @click="toMessage">
-          <img v-else src="../../asset/imgs/bell.png" alt="" class="bell" >
+         <div class="bell-item" @click="toMessage">
+            <img v-if="isbell" src="../../asset/imgs/bell_r.png" alt="" class="bell" >
+            <img v-else src="../../asset/imgs/bell.png" alt="" class="bell" >
+         </div>
       </div>
      </div>  
      <div class="shuliang">
@@ -49,9 +51,13 @@
      </div>
      
      <!--  -->
-    <she-bei :list="list" :isEmpty="isEmpty"></she-bei>
+    <she-bei :list="list"></she-bei>
+    <div class="kong" v-if="isEmpty">
+        <img src="../../asset/imgs/kong.png" alt="" class="kong-img">
+        <div class="tips">设备列表为空　 <a href="../my_rengzheng/main" class="link">通过认证</a></div>
+    </div>
     <my-load :Loading="loading" :Bottom="isBottom"> </my-load>
-
+    
     <tab-bar active="0"/>
     <van-toast id="van-toast" />
     <!-- <div class="mask" :style="{'height': height}"></div> -->
@@ -326,6 +332,11 @@ export default {
         padding: 3px 0;
         .s-icon {width:11px;height: 11px;margin-right: 8px;margin-left: 11px;}
       }
+     .bell-item {
+      	display: flex;
+      	justify-content: center;
+			 	align-items: center;
+     }
       .bell {width: 19px;height: 20px;margin-left: 30px;margin-right: 15px;align-self: center;}
     }
    
@@ -429,5 +440,20 @@ export default {
     z-index: 999;
     overflow: hidden;
   }
+}
+.kong {
+    text-align: center;
+    .kong-img {
+        width: 100px;
+        height: 120px;
+        margin: 75px  auto 22px auto;
+    }
+    .tips {
+        display: flex;
+        justify-content: center;
+        font-size:  12px;
+        color:#A1A2A4;
+        .link {color:#FDC915;}
+    }
 }
 </style>

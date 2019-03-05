@@ -4,5 +4,5 @@
   "van-toast": "../../../static/dist/toast/index",
   "van-dialog": "../../../static/dist/dialog/index"
   },
-  "navigationBarTitleText": "任务详情"
+  "navigationBarTitleText": "整改详情"
 }

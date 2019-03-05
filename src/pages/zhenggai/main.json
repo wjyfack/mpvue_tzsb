@@ -6,5 +6,5 @@
     "van-tabbar-item": "../../../static/dist/tabbar-item/index",
     "van-loading": "../../../static/dist/loading/index"
   },
-  "navigationBarTitleText": "设备认证"
+  "navigationBarTitleText": "整改反馈"
 }

@@ -15,15 +15,15 @@
      <div class="radio-item" @click="onRadio(2)"> <img  v-if="checked"  src="./../../asset/imgs/radiod.png" class="radio" alt=""><img v-if="!checked"  src="./../../asset/imgs/radio_checked.png" class="radio" alt=""><label for="geren" class="label">个人用户</label></div>
   </div>
   
-    <div class="ren-list van-hairline--bottom">
-     <div class="ren-list-item van-hairline--top" v-for="(item,index) in 10">xxxxxxx</div>
+    <div class="ren-list van-hairline--bottom" v-if="SList.length != 0">
+     <div class="ren-list-item van-hairline--top" v-for="(item,index) in SList" :key="index" @click="selectSlit(item)">{{item}}</div>
      
     </div>
   <van-transition :show="checked" name="fade-left">
     <div class="part" v-if="checked">
       <div class="form-input van-hairline--top">
         <div class="label">单位名称</div>
-        <input type="text" class="input" v-model="qi.name" placeholder="请输入单位名称" >
+        <input type="text" class="input" v-model="qi.name" placeholder="请输入单位名称" @input="changeMohu(e,1)">
       </div>
       <div class="form-input van-hairline--top">
         <div class="label">单位地址</div>
@@ -67,7 +67,7 @@
     <div class="part" v-if="!checked">
       <div class="form-input van-hairline--top">
         <div class="label">用户姓名</div>
-        <input type="text" class="input" v-model="person.name" placeholder="请输入用户姓名" >
+        <input type="text" class="input" v-model="person.name" placeholder="请输入用户姓名" @input="changeMohu(event,0)">
       </div>
       <div class="form-input van-hairline--top">
         <div class="label">用户电话</div>
@@ -126,6 +126,7 @@
 import Util from '@/utils/index'
 import {baseUrl} from '@/utils/config'
 import Toast from '@/../static/dist/toast/toast'
+var searchTimeout
 export default {
   components: {
   },
@@ -157,7 +158,11 @@ export default {
       isPs: true,
       isFm: true,
       isYy: true,
-      userInfo: {}
+      userInfo: {},
+      CList: [],
+      PList: [],
+      SList: [],
+      opt: 0
     }
   },
   // computed: {
@@ -173,6 +178,7 @@ export default {
    * @return {Array}           查询的结果
    */
     fuzzyQuery(list, keyWord) {
+      if(keyWord == '') return []
       var arr = [];
       for (var i = 0; i < list.length; i++) {
         if (list[i].match(keyWord) != null) {
@@ -180,6 +186,73 @@ export default {
         }
       }
       return arr;
+    },
+    selectSlit(item) {
+     if(this.checked) {
+      this.qi.name = item
+     } else {
+      this.person.name = item
+     }
+     this.SList = []
+    },
+    getMohuSearch() {
+     if(this.opt == 1) { // 企业
+       const name = this.qi.name
+       if(this.CList) {
+         this.SList = this.fuzzyQuery(this.CList,name)
+       } else {
+        this.getCompanyList(1)
+       }
+      } else { //  个人
+        if(this.PList) {
+         this.SList = this.fuzzyQuery(this.PList,this.person.name)
+       } else {
+        this.getCompanyList(0)
+       }
+      }
+    },
+    changeMohu(e,opt) {
+      this.opt = opt
+      !!searchTimeout && clearTimeout(searchTimeout)
+      searchTimeout = setTimeout(this.getMohuSearch,300)
+    },
+    getCompanyList(customerType = 1) {
+
+     if(customerType == 1) {
+       const CList = Util.getStorage('companyList')
+      if(CList) {
+       this.CList = CList
+       return ''
+      }
+     } else {
+      const PList = Util.getStorage('personList')
+      if(PList) {
+       this.PList = PList
+       return ''
+      }
+     }
+     
+     Util.loading('正在加载')
+    this.$http.post(`/company/name/list/${customerType}/${this.userInfo.id}`,'',{
+            headers:{
+              'Access-Token':this.userInfo.token,
+            }, //http请求头，
+          }).then((res) => {
+            let data = res.data
+            if(data.resultCode  == '0000000') {
+              console.log(data)
+             if(customerType == 1) { // 企业
+              this.CList = data.returnData
+              Util.setStorage('companyList', data.returnData)
+             } else {
+              this.PList = data.returnData
+              Util.setStorage('personList', data.returnData)
+             }
+             Util.clear()
+            } else {
+              Toast(data.resultDesc)
+            }
+        })
     },
     onSub() {
       let obj = {
@@ -253,10 +326,12 @@ export default {
         })
       }
     ,onRadio(opt) {
+      this.SList = []
       if(opt == 1) {
         this.checked = true
       } else { 
         this.checked = false
+        this.getCompanyList(0)
       }
     }
     ,deleteImgs(opts,index) {
@@ -353,6 +428,7 @@ export default {
     // console.log(123)
     this.userInfo = Util.getStorage('userInfo')
     this.checkStatus()
+    this.getCompanyList()
   }
 
 }

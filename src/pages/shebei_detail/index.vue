@@ -1,5 +1,5 @@
 <template>
-<div class="detail">
+<div class="detail fixed-posit" :style="{height: height}">
 <div class="info" :class="{'info-active': isEdit}">
   <div class="header van-hairline--bottom " >
     <div class="title">基本信息 <img v-if="isEdit" src="../../asset/imgs/xiugai.png" alt="" class="img"></div>
@@ -33,7 +33,7 @@
       <div class="title">设备位置</div>
       <div class="addr">
           <div class="addr-ssq" @click="addrsSelect"><span>{{addrSelect}}</span><div class="triangle_border_down"></div></div>
-          <textarea auto-height  class="textarea" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit" :placeholder="isEdit?'请输入设备位置':''"> </textarea>
+          <input type="text" class="input" v-model="baseInfo.deviceFullAddress"  :disabled="!isEdit" :placeholder="isEdit?'请输入设备位置':''">
       </div>
     
           
@@ -104,16 +104,16 @@
   </div>
 </div>
 <div class="check" @click="onCheck"> <span v-if="!isEdit" >{{tips}}</span></div>
-<van-transition :show="isEdit" name="slide-up">
-  <div class="set-fixed">
+<!--<van-transition :show="isEdit" name="slide-up">-->
+  <div class="set-fixed" :class="{'ishide':!isEdit}" catchtouchmove="ture">
     <div class="btn" @click="onBack">上一步</div>
     <div class="btn btn-c" @click="onSubmit">提交设备信息</div>
   </div>
-</van-transition>
-<van-transition :show="isAddr" name="slide-up">
-  <div class="min-h">
-    <van-picker show-toolbar :title="addrTitle" :columns="columns" @cancel="isAddr = false"
-  @confirm="bindAddrChange" />
+<!--</van-transition>-->
+<van-transition v-if="isAddr" :show="isAddr" name="slide-up" class="min-h">
+  <div class="" style="width: 100%;">
+    <van-picker show-toolbar :title="addrTitle" :columns="columns" @cancel="onCancel"
+  @confirm="bindAddrChange" style="width:100%;"/>
   </div>
       
 </van-transition>
@@ -170,7 +170,8 @@ export default {
       columns: [],
       addrTitle: '请选择省',
       addrSelect: '请选择地址',
-      userInfo: {}
+      userInfo: {},
+      height:'500px'
     }
   },
 //  computed: {
@@ -180,6 +181,19 @@ export default {
 //   },
 
   methods: {
+   onCancel() {
+    this.isAddr = false
+    this.addrTitle = '请选择省'
+    this.addrShengId = 0
+     this.addrShiId = 0
+    this.addrQuId = 0
+    let arr = []
+    for(let i in this.addrSheng) {
+      let {areaName}  = this.addrSheng[i]
+      arr = [...arr,areaName]
+    }
+    this.columns = arr
+   },
     onCheck() {
      if(this.isTips) {
       this.isTips = false
@@ -258,7 +272,13 @@ export default {
         case '请选择镇':
          this.addrZhenId = index
          this.isAddr = false
-          this.addrTitle = '请选择省'
+         this.addrTitle = '请选择省'
+         let arr = []
+         for(let i in this.addrSheng) {
+           let {areaName}  = this.addrSheng[i]
+           arr = [...arr,areaName]
+         }
+         this.columns = arr
           //  console.log(this.addrSheng[this.addrShengId].areaName)
            this.addrSelect = `${this.addrSheng[this.addrShengId].areaName}/${this.addrShi[this.addrShiId].areaName}/${this.addrQu[this.addrQuId].areaName}/${this.addrZhen[this.addrZhenId].areaName}`
         break
@@ -382,7 +402,7 @@ export default {
         data[`paramName${i+1}`] = baseInfo.deviceParams[i].name
         data[`paramValue${i+1}`] = baseInfo.deviceParams[i].value
       }
-      console.log(baseInfo.deviceId,this.id)
+//      console.log(data)
 //     console.log(this.addrShi[this.addrShiId]? this.addrShi[this.addrShiId].id:baseInfo.deviceArea2)
 //       return ''
        const params = JSON.stringify(data)
@@ -470,9 +490,20 @@ export default {
       if(data.deviceAreaName3) str += `/${data.deviceAreaName3}`
       if(data.deviceAreaName4) str += `/${data.deviceAreaName4}`
       return str
+    },
+    getPhoneHeight () {
+      let _this = this
+      wx.getSystemInfo({
+        success: function(res) {
+         _this.height = (res.windowHeight) +'px'
+         
+         
+//         console.log(~~res.windowHeight)
+        }
+      })
     }
   },
-
+  mounted() {this.getPhoneHeight()},
   onShow () {
     this.userInfo = Util.getStorage('userInfo')
      const { id,isUpdate,applyId } = this.$mp.query
@@ -497,9 +528,20 @@ export default {
 }
 </script>
 
-<style scoped  lang="less">
+<style lang="less">
+.fixed-posit {
+  position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+  overflow-y: scroll;
+ -webkit-overflow-scrolling: touch;
+/*	height: 100%;*/
+ }
+ .ishide {display: none !important;}
 .detail {
   background: #EEEFF4;
+  
    .info {
      .header {
        padding:  10px 20px;
@@ -524,7 +566,7 @@ export default {
           display: flex;
           align-items: center;
           padding: 5px 0;
-          .title {font-size: 14px;color:#1C2627; min-width: 120px;}
+          .title {font-size: 14px;color:#1C2627; min-width: 100px;}
           .input {
             flex: 1;
             height: auto;
@@ -583,10 +625,15 @@ export default {
      padding-bottom: 100px;
    }
    .set-fixed {
-     position: fixed;
+/*     position: absolute;*/
+     display: -webkit-flex;
+     display: flex;
+     width: 100%;
+/*
      bottom: 0;
      left: 0;
      right: 0;
+*/
       background: #ffffff;
       height: 55px;
       z-index: 99;
@@ -603,6 +650,9 @@ export default {
    .min-h {
      min-height: 50px;
      position:fixed;
+     display: -webkit-flex;
+     display: flex;
+     width: 100%;
      left: 0;
      right: 0;
      bottom: 0;
