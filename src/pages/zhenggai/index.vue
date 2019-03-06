@@ -28,7 +28,7 @@
               <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
             </div>
           </a>
-          <div class="no-driver" v-if="parOneDev">暂无需整改设备</div>
+          <div class="no-driver" v-if="parOneDev">暂无设备</div>
           <my-load :Loading="parOneLoad" :Bottom="parOneBottom"> </my-load>
         </div> 
       </van-tab>
@@ -59,7 +59,7 @@
               <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
             </div>
           </a>
-          <div class="no-driver" v-if="parTwoDev">暂无需整改设备</div>
+          <div class="no-driver" v-if="parTwoDev">暂无设备</div>
           <my-load :Loading="parTwoLoad" :Bottom="parTwoBottom"> </my-load>
         </div>   
       </van-tab>
@@ -90,7 +90,7 @@
               <div class="desc van-multi-ellipsis--l2">{{item.commandDeviceProblem}}</div>
             </div>
           </a>
-          <div class="no-driver" v-if="parTreDev">暂无需整改设备</div>
+          <div class="no-driver" v-if="parTreDev">暂无设备</div>
           <my-load :Loading="parTreLoad" :Bottom="parTreBottom"> </my-load>
         </div> 
       </van-tab>
@@ -159,6 +159,7 @@ export default {
         this.pageNum = ++this.allNum
         break
       }
+      console.log(this.pageNum,this.allNum,active)
       const params = JSON.stringify({
         "pageSize":"10",
         "pageNum":`${this.pageNum}`,
@@ -170,7 +171,7 @@ export default {
             }, //http请求头，
           }).then((res) => {
             let data = res.data
-            console.log(data)
+            // console.log(data)
             if(data.resultCode == '0000000') {
               let returnData = data.returnData
               try {
@@ -277,7 +278,7 @@ export default {
     
   }
   ,onReachBottom () {
-    this.getData()
+    this.getData(this.active)
   }
 }
 </script>

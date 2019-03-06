@@ -36,8 +36,9 @@ export default {
          oldPwd: '',
          newPwd: '',
          agnPwd: '',
-         userInfo:{}
-       }
+         
+       },
+       userInfo:{}
     }
   },
   // computed: {
@@ -55,7 +56,7 @@ export default {
         })
       }
     ,onSub() {
-     const {   oldPwd,newPwd,agnPwd} = this.account
+     const { oldPwd,newPwd,agnPwd} = this.account
      if(oldPwd == '') {
        Toast('请输入旧密码')
        return ''
@@ -98,6 +99,7 @@ export default {
   },
   onShow() {
     this.userInfo = Util.getStorage('userInfo')
+    console.log(this.userInfo)
   },
   created () {
     this.getPhoneHeight()

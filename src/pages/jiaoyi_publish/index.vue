@@ -186,18 +186,18 @@
         />
     </div>
   </van-popup>
-<van-popup :show="edit" @close="onClose">
-          <div class="h-s100">
-                  <div class="jianliss-edit">
-                    <!-- <div class="back" @click="onClose">返回</div> -->
-                    <div class="edit-item van-hairline--bottom">
-                      <div class="title">{{inputName}}</div>
-                      <textarea  auto-height="true" :focus="true" class="textarea" v-model.trim="inputValue" :placeholder="inputPlace"></textarea>
-                    </div>
-                    <div class="btn-su" @click="editInput">保存</div>
-                  </div>
-          </div>
-</van-popup>
+  <van-popup :show="edit" @close="onClose" position="bottom">
+      <div class="h-s100">
+              <div class="jianliss-edit">
+                <!-- <div class="back" @click="onClose">返回</div> -->
+                <div class="edit-item van-hairline--bottom">
+                  <div class="title">{{inputName}}</div>
+                  <textarea  auto-height="true" :focus="true" class="textarea" v-model.trim="inputValue" :placeholder="inputPlace"></textarea>
+                </div>
+                <div class="btn-su" @click="editInput">保存</div>
+              </div>
+      </div>
+  </van-popup>
 </div>
 </template>
 <script>

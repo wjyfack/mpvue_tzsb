@@ -37,8 +37,8 @@
           <div class="info-item van-hairline--bottom" @click="selectDate(5)">
             <div class="left">学历</div>
             <div class="right">
-              <div v-if="person.xueli">{{xuelis[person.xueli]}}</div>
-              <div v-else>未填写</div>
+              <div >{{xuelis[person.xueli]}}</div>
+             
               <img src="../../asset/imgs/arrow.png" alt="" class="ri-img">
               </div>
           </div>
@@ -693,6 +693,33 @@ export default {
     ,save() {
       const person = this.person
       const workSite = person.workAddr ? person.workAddr.split('/'): []
+      console.log(person)
+      if(!person.name) {
+        Toast('请输入姓名')
+        return ''
+      }
+
+      if(!person.bornDate) {
+        Toast('请选择出生年月')
+        return ''
+      }
+      if(!person.phone) {
+        Toast('请输入手机号')
+        return ''
+      }
+      if(!person.workDate) {
+        Toast('请选择参加工作时间')
+        return ''
+      }
+      if(!person.workDate) {
+        Toast('请输入参加工作时间')
+        return ''
+      }
+       if(!person.expectPosi) {
+        Toast('请选择期待职位')
+        return ''
+      }
+      
       if(workSite.length == 0) {
         Toast('请选择工作地点')
         return ''
@@ -748,26 +775,26 @@ export default {
         }).then((res) => {
           let data = res.data
           if(data.resultCode == '0000000') {
-              let info = data.returnData
+              let info = data.returnData || {}
               if(this.workEdit) {
                 this.person.workExp = info.resumeWorkExpList
               } else {
                 let  person = {
                   name: info.name||'',// 姓名
                   avatar: info.headPhoto || '',
-                  sex: info.sex,// 0:男1:女
+                  sex: info.sex||'男',// 0:男1:女
                   bornDate: info.birthDay||'',　// 出生年月
-                  phone: info.mobileNum,　//手机好
+                  phone: info.mobileNum || '',　//手机好
                   xueli:~~(info.educationalBg-1),　//学历
                   workDate: info.outWorkDay, // 工作时间 
                   qiuzhiStatus: ~~(info.requireJobStatus-1), // 求职状态
                   expectPosi: info.expectJobName,// 期望职业
-                  workAddr: `${info.workSiteProvince}/${info.workSiteCity}/${info.workSiteArea}`,// 工作地点
+                  workAddr: info.workSiteProvince&&info.workSiteCity&&info.workSiteArea?`${info.workSiteProvince}/${info.workSiteCity}/${info.workSiteArea}`:'',// 工作地点
                   salary:~~(info.salaryId-1), //资薪
                   certif: info.certificates ,// 证书
                   workExp: info.resumeWorkExpList
                 }
-              this.brands = Util.getCertifSort(info.certificates)
+              this.brands = info.certificates?Util.getCertifSort(info.certificates):[]
               this.person = person
             }
           }

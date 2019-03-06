@@ -23,6 +23,7 @@
         <div class="fen">{{item.deviceFullAddress}}</div>
       </div>
     </a>
+    <div class="no-message" v-if="fabArr.length ==0">暂无信息</div>
   </div>
 
 </div>
@@ -48,6 +49,7 @@
             <div class="title">{{item.tradeFullAddress}}</div>
           </div>
         </a>
+        <div class="no-message" v-if="repArr.length ==0">暂无信息</div>
       </div>
   </div>
   <van-toast id="van-toast" />
@@ -293,6 +295,14 @@ export default {
         .price {color:#FDC915;font-size: 11px;line-height: 21px;}
         .fen {color:#A1A2A4;font-size: 10px;line-height: 14px;}
       }
+    }
+    .no-message {
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #A1A2A4;
+      padding: 15px 0;
     }
   }
 }

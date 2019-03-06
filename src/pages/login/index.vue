@@ -4,7 +4,7 @@
     <div class="form">
       <div class="input-item">
         <img src="../../asset/imgs/login_people.png" class="img" alt="">
-        <input type="text" class="input" v-model.trim="phone" placeholder="请输入手机号号码"> 
+        <input type="text" class="input" v-model.trim="phone" placeholder="请输入手机号或企业名"> 
       </div>
        <div class="input-item">
         <img src="../../asset/imgs/login_lock.png" class="img" alt="">
@@ -55,7 +55,7 @@ export default {
       })
     }
 		,toOnLogin(e) {
-			console.log(e)
+			// console.log(e)
 			const { formId } = e.mp.detail
 			if(formId != "the formId is a mock one") { // 在真机才有
 				this.formId = formId	 
@@ -81,9 +81,10 @@ export default {
         } else {
          pwds = this.pwd
         }
-
-        if(!this.regPhone.test(this.phone)) {
-          Toast('手机号格式有误')
+        //this.regPhone.test(this.phone)
+        // console.log(!this.phone,pwds)
+        if(!this.phone) {
+          Toast('请输入手机号或企业名')
           return ''
         } else if(pwds == 'd41d8cd98f00b204e9800998ecf8427e') {
           Toast('请输入密码')
@@ -118,8 +119,8 @@ export default {
     }
     ,autoLogin() {
        let userInfo = this.userInfo
-       if(userInfo) {
-         this.phone = userInfo.customerLinkTel
+       if(userInfo) {         
+          this.phone = userInfo.customerLinkTel ? userInfo.customerLinkTel : userInfo.customerLoginName
            this.pwd = userInfo.customerLoginPwd
          Toast({
            duration: 0,
@@ -134,25 +135,25 @@ export default {
     }
     ,getUserInfo() {
        let _this = this
-        wx.login({
-          success(res) {
-            // console.log(res)
-            let code = res.code
-            wx.request({
-              url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxe783c24562705a90&secret=e7e37ccc968b2bc8dae410163bb25a40&js_code='+ code +'&grant_type=authorization_code',
-              data: {},
-              header: {
-                  'content-type': 'application/json'
-              },
-              success: function(res) {
-                const openid = res.data.openid //返回openid
-                _this.openId = openid
-								Util.setStorage('openid',openid)
+        // wx.login({
+        //   success(res) {
+        //     // console.log(res)
+        //     let code = res.code
+        //     wx.request({
+        //       url: 'https://api.weixin.qq.com/sns/jscode2session?appid=&secret=&js_code='+ code +'&grant_type=authorization_code',
+        //       data: {},
+        //       header: {
+        //           'content-type': 'application/json'
+        //       },
+        //       success: function(res) {
+        //         const openid = res.data.openid //返回openid
+        //         _this.openId = openid
+								// Util.setStorage('openid',openid)
                 _this.autoLogin()
-              }
-            })
-          }
-        })
+        //       }
+        //     })
+        //   }
+        // })
     }
   },
 

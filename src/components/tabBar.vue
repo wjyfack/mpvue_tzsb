@@ -8,14 +8,14 @@
         <img slot="icon" src="../asset/imgs/fail.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/fail_c.png" mode="aspectFit" />
       </van-tabbar-item>
-       <van-tabbar-item > 
+       <!-- <van-tabbar-item > 
         <img slot="icon" class="tabbar-img-big" src="../asset/imgs/jiankong.png"  mode="aspectFit" />
         <img slot="icon-active" class="tabbar-img-big" src="../asset/imgs/jiankong.png" mode="aspectFit" />
       </van-tabbar-item>
       <van-tabbar-item > 
         <img slot="icon" src="../asset/imgs/yewu.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/yewu_c.png" mode="aspectFit" />
-      </van-tabbar-item>
+      </van-tabbar-item> -->
       <van-tabbar-item > 
         <img slot="icon" src="../asset/imgs/login_people.png" class="icon" mode="aspectFit" />
         <img slot="icon-active" src="../asset/imgs/my.png" mode="aspectFit" />
@@ -34,14 +34,14 @@ export default {
                 case 1:
                 url= '../zhenggai/main'
                     break
-                case 2:
-                    url= '../jiankong/main'
-                    break
-                case 3:
-                    url= '../yewu/main'
-                    break
+                // case 2:
+                //     url= '../jiankong/main'
+                //     break
+                // case 3:
+                //     url= '../yewu/main'
+                //     break
          
-                case 4:
+                case 2:
                     url= '../my/main'
                     break
                 case 0: 

@@ -240,7 +240,7 @@ export default {
           }).then((res) => {
             let data = res.data
             if(data.resultCode  == '0000000') {
-              console.log(data)
+              // console.log(data)
              if(customerType == 1) { // 企业
               this.CList = data.returnData
               Util.setStorage('companyList', data.returnData)
@@ -272,13 +272,54 @@ export default {
         obj.authType = '1'
         obj.linkMan = this.qi.conact
         obj.linkTel = this.qi.phone
+        if(!obj.companyName) {
+          Toast('请输入单位名称')
+          return ''
+        } else if(!obj.companyAddress) {
+          Toast('请输入单位地址')
+          return ''
+        } else if(!obj.linkMan) {
+          Toast('请输入单位联系人')
+          return ''
+        } else if(!obj.linkTel) {
+          Toast('请输入单位电话')
+          return ''
+        } else if(!obj.deviceCertImgs) {
+          Toast('请选择使用登记证')
+          return ''
+        } else if(!obj.businessLicenseImg) {
+          Toast('请选择营业执照')
+          return ''
+        }
       } else { // 用户
         obj.authType = '0'
         obj.linkMan = this.person.name
         obj.linkTel = this.person.phone
+
+        if(!obj.linkMan) {
+          Toast('请输入用户姓名')
+          return ''
+        } else if(!obj.linkTel) {
+          Toast('请输入用户电话')
+          return ''
+        } else if(!obj.deviceAddress) {
+          Toast('请输入设备地址')
+          return ''
+        } else if(!obj.deviceCertImgs) {
+          Toast('请选择使用登记证')
+          return ''
+        } else if(!obj.idCardFrontImg) {
+          Toast('请选择身份证正面')
+          return ''
+        } else if(!obj.idCardContraryImg) {
+          Toast('请选择身份证反面')
+          return ''
+        }
+
       }
       const params = JSON.stringify(obj)
-      console.log(params)
+      // console.log(params)
+      // return ''
        this.$http.post(`/customer/auth/submit/${this.userInfo.id}`,params,{
             headers:{
               'Access-Token':this.userInfo.token,
@@ -444,7 +485,7 @@ export default {
    right: 0;
    top:78px;
    width: 100%;
-   height: 140px;
+   max-height: 140px;
    z-index: 99;
    overflow-y: scroll;
    .ren-list-item {
