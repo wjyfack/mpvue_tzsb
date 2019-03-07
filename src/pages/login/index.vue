@@ -120,7 +120,7 @@ export default {
     ,autoLogin() {
        let userInfo = this.userInfo
        if(userInfo) {         
-          this.phone = userInfo.customerLinkTel ? userInfo.customerLinkTel : userInfo.customerLoginName
+          this.phone = userInfo.customerLoginName
            this.pwd = userInfo.customerLoginPwd
          Toast({
            duration: 0,
