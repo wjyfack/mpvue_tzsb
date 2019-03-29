@@ -98,29 +98,29 @@
       <van-transition :show="!show" name="slide-right">
         <div>
          <div class="set-height">
-<!--
+
           <div class="info info-top">
            <div class="mes">
             <div class="mes-item">
-              <div class="title" > <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
-              <input @focus="onInput(index)" class="input" v-model="zhenggaiZhubei" :disabled="!isEdit" placeholder="已经根据要求整改">
-           </div>
-           <div class="pic-item">
+                <div class="title" > <div>整改备注</div><img src="../../asset/imgs/xiugaih.png" alt="" class="t_img">  </div>
+                <input @focus="onInput(index)" class="input" v-model="zhenggaiZhubei" :disabled="!isEdit" placeholder="已经根据要求整改">
+            </div>
+            <div class="pic-item">
               <div class="title">整改图片 </div>
               <div class="input_img">
                 <div class="img-list" v-for="(items,indexs) in imgs" :key="indexs">
                   <div class="close" v-if="isEdit" @click="deleteImg(index,indexs)"><img src="../../asset/imgs/z_cuo.png" alt="" class="img-c"></div>
-                  <img v-if="baseImg+items" :src="baseImg+items" alt="" class="img-item" @click="previews(item.imgs,indexs)">
+                  <img v-if="baseImg+items" :src="baseImg+items" alt="" class="img-item" @click="previews(baseImg+items,indexs)">
                 </div>
                 <div class="add" v-if="isEdit" @click="uploadImg(13)">
                     <img src="../../asset/imgs/add.png" alt="" class="add_img">
                  </div>
                </div>
-             </div>
+            </div>
            </div>
           </div>
--->
-           <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
+
+           <!-- <div class="info info-top" v-for="(item,index) in tasks" :key="item.checkNo" >
              <div class="header van-hairline--bottom">
                <div class="title">任务{{index+1}}</div>
              </div>
@@ -158,7 +158,7 @@
                  <input @focus="onInput(index)" class="input" v-model="item.remark" :disabled="!isEdit" placeholder="已经根据要求整改">
                </div>
              </div>
-           </div>
+           </div> -->
           
          </div>
          <div class="padd-bottm"></div>
@@ -167,7 +167,7 @@
        </van-transition>
       <div class="set-fixed van-hairline--top" v-if="!show&&isEdit" > 
           <div class="btn" @click="changTab">上一步</div>
-          <div class="btn btn-c" @click="pushTasks">提交整改反馈</div>
+          <div class="btn btn-c" @click="onSubZhenggai">提交整改反馈</div>
         </div>
       <van-toast id="van-toast" />
      <van-dialog id="van-dialog" />
@@ -263,14 +263,22 @@ export default {
            
              data.returnData.rectifyStatusName = this.getrectifyStatusName(data.returnData.rectifyStatus)
              data.returnData.remark = data.returnData.remark == 'null' ? '' : data.returnData.remark
-              if(data.returnData.rectifyStatus == 3 || data.returnData.rectifyStatus == 1) {
+              if(data.returnData.rectifyStatus == 3 ) {
                  this.isEdit = false
 //                 console.log(data.returnData.rectifyStatus)
               } else {
                  this.isEdit = true
               }
-//              this.zhenggaiZhubei = data.returnData.rectifyRemark
-//              this.imgs = data
+              this.zhenggaiZhubei = data.returnData.rectifyRemark
+              let imgNames = data.returnData.rectifyImg ? data.returnData.rectifyImg.split('&'): []
+              for(let j in imgNames) {
+                if(imgNames[j] == ''|| imgNames== null) {
+                  imgNames.splice(j,1)
+                } else {
+                  imgNames[j] = imgNames[j]
+                }
+              }
+              this.imgs = imgNames
               this.command = data.returnData
             }
             
@@ -339,10 +347,10 @@ export default {
              wx.hideToast();  
             var data =JSON.parse(res.data)  // string to obj
              if(data.resultCode == '0000000') {
-//                console.log(data,index)
+               // console.log(data,index)
                 const url = data.returnData
-                _this.tasks[index].imgs = [..._this.tasks[index].imgs, url]
-//              _this.imgs = [..._this.imgs, url]
+                // _this.tasks[index].imgs = [..._this.tasks[index].imgs, url]
+             _this.imgs = [..._this.imgs, url]
             }
           },fail:function(err){
             wx.hideToast();  
@@ -359,8 +367,8 @@ export default {
 
     }
     ,deleteImg (index,indexs) {
-        this.tasks[index].imgs.splice(indexs,1)
-//        this.imgs[index].splice(indexs,1)
+        // this.tasks[index].imgs.splice(indexs,1)
+       this.imgs.splice(indexs,1)
     }
     ,pushTask(index) { // index 为第几个任务
       if(!this.isEdit) {
@@ -433,6 +441,46 @@ export default {
     ,onInput(index) {
         console.log(index)
     },
+    onSubZhenggai() {
+     if(!this.zhenggaiZhubei) {
+       Toast('请输入整改注备')
+       return ''
+     } else if(this.imgs.length == 0) {
+       Toast('请选择整改图片')
+       return ''
+     }
+     Dialog.confirm({
+       message: '提交整改反馈？'
+     }).then(() => {
+      const params =JSON.stringify( {
+        "id":  this.ids,
+        "rectifyImg": this.imgs.length !=0 ? this.imgs.join('&'): '',
+        "rectifyRemark": this.zhenggaiZhubei
+      })
+      // console.log(params)
+      // return ''
+      this.$http.post(`/task/command/rectify/submit/${this.userInfo.id}`,params,{
+        headers:{
+          'Access-Token':this.userInfo.token,
+        }, //http请求头，
+      }).then((res) => {
+        let data = res.data
+        if(data.resultCode == '0000000') {
+            Toast('提交成功,正在返回')
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              })
+            },1500)
+            
+        } else {
+          Toast(data.resultDesc)
+        }
+      })
+     }).catch(() => {
+       // on cancel
+     });
+    },
     getPhoneHeight () {
       let _this = this
       wx.getSystemInfo({
@@ -461,7 +509,7 @@ export default {
     this.tasks = []
     this.show = true
     this.getDetail()
-    this.getTask()
+    // this.getTask()
   },
 
   onPageScroll(event) {

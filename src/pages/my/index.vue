@@ -45,7 +45,7 @@
       <div class="title">退出登陆</div>
     </div>
   </div>
-  <tab-bar active="4"/>
+  <tab-bar active="4" :show="show"/>
 </div>
 
 </div>
@@ -59,7 +59,8 @@ export default {
   },
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      show: true
     }
   },
   // computed: {
@@ -82,9 +83,12 @@ export default {
       }, 2000)
     }
   },
-
   onShow () {
      this.userInfo = Util.getStorage('userInfo')
+      this.show = true
+      if(this.userInfo.authenticationFlag == 0 && this.userInfo.createType == 0) {
+        this.show = false
+      }
   }
   ,onReachBottom () {
   }

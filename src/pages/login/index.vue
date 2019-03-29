@@ -41,7 +41,8 @@ export default {
       pwd: '',
       regPhone:  /^1[34578]\d{9}$/ ,
       openId:'',
-			formId: ''
+      formId: '',
+      code: ''
     }
   },
 
@@ -93,7 +94,7 @@ export default {
          const params = JSON.stringify({
             customerLoginName: this.phone,
             customerLoginPwd: pwds,
-            wxOpenId: this.openId
+            wxCode: this.code
           })
 //				 const token = this.formId ? {
 //					 headers:{
@@ -107,7 +108,17 @@ export default {
               if(data.resultCode == '0000000') {
                 Toast.clear()
                 Util.setStorage('userInfo', data.returnData)
-                Util.redTo('../index/main')
+                const userInfo = data.returnData
+                // createType 0 用户 1 系统
+                // authenticationFlag 0未认证 1认证+
+                if(userInfo.authenticationFlag == 1) {
+                  Util.redTo('../index/main')  
+                } else {
+                  //  系统可以查看
+                  if(userInfo.createType == 0) {
+                    Util.redTo('../yewu/main')
+                  }
+                }
               } else {
                 Toast(data.resultDesc)
               }
@@ -155,6 +166,16 @@ export default {
         //   }
         // })
     }
+    ,getCode() {
+      let _this = this
+      wx.login({
+        success(res) {
+          // console.log(res)
+          let code = res.code
+          _this.code = code
+        }
+      })
+    }
   },
 
   created () {
@@ -164,6 +185,7 @@ export default {
    this.userInfo = Util.getStorage('userInfo')
    this.password= ''
    this.pwd= ''
+   this.getCode()
 //   console.log(123)
    
 //   this.autoLogin()
@@ -175,6 +197,7 @@ export default {
 //   console.log(345)
     // 自动登录
     this.getUserInfo()
+
     
   }
 }

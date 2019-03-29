@@ -1,6 +1,6 @@
 ////   'http://120.77.34.115:8507'
-export const baseUrl = 'https://www.xiangua.net/customer_app-api-test'// 'http://192.168.0.116:8507'//
-export const  smsUrl = 'https://api2.bmob.cn' 
+export const baseUrl = 'https://www.xiangua.net/customer_app-api-test'//'http://192.168.0.116:8507'//
+export const  smsUrl = 'https://api2.bmob.cn'
 // 字体 https://img.yzcdn.cn openId https://api.weixin.qq.com
 export const zhilingUrl = 'http://120.31.143.223:8066'
 export const deviceTypes= [
@@ -17,6 +17,7 @@ export const dateSort = [
     {id: 1, name: '按下年年检时间降序'},
     {id: 2, name: '按下年年检时间升序'},
 ]
+
 export const certifSort ={
     "特种设备相关管理":['特种设备安全管理负责人(A1)',
         '特种设备质量管理负责人(A2)',

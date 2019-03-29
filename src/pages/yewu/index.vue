@@ -69,7 +69,7 @@
       </div>
     </div>
      <van-dialog id="van-dialog" />
-    <tab-bar active="3"/>
+    <tab-bar active="3" :show="show"/>
   </div>
 </template>
 <script>
@@ -86,7 +86,8 @@ export default {
   data () {
     return {
      height: 0,
-     userInfo:{}
+     userInfo:{},
+     show: true
     }
   },
   // computed: {
@@ -95,56 +96,76 @@ export default {
   //   }
   // },
   methods: {
-      getPhoneHeight () {
-          let _this = this
-          wx.getSystemInfo({
-            success: function(res) {
-            _this.height = (res.windowHeight) +'px'
-            }
-          })
-      }
-        ,qiyeNavTo(opt) {
-          if(this.userInfo.companyId == null || this.userInfo.companyName == null) {
-            Dialog.alert({
-              message: '暂未认证企业，请先认证'
-            }).then(() => {
-                //Util.redTo('../my_rengzheng/main')
-            })
-          } else {
-            let url = ''
-              switch(opt) {
-                case 1:
-                  url = `../yewu_detail/main?id=1`
-                break
-                case 2:
-                  url = `../yewu_detail/main?id=2`
-                break
-                case 3:
-                  url = `../yewu_detail/main?id=3`
-                break
-                case 4:
-                  url = `../zhaoping/main?id=2`
-                break
-                case 5:
-                  url = `../yewu_detail/main?id=5`
-                break
-                case 6:
-                  url = `../nengyuan/main`
-                break
-                case 7:
-                  url = `../jiaoyi/main?id=2`
-                break
-              }
-              Util.navTo(url)
+    getPhoneHeight () {
+        let _this = this
+        wx.getSystemInfo({
+          success: function(res) {
+          _this.height = (res.windowHeight) +'px'
           }
-        }
+        })
+    }
+    ,qiyeNavTo(opt) {
+      if(this.userInfo.companyId || this.userInfo.companyName) {
+        Dialog.alert({
+          message: '暂未认证企业，请先认证'
+        }).then(() => {
+            //Util.redTo('../my_rengzheng/main')
+        })
+      } else {
+        let url = ''
+          switch(opt) {
+            case 1:
+              url = `../yewu_detail/main?id=1`
+            break
+            case 2:
+              url = `../yewu_detail/main?id=2`
+            break
+            case 3:
+              url = `../yewu_detail/main?id=3`
+            break
+            case 4:
+              url = `../zhaoping/main?id=2`
+            break
+            case 5:
+              url = `../yewu_detail/main?id=5`
+            break
+            case 6:
+              url = `../nengyuan/main`
+            break
+            case 7:
+              url = `../jiaoyi/main?id=2`
+            break
+          }
+          Util.navTo(url)
+      }
+    }
   },
 
   created () {
     this.getPhoneHeight()
   }
-  ,mounted() {
+  ,onShow() {
      this.userInfo = Util.getStorage('userInfo')
+     // createType 0 用户 1 系统
+     // authenticationFlag 0未认证 1认证+
+    this.show = true
+    let app = getApp()
+    let ishowRenz = app.globalData.ishowRenz
+    if(this.userInfo.authenticationFlag == 0 && this.userInfo.createType == 0) {
+      this.show = false
+      if(!ishowRenz) {
+        app.globalData.ishowRenz = true
+        Dialog.confirm({
+          message: '帐号未认证，是否前往认证？'
+        }).then(() => {
+          // on confirm
+          Util.navTo('../my_rengzheng/main')
+        }).catch(() => {
+          // on cancel
+        })
+      }
+      
+    }
   }
   ,onReachBottom () {
 

@@ -159,7 +159,7 @@ export default {
         this.pageNum = ++this.allNum
         break
       }
-      console.log(this.pageNum,this.allNum,active)
+      //console.log(this.pageNum,this.allNum,active)
       const params = JSON.stringify({
         "pageSize":"10",
         "pageNum":`${this.pageNum}`,
