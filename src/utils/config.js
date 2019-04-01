@@ -1,5 +1,5 @@
-////   'http://120.77.34.115:8507'
-export const baseUrl = 'https://www.xiangua.net/customer_app-api-test'//'http://192.168.0.116:8507'//
+////   'http://120.77.34.115:8507' 
+export const baseUrl = 'https://www.xiangua.net/customer_app-api-test'//'http://192.168.0.142:8507'//
 export const  smsUrl = 'https://api2.bmob.cn'
 // 字体 https://img.yzcdn.cn openId https://api.weixin.qq.com
 export const zhilingUrl = 'http://120.31.143.223:8066'

@@ -11,23 +11,24 @@
     </div>
     <div class="rengzheng" :style="{'height': height}" v-else>
       <div class="radio-group">
-        <div class="radio-item" @click="onRadio(1)"> <img v-if="!checked" src="./../../asset/imgs/radiod.png" class="radio"
-            alt=""><img v-if="checked" src="./../../asset/imgs/radio_checked.png" class="radio" alt=""> <label for="qiye"
-            class="label">企业用户</label></div>
-        <div class="radio-item" @click="onRadio(2)"> <img v-if="checked" src="./../../asset/imgs/radiod.png" class="radio"
-            alt=""><img v-if="!checked" src="./../../asset/imgs/radio_checked.png" class="radio" alt=""><label for="geren"
-            class="label">个人用户</label></div>
+        <div class="radio-item" @click="onRadio(1)"> <img v-if="!checked" src="./../../asset/imgs/radiod.png"
+            class="radio" alt=""><img v-if="checked" src="./../../asset/imgs/radio_checked.png" class="radio" alt="">
+          <label for="qiye" class="label">企业用户</label></div>
+        <div class="radio-item" @click="onRadio(2)"> <img v-if="checked" src="./../../asset/imgs/radiod.png"
+            class="radio" alt=""><img v-if="!checked" src="./../../asset/imgs/radio_checked.png" class="radio"
+            alt=""><label for="geren" class="label">个人用户</label></div>
       </div>
 
       <div class="ren-list van-hairline--bottom" v-if="SList.length != 0">
-        <div class="ren-list-item van-hairline--top" v-for="(item,index) in SList" :key="index" @click="selectSlit(item)">{{item}}</div>
+        <div class="ren-list-item van-hairline--top" v-for="(item,index) in SList" :key="index"
+          @click="selectSlit(index)">{{item}}</div>
 
       </div>
       <van-transition :show="checked" name="fade-left">
         <div class="part" v-if="checked">
           <div class="form-input van-hairline--top">
             <div class="label">单位名称</div>
-            <input type="text" class="input" v-model="qi.name" placeholder="请输入单位名称" @input="changeMohu(e,1)">
+            <input type="text" class="input" v-model="qi.name" placeholder="请输入单位名称" @input="changeMohu($event,1)">
           </div>
           <div class="form-input van-hairline--top">
             <div class="label">单位地址</div>
@@ -45,7 +46,8 @@
           <div class="form-input van-hairline--top">
             <div class="label">使用登记证</div>
             <div class="pic-list" v-for="(item , index) in qiImgsG" :key="index">
-              <span class="colse" @click="deleteImgs(1,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+              <span class="colse" @click="deleteImgs(1,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c"
+                  alt=""></span>
               <img :src="baseUrls+item" class="img-sel" alt="">
             </div>
             <div class="add" v-if="isQI" @click="addImgs(1)">
@@ -55,7 +57,8 @@
           <div class="form-input van-hairline--top">
             <div class="label">营业执照</div>
             <div class="pic-list" v-for="(item , index) in yyImgsG" :key="index">
-              <span class="colse" @click="deleteImgs(4,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+              <span class="colse" @click="deleteImgs(4,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c"
+                  alt=""></span>
               <img :src="baseUrls+item" class="img-sel" alt="">
             </div>
             <div class="add" v-if="isYy" @click="addImgs(4)">
@@ -71,7 +74,7 @@
         <div class="part" v-if="!checked">
           <div class="form-input van-hairline--top">
             <div class="label">用户姓名</div>
-            <input type="text" class="input" v-model="person.name" placeholder="请输入用户姓名" @input="changeMohu(event,0)">
+            <input type="text" class="input" v-model="person.name" placeholder="请输入用户姓名" @input="changeMohu($event,0)">
           </div>
           <div class="form-input van-hairline--top">
             <div class="label">用户电话</div>
@@ -88,7 +91,8 @@
           <div class="form-input van-hairline--top">
             <div class="label">使用登记证</div>
             <div class="pic-list" v-for="(item , index) in qiImgsG" :key="index">
-              <span class="colse" @click="deleteImgs(1,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+              <span class="colse" @click="deleteImgs(1,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c"
+                  alt=""></span>
               <img :src="baseUrls+item" class="img-sel" alt="">
             </div>
             <div class="add" v-if="isQI" @click="addImgs(1)">
@@ -98,7 +102,8 @@
           <div class="form-input van-hairline--top">
             <div class="label">身份证正面</div>
             <div class="pic-list" v-for="(item , index) in psImgsG" :key="index">
-              <span class="colse" @click="deleteImgs(2,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+              <span class="colse" @click="deleteImgs(2,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c"
+                  alt=""></span>
 
               <img :src="baseUrls+item" class="img-sel" alt="">
             </div>
@@ -109,7 +114,8 @@
           <div class="form-input van-hairline--top">
             <div class="label">身份证反面</div>
             <div class="pic-list" v-for="(item , index) in fmImgsG" :key="index">
-              <span class="colse" @click="deleteImgs(3,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c" alt=""></span>
+              <span class="colse" @click="deleteImgs(3,index)"><img src="../../asset/imgs/z_cuo.png" class="img-c"
+                  alt=""></span>
 
               <img :src="baseUrls+item" class="img-sel" alt="">
             </div>
@@ -156,6 +162,7 @@
         height: '',
         checked: true, // true 为企业　false 为个人
         baseUrls: `${baseUrl}/file/show/certificate/`,
+        name: '',
         qi: {
           name: '',
           addr: '',
@@ -183,7 +190,8 @@
         PList: [],
         SList: [],
         opt: 0,
-        companylist:[]
+        companylist: [],
+        matchList: []
       }
     },
     // computed: {
@@ -204,21 +212,34 @@
         for (var i = 0; i < list.length; i++) {
           if (list[i].match(keyWord) != null) {
             arr.push(list[i]);
-            if(arr.length > 100) {
+            if (arr.length > 100) {
               return arr
             }
           }
         }
         return arr
       },
-      selectSlit(item) {
-        if (this.checked) {
-          this.qi.name = item
+      selectSlit(index) {  //
+        const {useAddress, useContactMan,useContactManTel,useName} = this.matchList[index]
+        if (this.checked) { // 企业
+          let qi= {
+            name: useName,
+            addr: useAddress,
+            phone: useContactManTel,
+            conact: useContactMan
+          }
+          this.qi = qi
         } else {
-          this.person.name = item
+          let person= {
+            name: useName,
+            addr: useAddress,
+            phone: useContactManTel,
+          }
+          this.person = person
         }
+
         this.SList = []
-        this.checkCompany(item)
+        // this.checkCompany(item)
       },
       getMohuSearch() {
         if (this.opt == 1) { // 企业
@@ -226,20 +247,24 @@
           if (this.CList) {
             this.SList = this.fuzzyQuery(this.CList, name)
           } else {
-            this.getCompanyList(1)
+            // this.getCompanyList(1)
           }
         } else { //  个人
           if (this.PList) {
             this.SList = this.fuzzyQuery(this.PList, this.person.name)
           } else {
-            this.getCompanyList(0)
+            // this.getCompanyList(0)
           }
         }
       },
       changeMohu(e, opt) {
-        this.opt = opt
+        const { value } = e.mp.detail
+        
+        this.name = value
+        this.opt = opt // 为0 用户 1企业
         !!searchTimeout && clearTimeout(searchTimeout)
-        searchTimeout = setTimeout(this.getMohuSearch, 300)
+        // searchTimeout = setTimeout(this.getMohuSearch, 300)
+        searchTimeout = setTimeout(this.searchCompanyList, 300)
       },
       getCompanyList(customerType = 1) {
 
@@ -274,6 +299,35 @@
               Util.setStorage('personList', data.returnData)
             }
             Util.clear()
+          } else {
+            Toast(data.resultDesc)
+          }
+        })
+      },
+
+      searchCompanyList() { // 请求模糊查询
+        // if (this.opt == 1) { // 企业
+        // } else { //  个人
+        // }
+        const params = JSON.stringify({
+          'UseName': this.name
+        })
+
+        // this.SList = [1, 2.3, 4, 5, 6]
+        this.$http.post(`/company/name/vaguelist/${this.userInfo.id}`, params, {
+          headers: {
+            'Access-Token': this.userInfo.token,
+          }, //http请求头，
+        }).then((res) => {
+          let data = res.data
+          if (data.resultCode == '0000000') {
+            let list = data.returnData
+            this.matchList = list
+            let listArr =  list.map((item) => {
+              return item.useName
+            })
+
+            this.SList = listArr
           } else {
             Toast(data.resultDesc)
           }
@@ -389,7 +443,7 @@
         const params = JSON.stringify({
           "realName": realName
         })
-        this.$http.post(`/customer/user/ids/real/${this.userInfo.id}`, params,{
+        this.$http.post(`/customer/user/ids/real/${this.userInfo.id}`, params, {
           headers: {
             'Access-Token': this.userInfo.token,
           }, //http请求头，
@@ -398,7 +452,7 @@
           if (data.resultCode == '0000000') {
             let companyList = data.returnData
             // console.log('checkCompany', companyList)
-            if(companyList.length != 0) {
+            if (companyList.length != 0) {
               this.companylist = [...companyList]
               // this.show = true
               Dialog.confirm({
@@ -429,7 +483,7 @@
           this.checked = true
         } else {
           this.checked = false
-          this.getCompanyList(0)
+          // this.getCompanyList(0)
         }
       },
       deleteImgs(opts, index) {
@@ -532,7 +586,7 @@
       // console.log(123)
       this.userInfo = Util.getStorage('userInfo')
       this.checkStatus()
-      this.getCompanyList()
+      // this.getCompanyList()
     }
 
   }
@@ -543,18 +597,21 @@
   .vPopup {
     background: #fff;
     min-width: 320px;
+
     .title {
       padding: 15px;
       font-size: 14px;
       font-weight: bold;
-      color:#1C2627;
+      color: #1C2627;
       display: flex;
       justify-content: center;
     }
+
     .vPopup-list {
       max-height: 140px;
       z-index: 99;
       overflow-y: scroll;
+
       .vPopup-item {
         display: flex;
         justify-content: center;
@@ -564,9 +621,11 @@
         color: #1C2627;
       }
     }
+
     .vPopup-group {
       display: flex;
       justify-content: center;
+
       .vPopup-btn {
         flex: 1;
         display: flex;
@@ -576,11 +635,13 @@
         color: #1C2627;
         padding: 15px 0;
       }
+
       .btn1 {
         background: #FDC915;
       }
     }
   }
+
   .isrenzheng {
     position: relative;
 
